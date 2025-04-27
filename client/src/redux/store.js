@@ -1,9 +1,6 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import { apiSlice } from "./api/apiSlice";
 import authSlice from "./features/auth/authSlice";
-import courseCreationReducer from "./features/courses/courseCreationSlice";
-import profileReducer from "./features/profile/profileSlice";
-import adminReducer from "./features/admin/adminSlice";
 import {
     persistStore,
     persistReducer,
@@ -15,19 +12,19 @@ import {
     REGISTER,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import courseCreationReducer from './features/courses/courseCreationSlice';
 
 const persistConfig = {
     key: "root",
     version: 1,
     storage,
+    blacklist: [apiSlice.reducerPath]
 };
 
 const rootReducer = combineReducers({
     [apiSlice.reducerPath]: apiSlice.reducer,
     auth: authSlice,
     courseCreation: courseCreationReducer,
-    profile: profileReducer,
-    admin: adminReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

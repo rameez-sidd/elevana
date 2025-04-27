@@ -1,56 +1,47 @@
-import React, { useEffect, useState } from 'react'
-import { DataGrid } from '@mui/x-data-grid';
-import { Box, Button } from '@mui/material'
-import { AiFillDelete } from 'react-icons/ai'
-import { RiEditBoxFill } from "react-icons/ri";
-import Loading from '../../../components/Loading';
 import { format } from 'timeago.js';
-import DeleteCourse from './DeleteCourse';
-import { useGetAllCoursesQuery } from '../../../redux/features/courses/coursesApi';
-import useGetCourseForEdit from '../../../hooks/useGetCourseForEdit';
+import React, { useEffect } from 'react'
+import Loading from '../../../components/Loading';
+import { DataGrid } from '@mui/x-data-grid';
 
-const CoursesDataGrid = () => {
-    const {data, isLoading, error, refetch, isSuccess} = useGetAllCoursesQuery(undefined, {refetchOnFocus: true, refetchOnMountOrArgChange: true, refetchOnReconnect: true})
-    const [openDeleteModal, setOpenDeleteModal] = useState(false)
-    const [courseIdToDelete, setCourseIdToDelete] = useState("")
-    const [courseIdToEdit, setCourseIdToEdit] = useState("")
-    
-    // Using our new custom hook
-    const { loading: editLoading } = useGetCourseForEdit(courseIdToEdit);
-    
+import { Box, Button } from '@mui/material'
+import { AiFillDelete, AiFillMail } from 'react-icons/ai'
+import { useGetAllUsersQuery } from '../../../redux/features/user/userApi';
+
+const StudentsDataGrid = () => {
+    const { data, isLoading, error, refetch, isSuccess } = useGetAllUsersQuery(undefined, { refetchOnFocus: true, refetchOnMountOrArgChange: true, refetchOnReconnect: true })
+
+
     useEffect(() => {
         refetch()
-    }, [])
+    }, [] )
+
 
     const columns = [
         { field: "id", headerName: "ID", flex: 0.3 },
-        { field: "title", headerName: "Course Title", flex: 1 },
-        { field: "ratings", headerName: "Ratings", flex: 0.5 },
-        { field: "purchased", headerName: "Purchased", flex: 0.5 },
-        { field: "created_at", headerName: "Created At", flex: 0.5 },
-        { field: " ", headerName: "Edit", flex: 0.4, renderCell: (params) => { return (<Button onClick={() => handleEdit(params.row.id)}><RiEditBoxFill size={17} className='text-dark-green' /></Button>) } },
-        { field: "  ", headerName: "Delete", flex: 0.4, renderCell: (params) => { return (<Button onClick={() => {
-            setOpenDeleteModal(true)
-            setCourseIdToDelete(params.row.id)
-        }}><AiFillDelete size={17} className='text-dark-green' /></Button>) } },
+        { field: "name", headerName: "Name", flex: 0.5 },
+        { field: "email", headerName: "Email", flex: 0.6 },
+        { field: "role", headerName: "Role", flex: 0.3 },
+        { field: "courses", headerName: "Purchased Courses", flex: 0.5 },
+        { field: "created_at", headerName: "Joined At", flex: 0.4 },
+        { field: "  ", headerName: "Email", flex: 0.3, renderCell: (params) => { return (<Button><a href={`mailto:${params.row.email}`} style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}><AiFillMail size={17} className='text-dark-green' /></a></Button>) } },
+
     ]
 
     const rows = []
 
+
     {
-        data && data?.courses?.forEach((item) => (
+        data && data?.users?.forEach((item) => (
             rows.push({
                 id: item._id,
-                title: item.name,
-                ratings: item.ratings,
-                purchased: item.purchased,
+                name: item.name,
+                email: item.email,
+                role: item.role === 'admin' ? 'educator' : item.role,
+                courses: item.purchasedCourses.length,
                 created_at: format(item.createdAt),
+
             })
         ))
-    }
-
-    const handleEdit = (id) => {
-        setCourseIdToEdit(id)
     }
 
 
@@ -127,14 +118,8 @@ const CoursesDataGrid = () => {
                 )
             }
 
-            {
-                openDeleteModal && (
-                    <DeleteCourse setOpenDeleteModal={setOpenDeleteModal} courseId={courseIdToDelete} refetch={refetch}/>
-                )
-            }
-
         </div>
     )
 }
 
-export default CoursesDataGrid
+export default StudentsDataGrid

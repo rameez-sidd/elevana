@@ -6,6 +6,7 @@ export const courseApi = apiSlice.injectEndpoints({
             query:(data) => ({
                 url: 'create-course',
                 method: 'POST',
+                body: data,
                 credentials: 'include'
             })
         }),
@@ -15,8 +16,32 @@ export const courseApi = apiSlice.injectEndpoints({
                 method: 'GET',
                 credentials: 'include'
             })
-        })
+        }),
+        deleteCourse: builder.mutation({
+            query:(id) => ({
+                url: `delete-course/${id}`,
+                method: 'DELETE',
+                credentials: 'include'
+            })
+        }),
+        getCourseForEdit: builder.query({
+            query:(id) => ({
+                url: `get-course-for-edit/${id}`,
+                method: 'GET',
+                credentials: 'include'
+            })
+        }),
+        editCourse: builder.mutation({
+            query:({id, data}) => ({
+                url: `edit-course/${id}`,
+                method: 'PUT',
+                body: data,
+                credentials: 'include'
+            })
+        }),
     })
 })
 
-export const { useCreateCourseMutation, useGetAllCoursesQuery } = courseApi
+
+
+export const { useCreateCourseMutation, useGetAllCoursesQuery, useDeleteCourseMutation, useGetCourseForEditQuery, useEditCourseMutation } = courseApi

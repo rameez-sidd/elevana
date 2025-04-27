@@ -11,6 +11,7 @@ import sendMail from "../utils/sendMail.js";
 import { reverse } from "dns/promises"
 import { title } from "process"
 import { notificationModel } from "../models/notification.model.js"
+import { log } from "console"
 
 
 const _dirname = path.resolve()
@@ -23,7 +24,7 @@ export const uploadCourse = CatchAsyncError(async (req, res, next) => {
             createdBy: req.user._id
         }
         const thumbnail = data.thumbnail
-        if(thumbnail){
+        if (thumbnail) {
             const myCloud = await cloudinary.v2.uploader.upload(thumbnail, {
                 folder: "courses"
             })
@@ -43,17 +44,13 @@ export const editCourse = CatchAsyncError(async (req, res, next) => {
     try {
         const data = req.body
         const thumbnail = data.thumbnail
-        if(thumbnail){
-            await cloudinary.v2.uploader.destroy(thumbnail.public_id)
-
-            const myCloud = await cloudinary.v2.uploader.upload(thumbnail, {
-                folder: "courses"
-            })
-            data.thumbnail = {
-                public_id: myCloud.public_id,
-                url: myCloud.secure_url
-            }
-        } 
+        const myCloud = await cloudinary.v2.uploader.upload(thumbnail, {
+            folder: "courses"
+        })
+        data.thumbnail = {
+            public_id: myCloud.public_id,
+            url: myCloud.secure_url
+        }
 
         const courseId = req.params.id
         const course = await courseModel.findByIdAndUpdate(courseId, {
@@ -71,13 +68,31 @@ export const editCourse = CatchAsyncError(async (req, res, next) => {
 })
 
 // get single course
+export const getCourseForEdit = CatchAsyncError(async (req, res, next) => {
+    try {
+        const courseId = req.params.id
+
+        const course = await courseModel.findById(courseId)
+
+        res.status(200).json({
+            success: true,
+            course,
+        })
+
+
+    } catch (error) {
+        return next(new ErrorHandler(error.message, 500))
+    }
+})
+
+// get single course
 export const getSingleCourse = CatchAsyncError(async (req, res, next) => {
     try {
         const courseId = req.params.id
 
         const isCacheExist = await redis.get(courseId)
 
-        if(isCacheExist){
+        if (isCacheExist) {
             const course = JSON.parse(isCacheExist)
             res.status(200).json({
                 success: true,
@@ -89,12 +104,12 @@ export const getSingleCourse = CatchAsyncError(async (req, res, next) => {
             await redis.set(courseId, JSON.stringify(course), "EX", 604800)  // 7 days
 
             res.status(200).json({
-                success: true, 
+                success: true,
                 course,
             })
         }
 
-        
+
     } catch (error) {
         return next(new ErrorHandler(error.message, 500))
     }
@@ -104,8 +119,8 @@ export const getSingleCourse = CatchAsyncError(async (req, res, next) => {
 export const getAllCourses = CatchAsyncError(async (req, res, next) => {
     try {
         const isCacheExist = await redis.get("allCourses")
-        
-        if(isCacheExist){
+
+        if (isCacheExist) {
             const courses = JSON.parse(isCacheExist)
             res.status(200).json({
                 success: true,
@@ -121,7 +136,7 @@ export const getAllCourses = CatchAsyncError(async (req, res, next) => {
                 courses,
             })
         }
-        
+
     } catch (error) {
         return next(new ErrorHandler(error.message, 500))
     }
@@ -135,7 +150,7 @@ export const getCourseByUser = CatchAsyncError(async (req, res, next) => {
 
         const courseExist = userCourseList?.find((course) => course._id.toString() === courseId)
 
-        if(!courseExist){
+        if (!courseExist) {
             return next(new ErrorHandler("You are not eligible to access this course", 400))
 
         }
@@ -157,16 +172,16 @@ export const getCourseByUser = CatchAsyncError(async (req, res, next) => {
 // add questions in course
 export const addQuestion = CatchAsyncError(async (req, res, next) => {
     try {
-        const {question, courseId, contentId} = req.body
+        const { question, courseId, contentId } = req.body
         const course = await courseModel.findById(courseId)
 
-        if(!mongoose.Types.ObjectId.isValid(contentId)){
+        if (!mongoose.Types.ObjectId.isValid(contentId)) {
             return next(new ErrorHandler("Invalid Content ID", 400))
         }
-        
-        const courseContent = course?.courseData?. find((item) => item._id.equals(contentId))
-        
-        if(!courseContent){
+
+        const courseContent = course?.courseData?.find((item) => item._id.equals(contentId))
+
+        if (!courseContent) {
             return next(new ErrorHandler("Invalid Content ID", 400))
         }
 
@@ -188,7 +203,7 @@ export const addQuestion = CatchAsyncError(async (req, res, next) => {
 
         // save the updated COurse
         await course?.save()
-        
+
         res.status(200).json({
             success: true,
             course,
@@ -202,23 +217,23 @@ export const addQuestion = CatchAsyncError(async (req, res, next) => {
 // add answer in course question
 export const addAnswer = CatchAsyncError(async (req, res, next) => {
     try {
-        const {answer, courseId, contentId, questionId} = req.body
+        const { answer, courseId, contentId, questionId } = req.body
 
         const course = await courseModel.findById(courseId)
 
-        if(!mongoose.Types.ObjectId.isValid(contentId)){
+        if (!mongoose.Types.ObjectId.isValid(contentId)) {
             return next(new ErrorHandler("Invalid Content ID", 400))
         }
-        
-        const courseContent = course?.courseData?. find((item) => item._id.equals(contentId))
-        
-        if(!courseContent){
+
+        const courseContent = course?.courseData?.find((item) => item._id.equals(contentId))
+
+        if (!courseContent) {
             return next(new ErrorHandler("Invalid Content ID", 400))
         }
-        
+
         const question = courseContent?.questions?.find((item) => item._id.equals(questionId))
-        
-        if(!question){
+
+        if (!question) {
             return next(new ErrorHandler("Invalid Question ID", 400))
 
         }
@@ -235,7 +250,7 @@ export const addAnswer = CatchAsyncError(async (req, res, next) => {
         // save the updated COurse
         await course?.save()
 
-        if(req.user?._id === question.user._id){
+        if (req.user?._id === question.user._id) {
             // create a notification
             await notificationModel.create({
                 user: req.user?._id,
@@ -247,8 +262,8 @@ export const addAnswer = CatchAsyncError(async (req, res, next) => {
                 name: question.user.name,
                 title: courseContent.title
             }
-            
-            const html = await ejs.renderFile(path.join(_dirname, "./mails/question-reply.ejs" ), data)
+
+            const html = await ejs.renderFile(path.join(_dirname, "./mails/question-reply.ejs"), data)
 
             try {
                 await sendMail({
@@ -261,7 +276,7 @@ export const addAnswer = CatchAsyncError(async (req, res, next) => {
                 return next(new ErrorHandler(error.message, 500))
             }
         }
-        
+
         res.status(200).json({
             success: true,
             course,
@@ -285,13 +300,13 @@ export const addReview = CatchAsyncError(async (req, res, next) => {
 
         const courseExists = userCourseList?.some((course) => course._id.toString() === courseId.toString())
 
-        if(!courseExists){
+        if (!courseExists) {
             return next(new ErrorHandler("You are not eligible to access this course", 400))
         }
 
         const course = await courseModel.findById(courseId)
 
-        const {review, rating} = req.body
+        const { review, rating } = req.body
 
         const reviewData = {
             user: req.user,
@@ -308,7 +323,7 @@ export const addReview = CatchAsyncError(async (req, res, next) => {
             avg += rev.rating
         })
 
-        if(course){
+        if (course) {
             course.ratings = avg / course.reviews.length
         }
 
@@ -335,17 +350,17 @@ export const addReview = CatchAsyncError(async (req, res, next) => {
 // add reply in review
 export const addReplyToReview = CatchAsyncError(async (req, res, next) => {
     try {
-        const {comment, courseId, reviewId} = req.body
+        const { comment, courseId, reviewId } = req.body
 
         const course = await courseModel.findById(courseId)
 
-        if(!course){
+        if (!course) {
             return next(new ErrorHandler("Course not found", 404))
         }
 
         const review = course?.reviews?.find((rev) => rev._id.toString() === reviewId)
 
-        if(!review){
+        if (!review) {
             return next(new ErrorHandler("Review not found", 404))
         }
 
@@ -354,7 +369,7 @@ export const addReplyToReview = CatchAsyncError(async (req, res, next) => {
             comment,
         }
 
-        if(!review.commentReplies){
+        if (!review.commentReplies) {
             review.commentReplies = []
         }
 
@@ -378,7 +393,8 @@ export const addReplyToReview = CatchAsyncError(async (req, res, next) => {
 
 export const getAllCoursesAdmin = CatchAsyncError(async (req, res, next) => {
     try {
-        getAllCoursesService(res)
+        const userId = req.user._id
+        getAllCoursesService(res, userId)
     } catch (error) {
         return next(new ErrorHandler(error.message, 500))
     }
@@ -387,22 +403,22 @@ export const getAllCoursesAdmin = CatchAsyncError(async (req, res, next) => {
 // delete course -- only for admin
 export const deleteCourse = CatchAsyncError(async (req, res, next) => {
     try {
-        const {id} = req.params
+        const { id } = req.params
         const course = await courseModel.findById(id)
 
-        if(!course){
+        if (!course) {
             return next(new ErrorHandler("Course not found", 404))
         }
 
-        await course.deleteOne({id})
+        await course.deleteOne({ id })
 
         await redis.del(id)
- 
+
         res.status(200).json({
             success: true,
             message: "Course deleted successfully"
         })
-        
+
     } catch (error) {
         return next(new ErrorHandler(error.message, 500))
     }

@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  activeStep: 0,
   courseInfo: {
     name: "",
     description: "",
@@ -11,7 +10,11 @@ const initialState = {
     level: "",
     categories: "",
     demoUrl: "",
-    thumbnail: "",
+    thumbnail: {
+      public_id: "",
+      url: "",
+    },
+    demoFileName: "",
   },
   benefits: [{ title: "" }],
   prerequisites: [{ title: "" }],
@@ -20,7 +23,7 @@ const initialState = {
       videoUrl: "",
       title: "",
       description: "",
-      videoSection: "Untitled Section 1",
+      videoSection: "Untitled Section",
       videoLength: "",
       links: [
         {
@@ -29,20 +32,20 @@ const initialState = {
         },
       ],
       suggestion: "",
+      fileName: "",
     },
   ],
   courseData: {},
+  isEditing: false,
+  editingCourseId: "",
 };
 
 const courseCreationSlice = createSlice({
   name: 'courseCreation',
   initialState,
   reducers: {
-    setActiveStep: (state, action) => {
-      state.activeStep = action.payload;
-    },
     setCourseInfo: (state, action) => {
-      state.courseInfo = action.payload;
+      state.courseInfo = { ...state.courseInfo, ...action.payload };
     },
     setBenefits: (state, action) => {
       state.benefits = action.payload;
@@ -56,19 +59,30 @@ const courseCreationSlice = createSlice({
     setCourseData: (state, action) => {
       state.courseData = action.payload;
     },
-    resetCourseCreation: (state) => {
-      return initialState;
+    setDemoFileName: (state, action) => {
+      state.courseInfo.demoFileName = action.payload;
     },
+    setContentFileName: (state, action) => {
+      const { index, fileName } = action.payload;
+      state.courseContentData[index].fileName = fileName;
+    },
+    setEditingMode: (state, action) => {
+      state.isEditing = action.payload.isEditing;
+      state.editingCourseId = action.payload.courseId;
+    },
+    resetCourseCreation: () => initialState,
   },
 });
 
 export const {
-  setActiveStep,
   setCourseInfo,
   setBenefits,
   setPrerequisites,
   setCourseContentData,
   setCourseData,
+  setDemoFileName,
+  setContentFileName,
+  setEditingMode,
   resetCourseCreation,
 } = courseCreationSlice.actions;
 

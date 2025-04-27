@@ -4,7 +4,7 @@ import { IoNotifications, IoCheckmarkDoneSharp } from "react-icons/io5";
 
 const DashboardHeader = ({title}) => {
     return (
-        <div className='px-6 py-2 flex items-center justify-between bg-white shadow-md'>
+        <div className='px-6 min-h-[45px] flex items-center justify-between bg-white border-b-1 border-gray-300'>
             <div className='text-lg font-[500]'>{title}</div>
             <Popover>
                 <PopoverTrigger asChild>

@@ -2,47 +2,53 @@ import React from 'react'
 import { HiPlus } from "react-icons/hi";
 import { CgClose } from "react-icons/cg";
 import { toast } from 'react-toastify';
+import { useDispatch, useSelector } from 'react-redux';
+import { setBenefits, setPrerequisites } from '../../../redux/features/courses/courseCreationSlice';
+import { useNavigate } from 'react-router-dom';
 
-const CourseData = ({ benefits, setBenefits, activeStep, setActiveStep, prerequisites, setPrerequisites }) => {
+const CourseData = () => {
+  const dispatch = useDispatch();
+  const { benefits, prerequisites } = useSelector((state) => state.courseCreation);
+  const navigate = useNavigate()
 
   const handleBenefitChange = (index, value) => {
     const updatedBenefits = benefits.map((benefit, i) => 
       i === index ? { ...benefit, title: value } : benefit
     );
-    setBenefits(updatedBenefits);
+    dispatch(setBenefits(updatedBenefits));
   };
 
   const handleAddBenefit = () => {
-    setBenefits([...benefits, { title: "" }]);
+    dispatch(setBenefits([...benefits, { title: "" }]));
   };
 
   const handlePrerequisitesChange = (index, value) => {
     const updatedPrerequisites = prerequisites.map((prerequisite, i) => 
       i === index ? { ...prerequisite, title: value } : prerequisite
     );
-    setPrerequisites(updatedPrerequisites);
+    dispatch(setPrerequisites(updatedPrerequisites));
   };
 
   const handleAddPrerequisites = () => {
-    setPrerequisites([...prerequisites, { title: "" }]);
+    dispatch(setPrerequisites([...prerequisites, { title: "" }]));
   };
 
   const handleRemoveBenefit = (index) => {
     const updated = benefits.filter((_, i) => i !== index);
-    setBenefits(updated);
+    dispatch(setBenefits(updated));
   };
 
   const handleRemovePrerequisite = (index) => {
     const updated = prerequisites.filter((_, i) => i !== index);
-    setPrerequisites(updated);
+    dispatch(setPrerequisites(updated));
   };
 
   const handlePrev = () => {
-    setActiveStep(activeStep - 1)
+    navigate('/admin/admin-dashboard/create-course')
   }
   const handleNext = () => {
     if (benefits[benefits.length - 1]?.title !== "" && prerequisites[prerequisites.length - 1]?.title !== "") {
-      setActiveStep(activeStep + 1)
+      navigate('/admin/admin-dashboard/create-course/course-content')
     } else{
         toast.error("Please fill all the fields to go to next!")
     }

@@ -1,7 +1,5 @@
 import { apiSlice } from "../../api/apiSlice";
 import { userLoggedIn, userLoggedOut, userRegistration } from "./authSlice";
-import { resetAdmin } from "../admin/adminSlice";
-import { resetCourseCreation } from "../courses/courseCreationSlice";
 
 export const authApi = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
@@ -60,8 +58,7 @@ export const authApi = apiSlice.injectEndpoints({
                 try {
                     await queryFulfilled;
                     dispatch(userLoggedOut());
-                    dispatch(resetAdmin());
-                    dispatch(resetCourseCreation());
+                   
                 } catch (error) {
                     console.log(error);
                 }

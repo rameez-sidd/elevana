@@ -343,7 +343,8 @@ export const updateProfilePicture = CatchAsyncError(async (req, res, next) => {
 
 export const getAllUSers = CatchAsyncError(async (req, res, next) => {
     try {
-        getAllUsersService(res)
+        const adminId = req.user._id;
+        getAllUsersService(res, adminId)
     } catch (error) {
         return next(new ErrorHandler(error.message, 500))
     }

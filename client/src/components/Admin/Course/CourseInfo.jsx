@@ -1,19 +1,25 @@
 import React, { useState } from 'react'
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { resetCourseCreation, setCourseInfo, setDemoFileName } from '../../../redux/features/courses/courseCreationSlice';
 
-const CourseInfo = ({ courseInfo, setCourseInfo, activeStep, setActiveStep }) => {
+const CourseInfo = () => {
+    const dispatch = useDispatch();
+    const courseInfo = useSelector((state) => state.courseCreation.courseInfo);
     const [dragging, setDragging] = useState(false)
     const [uploading, setUploading] = useState(false)
-    const [fileName, setFileName] = useState("")
+    const navigate = useNavigate()
+    const isEditing = useSelector((state) => state.courseCreation.isEditing)
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        setActiveStep(activeStep + 1)
+        navigate('/admin/admin-dashboard/create-course/course-data')
     }
 
     const handleChange = (e) => {
-        setCourseInfo({ ...courseInfo, [e.target.name]: e.target.value })
+        dispatch(setCourseInfo({ ...courseInfo, [e.target.name]: e.target.value }))
     }
 
     const handleFileChange = (e) => {
@@ -22,7 +28,7 @@ const CourseInfo = ({ courseInfo, setCourseInfo, activeStep, setActiveStep }) =>
             const reader = new FileReader()
             reader.onload = () => {
                 if (reader.readyState === 2) {
-                    setCourseInfo({ ...courseInfo, thumbnail: reader.result })
+                    dispatch(setCourseInfo({ ...courseInfo, thumbnail: reader.result }))
                 }
             }
             reader.readAsDataURL(file)
@@ -38,20 +44,19 @@ const CourseInfo = ({ courseInfo, setCourseInfo, activeStep, setActiveStep }) =>
             return;
         }
 
-        setFileName(file.name)
         setUploading(true);
         const formData = new FormData();
         formData.append("video", file);
-
+        
         try {
             const { data } = await axios.post("http://localhost:8000/api/v1/upload-video", formData, {
-
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
             });
-            setCourseInfo({ ...courseInfo, demoUrl: data.videoUrl });
+            dispatch(setCourseInfo({ ...courseInfo, demoUrl: data.videoUrl }));
             toast.success("Video uploaded successfully!");
+            dispatch(setDemoFileName(file.name))
         } catch (error) {
             toast.error(error.response?.data?.message || "Error uploading video");
         } finally {
@@ -76,12 +81,11 @@ const CourseInfo = ({ courseInfo, setCourseInfo, activeStep, setActiveStep }) =>
         if (file) {
             const reader = new FileReader()
             reader.onload = () => {
-                setCourseInfo({ ...courseInfo, thumbnail: reader.result })
+                dispatch(setCourseInfo({ ...courseInfo, thumbnail: reader.result }))
             }
             reader.readAsDataURL(file)
         }
     }
-
 
     return (
         <div className='py-12 px-12'>
@@ -110,15 +114,11 @@ const CourseInfo = ({ courseInfo, setCourseInfo, activeStep, setActiveStep }) =>
                                 <input type="number" disabled={uploading} name="estimatedPrice" id="estimated-price" value={courseInfo.estimatedPrice} onChange={handleChange} className='text-sm font-[300] bg-white w-full p-2 px-3 border border-gray-300 rounded-sm outline-none' placeholder='799' />
                             </div>
                         </div>
-
                     </div>
-
                     <div className='flex flex-col gap-0.5'>
                         <label htmlFor="course-tags" className='text-sm'>Course Tags</label>
                         <input type="text" name="tags" disabled={uploading} id="course-tags" value={courseInfo.tags} onChange={handleChange} className='text-sm font-[300] bg-white w-full p-2 px-3 border border-gray-300 rounded-sm outline-none' placeholder='Separate with commas (e.g. HTML, CSS, Javascript)' required />
                     </div>
-
-
                     <div className='flex items-center w-full justify-between gap-12'>
                         <div className='flex flex-col gap-0.5 flex-1'>
                             <label htmlFor="course-level" className='text-sm'>Course Level</label>
@@ -128,28 +128,25 @@ const CourseInfo = ({ courseInfo, setCourseInfo, activeStep, setActiveStep }) =>
                             <label htmlFor="demo-video" className='text-sm'>Demo Video</label>
                             <div className='flex items-center gap-2'>
                                 <input type="file" disabled={uploading} name="demoVideo" id="demo-video" accept="video/*" onChange={handleVideoUpload} className='hidden' />
-                                <label htmlFor="demo-video" className={`text-sm font-[300] ${uploading || courseInfo?.demoUrl === "" ? "text-[#7F7F7F]" : "text-black"} bg-white w-full p-2 px-3 border border-gray-300 rounded-sm outline-none ${uploading ? "cursor-not-allowed pointer-events-none" : "cursor-pointer"} hover:bg-gray-50 flex items-center gap-1`}>
+                                <label htmlFor="demo-video" className={`text-sm font-[300] ${uploading || courseInfo.demoUrl ? "text-black" : "text-[#7F7F7F]"} bg-white w-full p-2 px-3 border border-gray-300 rounded-sm outline-none ${uploading ? "cursor-not-allowed pointer-events-none" : "cursor-pointer"} hover:bg-gray-50 flex items-center gap-1`}>
                                     {
                                         uploading ? <>
                                             <span>Uploading...</span>
                                             <div className="w-4 h-4 border-4 border-gray-300 border-t-dark-green rounded-full animate-spin"></div>
-                                        </> : courseInfo.demoUrl ? fileName || "Change Video" : "Upload your demo video file here"
+                                        </> : courseInfo.demoUrl ? courseInfo.demoFileName || "Change Video" : "Upload your demo video file here"
                                     }
-
-                                    
                                 </label>
                                 { 
                                     courseInfo.demoUrl && (
-                                        <button  type="button" onClick={() => { setCourseInfo({ ...courseInfo, demoUrl: "" }); setFileName("") }} className='text-red-500 hover:text-red-700 text-xs'>Remove</button>
+                                        <button type="button" onClick={() => { 
+                                            dispatch(setCourseInfo({ ...courseInfo, demoUrl: "" })); 
+                                            dispatch(setDemoFileName(""));
+                                        }} className='text-red-500 hover:text-red-700 text-xs'>Remove</button>
                                     )
                                 }
                             </div>
-
-                            
-
                         </div>
                     </div>
-
                     <div className='mt-5'>
                         <input type="file" disabled={uploading} name="thumbnail" id="file" accept='image/*' className='hidden' onChange={handleFileChange} />
                         <label htmlFor="file" className={`${courseInfo.thumbnail ? "w-[500px] p-2" : "w-full p-4"} ${dragging ? "bg-light-green" : "bg-white"} border border-gray-300 flex flex-col items-center justify-center rounded-sm ${uploading ? 'cursor-not-allowed pointer-events-none' : 'cursor-pointer'} `} onDragOver={handleDragOver} onDragLeave={handleDragLeave} onDrop={handleDrop}>
@@ -159,7 +156,7 @@ const CourseInfo = ({ courseInfo, setCourseInfo, activeStep, setActiveStep }) =>
                                         <div className='text-sm p-2 pb-4'>
                                             Replace your thumbnail <span className='text-dark-green cursor-pointer'>Browse</span>
                                         </div>
-                                        <img src={courseInfo.thumbnail} alt="thumbnail" className='max-h-full w-full object-cover' />
+                                        <img src={isEditing ? courseInfo.thumbnail.url || courseInfo.thumbnail : courseInfo.thumbnail} alt="thumbnail" className='max-h-full w-full object-cover' />
                                     </>
                                 ) : (
                                     <div className='text-sm'>
@@ -169,8 +166,16 @@ const CourseInfo = ({ courseInfo, setCourseInfo, activeStep, setActiveStep }) =>
                             }
                         </label>
                     </div>
-
-                    <div className='flex justify-end'>
+                    <div className={`flex items-center mt-3 ${isEditing ? "justify-between" : "justify-end"}`}>
+                        {
+                            isEditing && (
+                                <button type="button" disabled={uploading} className='bg-dark-green text-white text-sm w-30 hover:bg-dark-grass-green py-1.5 rounded-sm cursor-pointer' onClick={() => {
+                                    dispatch(resetCourseCreation())
+                                    navigate('/admin/admin-dashboard/all-courses')
+                                }} >Cancel</button>
+                            )
+                        }
+                        
                         <input type="submit" value="Next" disabled={uploading} className='bg-dark-green text-white text-sm w-30 hover:bg-dark-grass-green py-1.5 rounded-sm cursor-pointer' />
                     </div>
                 </form>

@@ -87,7 +87,11 @@ const courseSchema = new mongoose.Schema({
     purchased:{
         type: Number,
         default: 0
-    }
+    },
+    purchasedBy: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
+    }]
 
 },
 { timestamps: true }

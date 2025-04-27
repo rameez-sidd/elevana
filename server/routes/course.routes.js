@@ -1,6 +1,6 @@
 import express from "express"
 import { authorizeRoles, isAuthenticated } from "../middlewares/auth.js";
-import { addAnswer, addQuestion, addReplyToReview, addReview, deleteCourse, editCourse, getAllCourses, getAllCoursesAdmin, getCourseByUser, getSingleCourse, uploadCourse, uploadVideo } from "../controllers/course.controller.js";
+import { addAnswer, addQuestion, addReplyToReview, addReview, deleteCourse, editCourse, getAllCourses, getAllCoursesAdmin, getCourseByUser, getCourseForEdit, getSingleCourse, uploadCourse, uploadVideo } from "../controllers/course.controller.js";
 import { updateAccessToken } from "../controllers/user.controller.js"
 
 const courseRouter = express.Router();
@@ -8,6 +8,7 @@ const courseRouter = express.Router();
 courseRouter.post('/create-course', updateAccessToken, isAuthenticated, authorizeRoles("admin"), uploadCourse)
 courseRouter.put('/edit-course/:id', updateAccessToken, isAuthenticated, authorizeRoles("admin"), editCourse)
 courseRouter.get('/get-course/:id', getSingleCourse)
+courseRouter.get('/get-course-for-edit/:id', updateAccessToken, isAuthenticated, authorizeRoles("admin"), getCourseForEdit)
 courseRouter.get('/get-courses', getAllCourses)
 courseRouter.get('/get-course-content/:id', updateAccessToken, isAuthenticated, getCourseByUser)
 courseRouter.put('/add-question', updateAccessToken, isAuthenticated, addQuestion)

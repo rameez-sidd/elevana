@@ -8,13 +8,21 @@ import { FiPlus } from "react-icons/fi";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { setCourseContentData, setContentFileName, setCourseData } from '../../../redux/features/courses/courseCreationSlice';
+import { useNavigate } from 'react-router-dom';
 
-const CourseContent = ({ activeStep, setActiveStep, courseContentData, setCourseContentData, handleSubmit: handleCourseSubmit }) => {
+const CourseContent = () => {
+  const dispatch = useDispatch();
+  const courseContentData = useSelector((state) => state.courseCreation.courseContentData);
+  const courseInfo = useSelector((state) => state.courseCreation.courseInfo);
+  const benefits = useSelector((state) => state.courseCreation.benefits);
+  const prerequisites = useSelector((state) => state.courseCreation.prerequisites);
   const [isEditable, setIsEditable] = useState(null)
   const [activeSection, setActiveSection] = useState(1)
   const [uploading, setUploading] = useState(false)
-  const [fileNames, setFileNames] = useState({})
   const [isAnyVideoUploading, setIsAnyVideoUploading] = useState(false)
+  const navigate = useNavigate()
 
   const updateField = (index, field, value) => {
     const updatedData = courseContentData.map((item, i) => {
@@ -27,7 +35,7 @@ const CourseContent = ({ activeStep, setActiveStep, courseContentData, setCourse
       }
       return i === index ? { ...item, [field]: value } : item;
     });
-    setCourseContentData(updatedData);
+    dispatch(setCourseContentData(updatedData));
   }
 
   const updateLinkField = (index, linkIndex, field, value) => {
@@ -40,7 +48,7 @@ const CourseContent = ({ activeStep, setActiveStep, courseContentData, setCourse
       }
       return item;
     });
-    setCourseContentData(updatedData);
+    dispatch(setCourseContentData(updatedData));
   };
 
   const handleRemoveLink = (index, linkIndex) => {
@@ -51,7 +59,7 @@ const CourseContent = ({ activeStep, setActiveStep, courseContentData, setCourse
       }
       return item;
     });
-    setCourseContentData(updatedData);
+    dispatch(setCourseContentData(updatedData));
   };
 
   const handleAddLink = (index) => {
@@ -61,7 +69,7 @@ const CourseContent = ({ activeStep, setActiveStep, courseContentData, setCourse
       }
       return item;
     });
-    setCourseContentData(updatedData);
+    dispatch(setCourseContentData(updatedData));
   };
 
   const validateContent = (item) => {
@@ -82,14 +90,15 @@ const CourseContent = ({ activeStep, setActiveStep, courseContentData, setCourse
 
     const newVideoSection = courseContentData.length > 0 ? courseContentData[courseContentData.length - 1].videoSection : "";
 
-    setCourseContentData([...courseContentData, {
+    dispatch(setCourseContentData([...courseContentData, {
       videoUrl: "",
       title: "",
       description: "",
       videoSection: newVideoSection,
       videoLength: "",
       links: [{ title: "", url: "" }],
-    }]);
+      fileName: "",
+    }]));
   };
 
   const addNewSection = () => {
@@ -100,30 +109,66 @@ const CourseContent = ({ activeStep, setActiveStep, courseContentData, setCourse
     }
 
     setActiveSection(activeSection + 1);
-    setCourseContentData([...courseContentData, {
+    dispatch(setCourseContentData([...courseContentData, {
       videoUrl: "",
       title: "",
       description: "",
       videoLength: "",
-      videoSection: `Untitled Section ${activeSection + 1}`,
+      videoSection: `Untitled Section ${activeSection}`,
       links: [{ title: "", url: "" }],
-    }]);
+      fileName: "",
+    }]));
   };
 
   const handlePrev = () => {
-    setActiveStep(activeStep - 1)
+    navigate('/admin/admin-dashboard/create-course/course-data')
   }
+
+  const formatData = () => {
+    const formattedBenefits = benefits.map((benefit) => ({ title: benefit.title }))
+    const formattedPrerequisites = prerequisites.map((prerequisite) => ({ title: prerequisite.title }))
+    const formattedCourseContentData = courseContentData.map((courseContent) => ({
+      videoUrl: courseContent.videoUrl,
+      title: courseContent.title,
+      description: courseContent.description,
+      videoSection: courseContent.videoSection,
+      links: courseContent.links.map((link) => ({
+        title: link.title,
+        url: link.url,
+      })),
+      suggestion: courseContent.suggestion,
+    }))
+
+    const data = {
+      name: courseInfo.name,
+      description: courseInfo.description,
+      price: courseInfo.price,
+      estimatedPrice: courseInfo.estimatedPrice,
+      tags: courseInfo.tags,
+      thumbnail: courseInfo.thumbnail,
+      level: courseInfo.level,
+      demoUrl: courseInfo.demoUrl,
+      totalVideos: courseContentData.length,
+      benefits: formattedBenefits,
+      prerequisites: formattedPrerequisites,
+      courseData: formattedCourseContentData,
+    }
+    return data
+  }
+
+  const setTheCourseDetails = () => {
+    const data = formatData()
+
+    dispatch(setCourseData(data))
+  }
+
   const handleNext = () => {
     if (validateContent(courseContentData[courseContentData.length - 1])) {
       toast.error("A Section cannot be empty!")
     } else {
-      setActiveStep(activeStep + 1)
-      handleCourseSubmit()
+      setTheCourseDetails()
+      navigate('/admin/admin-dashboard/create-course/course-preview')
     }
-  }
-
-  const handleSubmit = (e) => {
-    e.preventDefault()
   }
 
   const handleVideoUpload = async (e, index) => {
@@ -136,11 +181,10 @@ const CourseContent = ({ activeStep, setActiveStep, courseContentData, setCourse
     }
 
     setIsAnyVideoUploading(true);
-    setFileNames((prev) => ({ ...prev, [index]: file.name }))
     setUploading(index);
     const formData = new FormData();
     formData.append("video", file);
-
+    
     try {
       const { data } = await axios.post("http://localhost:8000/api/v1/upload-video", formData, {
         headers: {
@@ -149,6 +193,7 @@ const CourseContent = ({ activeStep, setActiveStep, courseContentData, setCourse
       });
       updateField(index, "videoUrl", data.videoUrl);
       toast.success("Video uploaded successfully!");
+      dispatch(setContentFileName({ index, fileName: file.name }));
     } catch (error) {
       toast.error(error.response?.data?.message || "Error uploading video");
     } finally {
@@ -160,9 +205,9 @@ const CourseContent = ({ activeStep, setActiveStep, courseContentData, setCourse
   return (
     <div className='px-12 py-12'>
       <div className=' flex flex-col gap-20'>
-        <form className='flex flex-col gap-4' onSubmit={handleSubmit}>
+        <form className='flex flex-col gap-4'>
           {
-            courseContentData.map((item, index) => {
+            courseContentData?.map((item, index) => {
               const newSection = index === 0 || item.videoSection !== courseContentData[index - 1].videoSection
 
               return (
@@ -188,8 +233,7 @@ const CourseContent = ({ activeStep, setActiveStep, courseContentData, setCourse
                               <RiDeleteBin6Line className={`${isAnyVideoUploading ? "cursor-not-allowed pointer-events-none" : "cursor-pointer"} w-6.5 h-6.5 p-1 hover:bg-green rounded-full`} size={25} onClick={() => {
                                 const updatedData = [...courseContentData];
                                 updatedData.splice(index, 1);
-                                setCourseContentData(updatedData);
-
+                                dispatch(setCourseContentData(updatedData));
                               }} />
                             )
                           }
@@ -213,7 +257,7 @@ const CourseContent = ({ activeStep, setActiveStep, courseContentData, setCourse
                                   uploading === index ? <>
                                     <span>Uploading...</span>
                                     <div className="w-4 h-4 border-4 border-gray-300 border-t-dark-green rounded-full animate-spin"></div>
-                                  </> : item.videoUrl ? fileNames[index] || "Change Video" : "Upload your video file here"
+                                  </> : item.videoUrl ? item.fileName || "Change Video" : "Upload your video file here"
                                 }
                               </label>
                               {item.videoUrl && (
@@ -230,7 +274,7 @@ const CourseContent = ({ activeStep, setActiveStep, courseContentData, setCourse
                         {/* links */}
                         <div className='flex flex-col gap-4 mt-5 mb-2 rounded-sm  '>
                           {
-                            item.links.map((link, linkIndex) => (
+                            item?.links?.map((link, linkIndex) => (
                               <div className='flex flex-col gap-2 rounded-sm ' key={linkIndex}>
                                 <div className='flex items-center justify-between'>
                                   <h6 className='text-sm font-[600]'>{`Link ${linkIndex + 1}`}</h6>
@@ -265,8 +309,8 @@ const CourseContent = ({ activeStep, setActiveStep, courseContentData, setCourse
                   <div className='mt-2 mb-2'>
                     {
                       index === courseContentData.length - 1 && (
-                        <div className={`flex items-center justify-center gap-1 ${isAnyVideoUploading ? "cursor-not-allowed pointer-events-none" : "cursor-pointer"} hover:bg-muted-green bg-dark-green w-10 rounded-full h-10 text-white`} onClick={(e) => newContentHandler(item)}>
-                          <BiVideoPlus size={24} />
+                        <div className={`flex items-center justify-center gap-1 ${isAnyVideoUploading ? "cursor-not-allowed pointer-events-none" : "cursor-pointer"} hover:bg-muted-green bg-dark-green w-fit rounded-sm font-[300] text-xs p-2 px-3 text-white`} onClick={(e) => newContentHandler(item)}>
+                          Add New Video
                         </div>
                       )
                     }

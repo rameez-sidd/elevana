@@ -36,6 +36,8 @@ export const createOrder = CatchAsyncError(async (req, res, next) => {
             paymentInfo,
         }
 
+        course.purchasedBy.push(user._id);
+        await course.save();
 
         const mailData = {
             order: {
