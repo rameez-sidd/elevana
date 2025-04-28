@@ -17,6 +17,7 @@ import CourseData from './components/Admin/Course/CourseData';
 import CourseContent from './components/Admin/Course/CourseContent';
 import CoursePreview from './components/Admin/Course/CoursePreview';
 import Students from './components/Admin/Student/Students';
+import Categories from './components/Admin/Categories/Categories';
 const appRouter = createBrowserRouter([
   {
     path: "/",
@@ -56,6 +57,7 @@ const appRouter = createBrowserRouter([
 
       { path: "all-courses", element: <AllCourses /> },
       { path: "students", element: <Students /> },
+      { path: "categories", element: <Categories /> },
     ]
 
   },

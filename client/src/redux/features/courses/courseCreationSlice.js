@@ -4,16 +4,14 @@ const initialState = {
   courseInfo: {
     name: "",
     description: "",
+    categories: "",
     price: "",
     estimatedPrice: "",
     tags: "",
     level: "",
     categories: "",
     demoUrl: "",
-    thumbnail: {
-      public_id: "",
-      url: "",
-    },
+    thumbnail: "",
     demoFileName: "",
   },
   benefits: [{ title: "" }],
@@ -66,6 +64,10 @@ const courseCreationSlice = createSlice({
       const { index, fileName } = action.payload;
       state.courseContentData[index].fileName = fileName;
     },
+    setContentDuration: (state, action) => {
+      const { index, videoLength } = action.payload;
+      state.courseContentData[index].videoLength = videoLength;
+    },
     setEditingMode: (state, action) => {
       state.isEditing = action.payload.isEditing;
       state.editingCourseId = action.payload.courseId;
@@ -84,6 +86,7 @@ export const {
   setContentFileName,
   setEditingMode,
   resetCourseCreation,
+  setContentDuration
 } = courseCreationSlice.actions;
 
 export default courseCreationSlice.reducer; 

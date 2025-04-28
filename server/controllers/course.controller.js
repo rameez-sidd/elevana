@@ -43,24 +43,44 @@ export const uploadCourse = CatchAsyncError(async (req, res, next) => {
 export const editCourse = CatchAsyncError(async (req, res, next) => {
     try {
         const data = req.body
-        const thumbnail = data.thumbnail
-        const myCloud = await cloudinary.v2.uploader.upload(thumbnail, {
-            folder: "courses"
-        })
-        data.thumbnail = {
-            public_id: myCloud.public_id,
-            url: myCloud.secure_url
+        const thumbnail = data.thumbnail;
+
+        const courseId = req.params.id;
+
+        const courseData = await courseModel.findById(courseId);
+
+        if (thumbnail && !thumbnail.startsWith("https")) {
+            await cloudinary.v2.uploader.destroy(courseData.thumbnail.public_id);
+
+            const myCloud = await cloudinary.v2.uploader.upload(thumbnail, {
+                folder: "courses",
+            });
+
+            data.thumbnail = {
+                public_id: myCloud.public_id,
+                url: myCloud.secure_url,
+            };
         }
 
-        const courseId = req.params.id
-        const course = await courseModel.findByIdAndUpdate(courseId, {
-            $set: data,
-        }, { new: true })
+        if (thumbnail.startsWith("https")) {
+            data.thumbnail = {
+                public_id: courseData?.thumbnail.public_id,
+                url: courseData?.thumbnail.url,
+            };
+        }
 
+        const course = await courseModel.findByIdAndUpdate(
+            courseId,
+            {
+                $set: data,
+            },
+            { new: true }
+        );
+        await redis.set(courseId, JSON.stringify(course)); // update course in redis
         res.status(201).json({
             success: true,
-            course
-        })
+            course,
+        });
 
     } catch (error) {
         return next(new ErrorHandler(error.message, 500))
@@ -439,7 +459,8 @@ export const uploadVideo = CatchAsyncError(async (req, res, next) => {
         res.status(200).json({
             success: true,
             videoUrl: myCloud.secure_url,
-            videoId: myCloud.public_id
+            videoId: myCloud.public_id,
+            videoLength: myCloud.duration,
         });
     } catch (error) {
         return next(new ErrorHandler(error.message, 500));

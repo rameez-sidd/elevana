@@ -9,8 +9,9 @@ import { IoIosAddCircleOutline } from "react-icons/io";
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCourseContentData, setContentFileName, setCourseData } from '../../../redux/features/courses/courseCreationSlice';
+import { setCourseContentData, setContentFileName, setCourseData, setContentDuration } from '../../../redux/features/courses/courseCreationSlice';
 import { useNavigate } from 'react-router-dom';
+import { formatVideoLength } from '../../../utils/formatVideoLength';
 
 const CourseContent = () => {
   const dispatch = useDispatch();
@@ -131,6 +132,7 @@ const CourseContent = () => {
       videoUrl: courseContent.videoUrl,
       title: courseContent.title,
       description: courseContent.description,
+      videoLength: courseContent.videoLength,
       videoSection: courseContent.videoSection,
       links: courseContent.links.map((link) => ({
         title: link.title,
@@ -194,6 +196,7 @@ const CourseContent = () => {
       updateField(index, "videoUrl", data.videoUrl);
       toast.success("Video uploaded successfully!");
       dispatch(setContentFileName({ index, fileName: file.name }));
+      dispatch(setContentDuration({ index, videoLength: formatVideoLength(data.videoLength) }));
     } catch (error) {
       toast.error(error.response?.data?.message || "Error uploading video");
     } finally {
@@ -265,6 +268,9 @@ const CourseContent = () => {
                               )}
                             </div>
 
+                          </div>
+                          <div className='flex flex-col gap-0.5'>
+                            <input type="text" readOnly name="video-length" id="video-length" disabled={isAnyVideoUploading} value={item.videoLength} className='text-sm font-[300] bg-white w-full p-2 px-3 rounded-sm outline-none border border-gray-300'  placeholder='Enter duration (e.g. 5:23)'/>
                           </div>
                           <div className='flex flex-col gap-0.5'>
                             <textarea name="video-description" id="video-description" disabled={isAnyVideoUploading} value={item.description} className='text-sm font-[300] bg-white w-full p-2 px-3 rounded-sm outline-none border border-gray-300 resize-none' rows='7' onChange={(e) => updateField(index, "description", e.target.value)} placeholder='Enter a brief description of the video' />

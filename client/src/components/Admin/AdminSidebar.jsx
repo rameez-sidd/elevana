@@ -8,6 +8,7 @@ import { RiLiveFill, RiVideoAddFill, RiTeamFill, RiSettingsFill } from "react-ic
 import { SiGoogleanalytics } from "react-icons/si";
 import { FaUsersCog } from "react-icons/fa";
 import { IoLogOut } from "react-icons/io5";
+import { MdCategory } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -99,7 +100,7 @@ const AdminSidebar = ({ openSidebar, setOpenSidebar }) => {
                     </SidebarGroupContent>
                 </SidebarGroup>
 
-                <SidebarGroup>
+                {/* <SidebarGroup>
                     <SidebarGroupLabel>Controllers</SidebarGroupLabel>
                     <SidebarGroupContent>
                         <SidebarMenu>
@@ -108,6 +109,22 @@ const AdminSidebar = ({ openSidebar, setOpenSidebar }) => {
                                     <div className="flex items-center gap-3 cursor-pointer">
                                         <RiTeamFill className="h-5 w-5" />
                                         <span>Manage Team</span>
+                                    </div>
+                                </SidebarMenuButton>
+                            </SidebarMenuItem>
+                        </SidebarMenu>
+                    </SidebarGroupContent>
+                </SidebarGroup> */}
+
+                <SidebarGroup>
+                    <SidebarGroupLabel>Customization</SidebarGroupLabel>
+                    <SidebarGroupContent>
+                        <SidebarMenu>
+                            <SidebarMenuItem>
+                                <SidebarMenuButton asChild className={menuButtonStyle('categories')} onClick={() => navigate('/admin/admin-dashboard/categories')}>
+                                    <div className="flex items-center gap-3 cursor-pointer">
+                                        <MdCategory className="h-5 w-5" />
+                                        <span>Categories</span>
                                     </div>
                                 </SidebarMenuButton>
                             </SidebarMenuItem>

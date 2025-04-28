@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { resetCourseCreation, setCourseInfo, setDemoFileName } from '../../../redux/features/courses/courseCreationSlice';
+import { useGetLayoutDataQuery } from '../../../redux/features/layout/layoutApi';
 
 const CourseInfo = () => {
     const dispatch = useDispatch();
@@ -12,10 +13,20 @@ const CourseInfo = () => {
     const [uploading, setUploading] = useState(false)
     const navigate = useNavigate()
     const isEditing = useSelector((state) => state.courseCreation.isEditing)
+    const { data, isLoading } = useGetLayoutDataQuery("Categories", { refetchOnMountOrArgChange: true, refetchOnFocus: true, refetchOnReconnect: true })
+    const [categories, setCategories] = useState([])
+
+    useEffect(() => {
+        if (data) {
+            setCategories(data.layout.categories)
+        }
+    }, [data])
 
     const handleSubmit = (e) => {
         e.preventDefault()
         navigate('/admin/admin-dashboard/create-course/course-data')
+        
+
     }
 
     const handleChange = (e) => {
@@ -47,7 +58,7 @@ const CourseInfo = () => {
         setUploading(true);
         const formData = new FormData();
         formData.append("video", file);
-        
+
         try {
             const { data } = await axios.post("http://localhost:8000/api/v1/upload-video", formData, {
                 headers: {
@@ -115,10 +126,25 @@ const CourseInfo = () => {
                             </div>
                         </div>
                     </div>
-                    <div className='flex flex-col gap-0.5'>
-                        <label htmlFor="course-tags" className='text-sm'>Course Tags</label>
-                        <input type="text" name="tags" disabled={uploading} id="course-tags" value={courseInfo.tags} onChange={handleChange} className='text-sm font-[300] bg-white w-full p-2 px-3 border border-gray-300 rounded-sm outline-none' placeholder='Separate with commas (e.g. HTML, CSS, Javascript)' required />
+                    <div className='flex items-center w-full justify-between gap-12'>
+                        <div className='flex flex-col gap-0.5 flex-1'>
+                            <label htmlFor="course-tags" className='text-sm'>Course Tags</label>
+                            <input type="text" name="tags" disabled={uploading} id="course-tags" value={courseInfo.tags} onChange={handleChange} className='text-sm font-[300] bg-white w-full p-2 px-3 border border-gray-300 rounded-sm outline-none' placeholder='Separate with commas (e.g. HTML, CSS, Javascript)' required />
+                        </div>
+                        <div className='flex flex-col gap-0.5 flex-1'>
+                            <label htmlFor="course-category" className='text-sm'>Course Category</label>
+                            <select name="categories" id="course-category" value={courseInfo.categories} onChange={handleChange} className='text-sm font-[300] bg-white w-full p-2 px-3 border border-gray-300 rounded-sm outline-none cursor-pointer'>
+                                <option value="" className='hidden !text-[#7F7F7F]'>Select Category</option>
+                                {
+                                    categories.map((item) => (
+                                        <option key={item._id} value={item.title}>{item.title}</option>
+                                    ))
+                                }
+                            </select>
+                        </div>
+
                     </div>
+                  
                     <div className='flex items-center w-full justify-between gap-12'>
                         <div className='flex flex-col gap-0.5 flex-1'>
                             <label htmlFor="course-level" className='text-sm'>Course Level</label>
@@ -136,10 +162,10 @@ const CourseInfo = () => {
                                         </> : courseInfo.demoUrl ? courseInfo.demoFileName || "Change Video" : "Upload your demo video file here"
                                     }
                                 </label>
-                                { 
+                                {
                                     courseInfo.demoUrl && (
-                                        <button type="button" onClick={() => { 
-                                            dispatch(setCourseInfo({ ...courseInfo, demoUrl: "" })); 
+                                        <button type="button" onClick={() => {
+                                            dispatch(setCourseInfo({ ...courseInfo, demoUrl: "" }));
                                             dispatch(setDemoFileName(""));
                                         }} className='text-red-500 hover:text-red-700 text-xs'>Remove</button>
                                     )
@@ -175,7 +201,7 @@ const CourseInfo = () => {
                                 }} >Cancel</button>
                             )
                         }
-                        
+
                         <input type="submit" value="Next" disabled={uploading} className='bg-dark-green text-white text-sm w-30 hover:bg-dark-grass-green py-1.5 rounded-sm cursor-pointer' />
                     </div>
                 </form>
