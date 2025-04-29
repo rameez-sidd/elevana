@@ -137,7 +137,7 @@ const AdminSidebar = ({ openSidebar, setOpenSidebar }) => {
                     <SidebarGroupContent>
                         <SidebarMenu>
                             <SidebarMenuItem>
-                                <SidebarMenuButton asChild className='hover:bg-light-green rounded-4xl px-3 transition-all duration-300'>
+                                <SidebarMenuButton asChild className={menuButtonStyle('courses-analytics')} onClick={() => navigate('/admin/admin-dashboard/courses-analytics')}>
                                     <div className="flex items-center gap-3 cursor-pointer">
                                         <SiGoogleanalytics className="h-5 w-5" />
                                         <span>Courses Analytics</span>
@@ -145,7 +145,7 @@ const AdminSidebar = ({ openSidebar, setOpenSidebar }) => {
                                 </SidebarMenuButton>
                             </SidebarMenuItem>
                             <SidebarMenuItem>
-                                <SidebarMenuButton asChild className='hover:bg-light-green rounded-4xl px-3 transition-all duration-300'>
+                                <SidebarMenuButton asChild className={menuButtonStyle('orders-analytics')} onClick={() => navigate('/admin/admin-dashboard/orders-analytics')}>
                                     <div className="flex items-center gap-3 cursor-pointer">
                                         <FaCartShopping className="h-5 w-5" />
                                         <span>Orders Analytics</span>
@@ -153,7 +153,7 @@ const AdminSidebar = ({ openSidebar, setOpenSidebar }) => {
                                 </SidebarMenuButton>
                             </SidebarMenuItem>
                             <SidebarMenuItem>
-                                <SidebarMenuButton asChild className='hover:bg-light-green rounded-4xl px-3 transition-all duration-300'>
+                                <SidebarMenuButton asChild className={menuButtonStyle('users-analytics')} onClick={() => navigate('/admin/admin-dashboard/users-analytics')}>
                                     <div className="flex items-center gap-3 cursor-pointer">
                                         <FaUsersCog className="h-5 w-5" />
                                         <span>Users Analytics</span>

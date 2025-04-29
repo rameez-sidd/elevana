@@ -1,6 +1,7 @@
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import React from 'react'
 import { IoNotifications, IoCheckmarkDoneSharp } from "react-icons/io5";
+import { GoBell } from "react-icons/go";
 
 const DashboardHeader = ({title}) => {
     return (
@@ -9,8 +10,8 @@ const DashboardHeader = ({title}) => {
             <Popover>
                 <PopoverTrigger asChild>
                     <div className='p-1 rounded-full relative cursor-pointer hover:bg-gray-200'>
-                        <IoNotifications size={25} />
-                        <div className='absolute top-[-4px] right-0 bg-dark-orange text-white w-5 h-5 flex justify-center items-center text-[10px] font-light rounded-full'>54</div>
+                        <GoBell size={23} />
+                        <div className='absolute top-[-4px] right-0 bg-red-500 outline-3 outline-white text-white w-4.5 h-4.5 flex justify-center items-center text-[10px] font-light rounded-full'>54</div>
                     </div>
                 </PopoverTrigger>
                 <PopoverContent className='p-0 rounded-xl border-none max-h-[60vh] overflow-y-scroll custom-scrollbar'>

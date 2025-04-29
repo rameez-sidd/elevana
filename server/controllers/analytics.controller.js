@@ -10,7 +10,17 @@ import { orderModel } from "../models/order.model.js";
 
 export const getUsersAnalytics = CatchAsyncError(async (req, res, next) => {
     try {
-        const users = await generateLast12MonthsData(userModel)
+        // Get all courses created by the admin
+        const adminCourses = await courseModel.find({ createdBy: req.user._id }).select('_id');
+        const courseIds = adminCourses.map(course => course._id);
+
+        // Get all orders for these courses
+        const orders = await orderModel.find({ courseId: { $in: courseIds } }).select('userId');
+        const userIds = [...new Set(orders.map(order => order.userId))];
+
+        // Get analytics for these users
+        const users = await generateLast12MonthsData(userModel, { _id: { $in: userIds } });
+        
         res.status(200).json({
             success: true,
             users
@@ -24,7 +34,7 @@ export const getUsersAnalytics = CatchAsyncError(async (req, res, next) => {
 // get courses analytics -- only for admin
 export const getCoursesAnalytics = CatchAsyncError(async (req, res, next) => {
     try {
-        const courses = await generateLast12MonthsData(courseModel)
+        const courses = await generateLast12MonthsData(courseModel, { createdBy: req.user._id })
         res.status(200).json({
             success: true,
             courses
@@ -38,7 +48,13 @@ export const getCoursesAnalytics = CatchAsyncError(async (req, res, next) => {
 // get orders analytics -- only for admin
 export const getOrdersAnalytics = CatchAsyncError(async (req, res, next) => {
     try {
-        const orders = await generateLast12MonthsData(orderModel)
+        // Get all courses created by the admin
+        const adminCourses = await courseModel.find({ createdBy: req.user._id }).select('_id');
+        const courseIds = adminCourses.map(course => course._id);
+
+        // Get analytics for orders of these courses
+        const orders = await generateLast12MonthsData(orderModel, { courseId: { $in: courseIds } })
+        
         res.status(200).json({
             success: true,
             orders

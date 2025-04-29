@@ -1,4 +1,4 @@
-export async function generateLast12MonthsData(model) {
+export async function generateLast12MonthsData(model, filter = {}) {
     const last12Months = [];
     const currentDate = new Date();
     currentDate.setDate(currentDate.getDate() + 1);
@@ -22,6 +22,7 @@ export async function generateLast12MonthsData(model) {
         });
 
         const count = await model.countDocuments({
+            ...filter,
             createdAt: {
                 $gte: startDate,
                 $lt: endDate,

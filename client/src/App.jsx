@@ -18,6 +18,9 @@ import CourseContent from './components/Admin/Course/CourseContent';
 import CoursePreview from './components/Admin/Course/CoursePreview';
 import Students from './components/Admin/Student/Students';
 import Categories from './components/Admin/Categories/Categories';
+import CoursesAnalytics from './components/Admin/Analytics/Courses/CoursesAnalytics';
+import UsersAnalytics from './components/Admin/Analytics/Users/UsersAnalytics';
+import OrdersAnalytics from './components/Admin/Analytics/Orders/OrdersAnalytics';
 const appRouter = createBrowserRouter([
   {
     path: "/",
@@ -58,6 +61,9 @@ const appRouter = createBrowserRouter([
       { path: "all-courses", element: <AllCourses /> },
       { path: "students", element: <Students /> },
       { path: "categories", element: <Categories /> },
+      { path: "courses-analytics", element: <CoursesAnalytics /> },
+      { path: "users-analytics", element: <UsersAnalytics /> },
+      { path: "orders-analytics", element: <OrdersAnalytics /> },
     ]
 
   },

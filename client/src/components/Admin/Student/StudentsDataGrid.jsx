@@ -111,6 +111,9 @@ const StudentsDataGrid = () => {
                                 '& .css-mmygx2-MuiSelect-select-MuiInputBase-input': {
                                     fontFamily: `"Lexend", sans-serif`,
 
+                                },
+                                '& .MuiDataGrid-columnSeparator': {
+                                    opacity: 0,
                                 }
 
                             }} />
