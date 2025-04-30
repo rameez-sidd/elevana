@@ -57,10 +57,10 @@ const MyAccount = () => {
         <div className='h-[100px] '>
 
         </div>
-        <div className='bg-white rounded-md px-8 pt-24 pb-8 flex items-center justify-center shadow-md  relative'>
+        <div className='bg-white rounded-md px-8 pt-24 pb-8 flex items-center justify-center shadow-2xl  relative'>
           <form className='flex flex-col items-center w-full' onSubmit={handleSubmit}>
             <div className='absolute top-[-100px] rounded-full flex items-center justify-center shadow-lg'>
-              <img src={previewImage} alt="avatar" width={150} height={150} className='rounded-full border-6 bg-gray-200 border-white' />
+              <img src={previewImage} alt="avatar" width={150} height={150} className='rounded-full border-8 bg-gray-200 border-white' />
               <input type="file" name="" id="avatar" className="hidden" accept="image/png,image/jpg,image/jpeg,image/webp" onChange={handleImageChange}/>
               <label htmlFor="avatar" className='cursor-pointer absolute bottom-1 right-1 bg-dark-green text-white rounded-full p-2 hover:bg-muted-green'><TbCameraPlus size={23} /></label>
             </div>
@@ -74,7 +74,7 @@ const MyAccount = () => {
               <input type="email" name="" id="email" value={user?.email || ""} readOnly className='text-sm font-[300] bg-gray-100 w-full p-2 px-4 border border-gray-300 rounded-sm outline-none' />
             </div>
             <div className='mt-8'>
-              <input type="submit" disabled={nameUploading || avatarUploading} value={nameUploading || avatarUploading ? "Saving..." : "Save"} className={`bg-dark-green text-white py-2 px-15 ${nameUploading || avatarUploading ? "cursor-not-allowed" : "cursor-pointer"} hover:bg-muted-green rounded-4xl text-sm`} />
+              <input type="submit" disabled={nameUploading || avatarUploading} value={nameUploading || avatarUploading ? "Saving..." : "Save"} className={`bg-dark-green text-white py-2 px-15 ${nameUploading || avatarUploading ? "bg-gray-300 hover:bg-gray-300 cursor-not-allowed" : "cursor-pointer hover:bg-muted-green "} rounded-4xl text-sm`} />
             </div>
           </form>
         </div>

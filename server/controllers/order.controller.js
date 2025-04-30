@@ -93,7 +93,7 @@ export const createOrder = CatchAsyncError(async (req, res, next) => {
 // get all orders only for admin
 export const getAllOrders = CatchAsyncError(async (req, res, next) => {
     try {
-        getAllOrdersService(res)
+        getAllOrdersService(res, req.user._id)
     } catch (error) {
         return next(new ErrorHandler(error.message, 500))
     }

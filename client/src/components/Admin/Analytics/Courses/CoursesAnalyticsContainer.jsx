@@ -21,7 +21,7 @@ const CoursesAnalyticsContainer = () => {
         <div className='px-12 py-12 flex h-full'>
             {
                 isLoading ? (
-                    <Loading />
+                    <Loading size='full' />
                 ) : (
                     <div className='h-full flex-1 flex flex-col'>
                         <div className='flex flex-col gap-1 text-center'>
@@ -36,7 +36,7 @@ const CoursesAnalyticsContainer = () => {
                                         <Label offset={0} position='insideBottom' />
                                     </XAxis>
 
-                                    <YAxis domain={[minValue, "auto"]}>
+                                    <YAxis domain={[minValue, "auto"]} style={{ fontSize: '10px' }}>
                                         <Label
                                             value="Courses Published"
                                             angle={-90}

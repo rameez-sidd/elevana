@@ -4,19 +4,22 @@ import { TbLayoutDashboardFilled, TbLayoutSidebarRightExpandFilled, TbLayoutSide
 import { GoSidebarExpand } from "react-icons/go";
 import { HiUsers } from "react-icons/hi2";
 import { FaFileInvoiceDollar, FaCartShopping } from "react-icons/fa6";
-import { RiLiveFill, RiVideoAddFill, RiTeamFill, RiSettingsFill } from "react-icons/ri";
+import { RiLiveFill, RiVideoAddFill, RiTeamFill, RiSettingsFill, RiProfileFill } from "react-icons/ri";
 import { SiGoogleanalytics } from "react-icons/si";
 import { FaUsersCog } from "react-icons/fa";
 import { IoLogOut } from "react-icons/io5";
 import { MdCategory } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useState } from "react";
+import Logout from "../Auth/Logout";
 
 const AdminSidebar = ({ openSidebar, setOpenSidebar }) => {
     const { user } = useSelector((state) => state.auth)
     const isEditing = useSelector((state) => state.courseCreation.isEditing)
     const navigate = useNavigate()
     const location = useLocation()
+    const [openLogout, setOpenLogout] = useState(false)
 
 
     const menuButtonStyle = (url) => {
@@ -65,7 +68,7 @@ const AdminSidebar = ({ openSidebar, setOpenSidebar }) => {
                                     </SidebarMenuButton>
                             </SidebarMenuItem>
                             <SidebarMenuItem>
-                                <SidebarMenuButton asChild className='hover:bg-light-green rounded-4xl px-3 transition-all duration-300'>
+                                <SidebarMenuButton asChild className={menuButtonStyle('invoices')} onClick={() => navigate('/admin/admin-dashboard/invoices')}>
                                     <div className="flex items-center gap-3 cursor-pointer">
                                         <FaFileInvoiceDollar className="h-5 w-5" />
                                         <span>Invoices</span>
@@ -100,21 +103,6 @@ const AdminSidebar = ({ openSidebar, setOpenSidebar }) => {
                     </SidebarGroupContent>
                 </SidebarGroup>
 
-                {/* <SidebarGroup>
-                    <SidebarGroupLabel>Controllers</SidebarGroupLabel>
-                    <SidebarGroupContent>
-                        <SidebarMenu>
-                            <SidebarMenuItem>
-                                <SidebarMenuButton asChild className='hover:bg-light-green rounded-4xl px-3 transition-all duration-300'>
-                                    <div className="flex items-center gap-3 cursor-pointer">
-                                        <RiTeamFill className="h-5 w-5" />
-                                        <span>Manage Team</span>
-                                    </div>
-                                </SidebarMenuButton>
-                            </SidebarMenuItem>
-                        </SidebarMenu>
-                    </SidebarGroupContent>
-                </SidebarGroup> */}
 
                 <SidebarGroup>
                     <SidebarGroupLabel>Customization</SidebarGroupLabel>
@@ -169,15 +157,15 @@ const AdminSidebar = ({ openSidebar, setOpenSidebar }) => {
                     <SidebarGroupContent>
                         <SidebarMenu>
                             <SidebarMenuItem>
-                                <SidebarMenuButton asChild className='hover:bg-light-green rounded-4xl px-3 transition-all duration-300'>
+                                <SidebarMenuButton asChild className={menuButtonStyle('profile')} onClick={() => navigate('/profile')}>
                                     <div className="flex items-center gap-3 cursor-pointer">
-                                        <RiSettingsFill className="h-5 w-5" />
-                                        <span>Settings</span>
+                                        <RiProfileFill className="h-5 w-5" />
+                                        <span>Profile</span>
                                     </div>
                                 </SidebarMenuButton>
                             </SidebarMenuItem>
                             <SidebarMenuItem>
-                                <SidebarMenuButton asChild className='hover:bg-light-green rounded-4xl px-3 transition-all duration-300'>
+                                <SidebarMenuButton asChild onClick={() => setOpenLogout(true)} className='hover:bg-light-green rounded-4xl px-3 transition-all duration-300'>
                                     <div className="flex items-center gap-3 cursor-pointer">
                                         <IoLogOut className="h-5 w-5" />
                                         <span>Logout</span>
@@ -189,6 +177,8 @@ const AdminSidebar = ({ openSidebar, setOpenSidebar }) => {
                 </SidebarGroup>
 
             </SidebarContent>
+
+            <Logout openLogout={openLogout} setOpenLogout={setOpenLogout} />
         </Sidebar>
     );
 };

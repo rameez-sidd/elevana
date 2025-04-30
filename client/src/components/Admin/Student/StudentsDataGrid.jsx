@@ -49,7 +49,7 @@ const StudentsDataGrid = () => {
         <div className='px-12 py-12'>
             {
                 isLoading ? (
-                    <Loading />
+                    <Loading size='screen'/>
                 ) : (
                     <Box>
                         <DataGrid checkboxSelection rows={rows} columns={columns} rowHeight={37} pagination pageSize={1} rowsPerPageOptions={[10, 25, 50]}
@@ -57,7 +57,7 @@ const StudentsDataGrid = () => {
                                 fontFamily: `"Lexend", sans-serif`,
                                 fontSize: '13px',
                                 border: 'none',
-                                boxShadow: '0px 4px 14px -4px #00000059;',
+                                border: '1px solid #d1d5db',
                                 height: 500,
 
                                 "& .MuiDataGrid-columnHeader": {

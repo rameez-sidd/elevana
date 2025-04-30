@@ -33,7 +33,7 @@ const ChangePassword = () => {
         <div className='h-[100px] '>
 
         </div>
-        <div className='bg-white rounded-md px-8 pt-24 pb-8 flex items-center justify-center shadow-md relative'>
+        <div className='bg-white rounded-md px-8 pt-24 pb-8 flex items-center justify-center shadow-2xl relative'>
           <form className='flex flex-col items-center w-full' onSubmit={handlePasswordChange}>
             <div className='absolute top-[-100px] rounded-full bg-light-green  p-4  w-[180] h-[180] flex items-center justify-center shadow-lg'>
               <img src={changePasswordIcon} alt="" width={120} height={120} className='rounded-full bg-white p-2' />
@@ -62,7 +62,7 @@ const ChangePassword = () => {
             </div>
             <div className='mt-8'>
               <input type="submit" disabled={isLoading} value={isLoading ? "Saving..." : "Save"} className={`bg-dark-green text-white py-2 px-15 ${isLoading ?
-                "cursor-not-allowed" : "cursor-pointer"} hover:bg-muted-green rounded-4xl text-sm`} />
+                "cursor-not-allowed bg-gray-300 hover:bg-gray-300" : "cursor-pointer hover:bg-muted-green"}  rounded-4xl text-sm`} />
             </div>
           </form>
         </div>

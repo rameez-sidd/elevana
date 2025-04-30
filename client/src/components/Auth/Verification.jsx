@@ -81,7 +81,7 @@ const Verification = ({ setActiveModal }) => {
                             ))}
                         </div>
                         <div>
-                            <button onClick={handleSubmit} disabled={isLoading}  className={`outline-none focus:outline-none bg-grass-green text-white w-full py-1.5 rounded-md hover:bg-dark-grass-green ${isLoading ? "cursor-not-allowed" : "cursor-pointer"}`}>{isLoading ? "Verifying..." : "Verify OTP"}</button>
+                            <button onClick={handleSubmit} disabled={isLoading}  className={`outline-none focus:outline-none bg-grass-green text-white w-full py-1.5 rounded-md ${isLoading ? "bg-gray-300 hover:bg-gray-300 cursor-not-allowed" : "cursor-pointer hover:bg-dark-grass-green "}`}>{isLoading ? "Verifying..." : "Verify OTP"}</button>
                         </div>
                         <p className='text-sm font-[300] mt-3'>Already verified or have an account? <span className='font-[500] text-dark-grass-green hover:underline cursor-pointer' onClick={() => setActiveModal('login')}>Login</span></p>
                     </div>

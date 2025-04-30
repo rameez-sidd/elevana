@@ -3,6 +3,8 @@ import Loading from '../../../Loading'
 import { useGetOrdersAnalyticsQuery } from '../../../../redux/features/analytics/analyticsApi'
 import React from 'react'
 
+
+
 const OrdersAnalyticsContainer = () => {
 
     const { data, isLoading } = useGetOrdersAnalyticsQuery({})
@@ -21,7 +23,7 @@ const OrdersAnalyticsContainer = () => {
         <div className='px-12 py-12 flex h-full'>
             {
                 isLoading ? (
-                    <Loading />
+                    <Loading size='full'/>
                 ) : (
                     <div className='h-full flex-1 flex flex-col'>
                         <div className='flex flex-col gap-1 text-center'>
@@ -34,7 +36,7 @@ const OrdersAnalyticsContainer = () => {
                                 <LineChart data={analyticsData} margin={{ top: 20, right: 30, left: 20, bottom: 50 }}>
                                     <CartesianGrid strokeDasharray="3 3" />
                                     <XAxis dataKey="name" interval={0} dy={10} style={{ fontSize: '10px' }} />
-                                    <YAxis>
+                                    <YAxis style={{ fontSize: '10px' }}>
                                         <Label
                                             value="Orders Placed"
                                             angle={-90}

@@ -19,7 +19,7 @@ const SideBar = () => {
 
     return (
         <div className=' min-w-[320px]  p-6'>
-            <div className='bg-white h-full rounded-xl flex flex-col overflow-hidden relative' style={{ boxShadow: '0 4px 6px -1px #0000004f' }}>
+            <div className='bg-white h-full rounded-xl flex flex-col overflow-hidden relative shadow-2xl'>
                 <div className='bg-dark-green px-2 py-1'>
                     <div className='flex items-center'>
                         <GoDotFill className='text-grass-green mx-[-2px]' />
@@ -36,7 +36,7 @@ const SideBar = () => {
                         </div>
                         <div className='flex flex-col'>
                             <h3 className='text-xl text-dark-green  font-[800] line-clamp-1 text-ellipsis overflow-hidden max-w-[320px]'>{formatName(user?.name)}</h3>
-                            <p className='text-xs  text-gray-500'>{user.role && user?.role === 'admin' ? "Educator" : "Student"}</p>
+                            <p className='text-xs  text-gray-500'>{user?.role && user?.role === 'admin' ? "Educator" : "Student"}</p>
                         </div>
                     </div>
                 </NavLink>

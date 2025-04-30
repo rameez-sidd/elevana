@@ -21,6 +21,7 @@ import Categories from './components/Admin/Categories/Categories';
 import CoursesAnalytics from './components/Admin/Analytics/Courses/CoursesAnalytics';
 import UsersAnalytics from './components/Admin/Analytics/Users/UsersAnalytics';
 import OrdersAnalytics from './components/Admin/Analytics/Orders/OrdersAnalytics';
+import AllInvoices from './components/Admin/Invoices/AllInvoices';
 const appRouter = createBrowserRouter([
   {
     path: "/",
@@ -64,6 +65,7 @@ const appRouter = createBrowserRouter([
       { path: "courses-analytics", element: <CoursesAnalytics /> },
       { path: "users-analytics", element: <UsersAnalytics /> },
       { path: "orders-analytics", element: <OrdersAnalytics /> },
+      { path: "invoices", element: <AllInvoices /> },
     ]
 
   },

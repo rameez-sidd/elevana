@@ -80,7 +80,7 @@ const SignUp = ({ setActiveModal }) => {
                                 )}
                             </div>
                             <div>
-                                <input type="submit" value={isLoading ? "Registering..." : "Register"} disabled={isLoading} className={`bg-grass-green text-white w-full py-1.5 rounded-md hover:bg-dark-grass-green ${isLoading ? "cursor-not-allowed" : "cursor-pointer"} outline-none focus:outline-none`} />
+                                <input type="submit" value={isLoading ? "Registering..." : "Register"} disabled={isLoading} className={`bg-grass-green text-white w-full py-1.5 rounded-md  ${isLoading ? "bg-gray-300 cursor-not-allowed hover:bg-gray-300" : "cursor-pointer hover:bg-dark-grass-green"} outline-none focus:outline-none`} />
                             </div>
 
                             {/* Social Authentication */}

@@ -1,9 +1,10 @@
 import React from 'react'
 
-const Loading = () => {
+const Loading = ({size}) => {
   return (
-    <div className="flex items-center w-full justify-center min-h-screen bg-background-green">
-      <div className="loader animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-dark-orange border-t-grass-green]"></div>
+    <div className={`flex items-center w-full justify-center h-${size} bg-background-green`}>
+      <div class="w-10 h-10 border-4 border-gray-200 border-t-[#163d3b] rounded-full animate-spin mx-auto"></div>
+
     </div>
 
   )

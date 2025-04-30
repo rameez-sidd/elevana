@@ -177,3 +177,10 @@ button:focus{
 .custom-scrollbar::-webkit-scrollbar-button {
   display: none; /* hides the up/down buttons */
 }
+
+.bg-profile{
+  background-image: url('assets/images/profile-bg3.jpeg');
+  background-size: cover;
+  background-position: center;
+  
+}

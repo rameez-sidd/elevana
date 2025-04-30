@@ -26,7 +26,7 @@ const Root = () => {
   }, []);
 
   if (isLoading) {
-    return <Loading />;
+    return <Loading size='screen'/>;
   }
 
   return (

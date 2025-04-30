@@ -56,7 +56,7 @@ const CategoryContainer = () => {
         <div className='px-12 py-12 h-full flex '>
             {
                 isLoading ? (
-                    <Loading />
+                    <Loading size='full'/>
                 ) : (
                     <div className=' h-full flex-1 flex items-center justify-center relative'>
                         <div className='flex flex-col gap-8'>

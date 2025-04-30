@@ -3,6 +3,7 @@ import Loading from '../../../Loading'
 import { useGetUsersAnalyticsQuery } from '../../../../redux/features/analytics/analyticsApi'
 import React from 'react'
 
+
 const UsersAnalyticsContainer = () => {
 
     const { data, isLoading } = useGetUsersAnalyticsQuery({})
@@ -21,7 +22,7 @@ const UsersAnalyticsContainer = () => {
         <div className='px-12 py-12 flex h-full'>
             {
                 isLoading ? (
-                    <Loading />
+                    <Loading size='full'/>
                 ) : (
                     <div className='h-full flex-1 flex flex-col'>
                         <div className='flex flex-col gap-1 text-center'>
@@ -34,7 +35,7 @@ const UsersAnalyticsContainer = () => {
                                 <AreaChart data={analyticsData} margin={{ top: 20, right: 30, left: 20, bottom: 50 }}>
                                     <XAxis dataKey="name" interval={0} dy={10} style={{ fontSize: '10px' }}/>
 
-                                    <YAxis>
+                                    <YAxis style={{ fontSize: '10px' }}>
                                         <Label
                                             value="Unique Users Purchased"
                                             angle={-90}
