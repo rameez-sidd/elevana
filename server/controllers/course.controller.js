@@ -77,6 +77,10 @@ export const editCourse = CatchAsyncError(async (req, res, next) => {
             { new: true }
         );
         await redis.set(courseId, JSON.stringify(course)); // update course in redis
+
+        const courses = await courseModel.find().select("-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links")
+        
+            await redis.set("allCourses", JSON.stringify(courses))
         res.status(201).json({
             success: true,
             course,
@@ -147,7 +151,7 @@ export const getAllCourses = CatchAsyncError(async (req, res, next) => {
                 courses,
             })
         } else {
-            const courses = await courseModel.find({ createdBy: req.user._id }).select("-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links")
+            const courses = await courseModel.find().select("-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links")
 
             await redis.set("allCourses", JSON.stringify(courses))
 

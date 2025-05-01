@@ -90,7 +90,7 @@ const SignUp = ({ setActiveModal }) => {
                                     <FcGoogle size={28} className='cursor-pointer outline-4 outline-background-green hover:outline-light-green rounded-full' />
                                     <AiOutlineGithub size={28} className='cursor-pointer outline-4 outline-background-green hover:outline-light-green rounded-full' />
                                 </div>
-                                <p className='text-sm font-[300] mt-3'>Already have an account? <span className='font-[500] text-dark-grass-green hover:underline cursor-pointer' onClick={() => setActiveModal('login')}>Login</span></p>
+                                <p className='text-sm font-[300] mt-3'>Already have an account? <span className={`font-[500] text-dark-grass-green hover:underline ${isLoading ? "cursor-not-allowed" : "cursor-pointer"}`} onClick={() => setActiveModal('login')}>Login</span></p>
                             </div>
 
                         </form>

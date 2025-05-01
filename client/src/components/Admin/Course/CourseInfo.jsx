@@ -154,7 +154,7 @@ const CourseInfo = () => {
                             <label htmlFor="demo-video" className='text-sm'>Demo Video</label>
                             <div className='flex items-center gap-2'>
                                 <input type="file" disabled={uploading} name="demoVideo" id="demo-video" accept="video/*" onChange={handleVideoUpload} className='hidden' />
-                                <label htmlFor="demo-video" className={`text-sm font-[300] ${uploading || courseInfo.demoUrl ? "text-black" : "text-[#7F7F7F]"} bg-white w-full p-2 px-3 border border-gray-300 rounded-sm outline-none ${uploading ? "cursor-not-allowed pointer-events-none" : "cursor-pointer"} hover:bg-gray-50 flex items-center gap-1`}>
+                                <label htmlFor="demo-video" className={`text-sm font-[300] ${courseInfo?.demoUrl ? "text-black" : "text-[#7F7F7F]"} bg-white w-full p-2 px-3 border border-gray-300 rounded-sm outline-none ${uploading ? "cursor-not-allowed pointer-events-none" : "cursor-pointer"} hover:bg-gray-50 flex items-center gap-1`}>
                                     {
                                         uploading ? <>
                                             <span>Uploading...</span>

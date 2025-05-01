@@ -26,7 +26,7 @@ const courseDataSchema = new mongoose.Schema({
     title: String,
     videoSection: String,
     description: String,
-    videoLength: Number,
+    videoLength: String,
     videoPlayer: String,
     links: [linkSchema],
     suggestion: String,

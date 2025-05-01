@@ -128,7 +128,7 @@ const CoursePreview = () => {
         </div>
 
         <div className='flex items-center justify-between mt-3'>
-          <button className='bg-dark-green text-white text-sm w-30 hover:bg-dark-grass-green py-1.5 rounded-sm cursor-pointer' onClick={handlePrev}>Previous</button>
+          <button disabled={isLoading || isUpdating} className='bg-dark-green text-white text-sm w-30 hover:bg-dark-grass-green py-1.5 rounded-sm cursor-pointer' onClick={handlePrev}>Previous</button>
           {
             isEditing ? (
               <button disabled={isUpdating} className={`bg-dark-green text-white text-sm w-30 hover:bg-dark-grass-green py-1.5 rounded-sm ${isUpdating ? "cursor-not-allowed bg-gray-300 hover:bg-gray-300" : "cursor-pointer hover:bg-dark-grass-green"}`} onClick={handleUpdate}>{isUpdating ? "Updating..." : "Update"}</button>
