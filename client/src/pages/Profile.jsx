@@ -7,7 +7,7 @@ const Profile = () => {
     const [isProfileOpen, setIsProfileOpen] = useState(true)
 
   return (
-    <div className='bg-profile flex flex-col h-screen'>
+    <div className='bg bg-profile flex flex-col h-screen'>
         <Header isProfileOpen={isProfileOpen} setIsProfileOpen={setIsProfileOpen}/>
         <ProfilePage/>
     </div>

@@ -5,13 +5,11 @@ import { useActivateMutation } from '../../redux/features/auth/authApi'
 import { useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 
-
 const Verification = ({ setActiveModal }) => {
     const inputRefs = useRef([])
     const [activate, {isLoading }] = useActivateMutation()
     const {token : activation_token} = useSelector((state) => state.auth)
     const [invalidCode, setInvalidCode] = useState(false)
-
     const [otp, setOtp] = useState(['', '', '', ''])
 
     const handleChange = (e, index) => {
@@ -53,12 +51,25 @@ const Verification = ({ setActiveModal }) => {
             setInvalidCode(true)
             toast.error(message);
         }
-        
+    };
+
+    const handleClose = (event, reason) => {
+        // Only allow closing through explicit user actions
+        if (reason === 'backdropClick' || reason === 'escapeKeyDown') {
+            return;
+        }
+        setActiveModal(null);
     };
 
     return (
-        <Modal open onClose={() => setActiveModal(null)} aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description">
+        <Modal 
+            open 
+            onClose={handleClose} 
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+            disableEscapeKeyDown
+            disableBackdropClick
+        >
             <Box className="absolute top-1/2 left-1/2 translate-y-[-50%] translate-x-[-50%] outline-none border-none rounded-xl shadow-xl bg-background-green overflow-hidden">
                 <div className='flex flex-col '>
                     <h2 className='text-2xl font-[600] bg-light-green px-7 py-5 text-center'>Verify Your Account</h2>
@@ -85,7 +96,6 @@ const Verification = ({ setActiveModal }) => {
                         </div>
                         <p className='text-sm font-[300] mt-3'>Already verified or have an account? <span className={`font-[500] text-dark-grass-green hover:underline ${isLoading ? "cursor-not-allowed" : "cursor-pointer"}`} onClick={() => setActiveModal('login')}>Login</span></p>
                     </div>
-
                 </div>
             </Box>
         </Modal>

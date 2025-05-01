@@ -4,7 +4,7 @@ import CoursesContainer from '../components/Courses/CoursesContainer'
 
 const Courses = () => {
   return (
-    <div className='bg-courses'>
+    <div className='bg bg-courses'>
         <Header/>
         <CoursesContainer/>
     </div>

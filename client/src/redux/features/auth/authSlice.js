@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     user: null,
     token: "",
+    modalOpen: ""
 }
 
 const authSlice = createSlice({
@@ -22,9 +23,12 @@ const authSlice = createSlice({
         },
         setUser: (state, action) => {
             state.user = action.payload.user;  
-        } 
+        },
+        setModalOpen: (state, action) => {
+            state.modalOpen = action.payload
+        }
     }
 })
 
-export const {userRegistration, userLoggedIn, setUser, userLoggedOut} = authSlice.actions
+export const {userRegistration, userLoggedIn, setUser, userLoggedOut, setModalOpen} = authSlice.actions
 export default authSlice.reducer

@@ -5,7 +5,7 @@ import { redis } from "../utils/redis.js";
 // create course
 export const createCourse = CatchAsyncError(async (data, res) => {
     const course = await courseModel.create(data)
-    const courses = await courseModel.find().select("-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links")
+    const courses = await courseModel.find().select("-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links").sort({ createdAt: -1 })
 
     await redis.set("allCourses", JSON.stringify(courses))
     res.status(201).json({

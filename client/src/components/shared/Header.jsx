@@ -1,17 +1,21 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import SignUp from '../Auth/SignUp'
 import Login from '../Auth/Login'
 import Verification from '../Auth/Verification'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import profilePic from '../../assets/images/avatar.jpg'
+import { setModalOpen } from '../../redux/features/auth/authSlice'
 
 const Header = ({isProfileOpen, setIsProfileOpen}) => {
-    const [activeModal, setActiveModal] = useState(null)
-    const {user} = useSelector((state) => state.auth)
+    const {user, modalOpen} = useSelector((state) => state.auth)
+    const dispatch = useDispatch()
     const navigate = useNavigate()
     
+    const handleSetModal = (modal) => {
+        dispatch(setModalOpen(modal))
+    }
 
     return (
         <div className='grid grid-cols-3 items-center mx-auto max-w-7xl p-3 py-5 w-full'>
@@ -28,29 +32,26 @@ const Header = ({isProfileOpen, setIsProfileOpen}) => {
                     user ? (
                         <img src={user.avatar ? user.avatar.url : profilePic} alt="avatar" className={`w-10 h-10 rounded-full object-cover cursor-pointer hover:outline-3 ${isProfileOpen ? 'outline-3 outline-dark-green hover:dark-green' : "hover:outline-grass-green"}`} onClick={() => navigate('/profile')}/>
                     ): (
-
-                        <button className='bg-dark-green text-sm text-white py-2.5 px-7 font-[300] cursor-pointer hover:bg-dark-grass-green rounded-4xl' onClick={() => setActiveModal("signup")}>Get Started</button>
+                        <button className='bg-dark-green text-sm text-white py-2.5 px-7 font-[300] cursor-pointer hover:bg-dark-grass-green rounded-4xl' onClick={() => handleSetModal("signup")}>Get Started</button>
                     )
                 }
             </div>
 
             {
-                activeModal === 'signup' && (
-                    <SignUp setActiveModal={setActiveModal}/>
-
+                modalOpen === 'signup' && (
+                    <SignUp setActiveModal={handleSetModal}/>
                 )
             }
             {
-                activeModal === 'login' && (
-                    <Login setActiveModal={setActiveModal}/>
+                modalOpen === 'login' && (
+                    <Login setActiveModal={handleSetModal}/>
                 )
             }
             {
-                activeModal === 'verification' && (
-                    <Verification setActiveModal={setActiveModal}/>
+                modalOpen === 'verification' && (
+                    <Verification setActiveModal={handleSetModal}/>
                 )
             }
-
         </div>
     )
 }

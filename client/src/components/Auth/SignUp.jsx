@@ -6,6 +6,7 @@ import { useFormik } from 'formik'
 import * as Yup from "yup"
 import { useRegisterMutation } from '../../redux/features/auth/authApi'
 import { toast } from 'react-toastify'
+import { useSelector } from 'react-redux'
 
 
 const schema = Yup.object().shape({
@@ -18,6 +19,8 @@ const schema = Yup.object().shape({
 const SignUp = ({ setActiveModal }) => {
     const [showPassword, setShowPassword] = useState(false)
     const [register, { isLoading, isSuccess, error }] = useRegisterMutation()
+   
+    
 
     const formik = useFormik({
         initialValues: { name: "", email: "", password: "" },
