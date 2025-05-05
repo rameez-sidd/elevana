@@ -54,7 +54,6 @@ const Verification = ({ setActiveModal }) => {
     };
 
     const handleClose = (event, reason) => {
-        // Only allow closing through explicit user actions
         if (reason === 'backdropClick' || reason === 'escapeKeyDown') {
             return;
         }

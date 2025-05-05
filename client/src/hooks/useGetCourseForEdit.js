@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { setCourseInfo, setBenefits, setPrerequisites, setCourseContentData, setCourseData, setEditingMode } from '../redux/features/courses/courseCreationSlice';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Categories from '@/components/Admin/Categories/Categories';
 
 const useGetCourseForEdit = (courseId) => {
     const [loading, setLoading] = useState(false);
@@ -26,7 +27,7 @@ const useGetCourseForEdit = (courseId) => {
                 if (response.data.success) {
                     setData(response.data.course);
                     
-                    const { name, description, price, estimatedPrice, tags, level, demoUrl, thumbnail, benefits, prerequisites, courseData: courseContent } = response.data.course;
+                    const { name, description, price, estimatedPrice, tags, level, demoUrl, thumbnail, categories, benefits, prerequisites, courseData: courseContent } = response.data.course;
                     
                     // Set editing mode
                     dispatch(setEditingMode({ isEditing: true, courseId }));
@@ -37,6 +38,7 @@ const useGetCourseForEdit = (courseId) => {
                         description,
                         price,
                         estimatedPrice,
+                        categories,
                         tags,
                         level,
                         demoUrl,

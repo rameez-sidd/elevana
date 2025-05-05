@@ -13,6 +13,7 @@ import {
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import courseCreationReducer from './features/courses/courseCreationSlice';
+import courseContentReducer from './features/courses/courseContentSlice';
 
 const persistConfig = {
     key: "root",
@@ -25,6 +26,7 @@ const rootReducer = combineReducers({
     [apiSlice.reducerPath]: apiSlice.reducer,
     auth: authSlice,
     courseCreation: courseCreationReducer,
+    courseContent: courseContentReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

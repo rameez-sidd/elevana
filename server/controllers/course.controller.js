@@ -79,8 +79,8 @@ export const editCourse = CatchAsyncError(async (req, res, next) => {
         await redis.set(courseId, JSON.stringify(course)); // update course in redis
 
         const courses = await courseModel.find().select("-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links").sort({ createdAt: -1 })
-        
-            await redis.set("allCourses", JSON.stringify(courses))
+
+        await redis.set("allCourses", JSON.stringify(courses))
         res.status(201).json({
             success: true,
             course,
@@ -123,7 +123,12 @@ export const getSingleCourse = CatchAsyncError(async (req, res, next) => {
                 course
             })
         } else {
-            const course = await courseModel.findById(courseId).select("-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links")
+            const course = await courseModel.findById(courseId).lean(); // .lean() returns a plain JS object
+
+            // Remove unwanted fields from courseData
+            if (course?.courseData) {
+                course.courseData = course.courseData.map(({ videoUrl, suggestion, questions, links, ...rest }) => rest);
+            }
 
             await redis.set(courseId, JSON.stringify(course), "EX", 604800)  // 7 days
 
@@ -436,7 +441,13 @@ export const deleteCourse = CatchAsyncError(async (req, res, next) => {
 
         await course.deleteOne({ id })
 
+
+
         await redis.del(id)
+
+        const courses = await courseModel.find().select("-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links").sort({ createdAt: -1 })
+
+        await redis.set("allCourses", JSON.stringify(courses))
 
         res.status(200).json({
             success: true,

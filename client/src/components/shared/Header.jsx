@@ -22,7 +22,12 @@ const Header = ({isProfileOpen, setIsProfileOpen}) => {
             <h1 className='justify-self-start font-plaster text-3xl text-dark-green'>Elevana</h1>
             <div className='justify-self-center flex items-center gap-8 font-light '>
                 <NavLink className={({isActive}) => `text-sm  p-1 border-b-2 border-transparent hover:text-dark-green hover:border-dark-green transition-all duration-300 ${isActive ? 'text-dark-green font-[600] px-0.5' : ' text-gray-600 px-1'} `} to={'/'}>Home</NavLink>
-                <NavLink className={({isActive}) => `text-sm p-1 border-b-2 border-transparent hover:text-dark-green hover:border-dark-green transition-all duration-300 ${isActive ? 'text-dark-green font-[600] px-0.5' : ' text-gray-600 px-1'} `} to={'/courses'}>Courses</NavLink>
+                {
+                    user && user?.role === 'admin' ? (<></>) : (
+
+                        <NavLink className={({isActive}) => `text-sm p-1 border-b-2 border-transparent hover:text-dark-green hover:border-dark-green transition-all duration-300 ${isActive ? 'text-dark-green font-[600] px-0.5' : ' text-gray-600 px-1'} `} to={'/courses'}>Courses</NavLink>
+                    )
+                }
                 <NavLink className={({isActive}) => `text-sm p-1 border-b-2 border-transparent hover:text-dark-green hover:border-dark-green transition-all duration-300 ${isActive ? 'text-dark-green font-[600] px-0.5' : ' text-gray-600 px-1'} `} to={'about'}>About</NavLink>
                 <NavLink className={({isActive}) => `text-sm p-1 border-b-2 border-transparent hover:text-dark-green hover:border-dark-green transition-all duration-300 ${isActive ? 'text-dark-green font-[600] px-0.5' : ' text-gray-600 px-1'} `} to={'policy'}>Policy</NavLink>
                 <NavLink className={({isActive}) => `text-sm p-1 border-b-2 border-transparent hover:text-dark-green hover:border-dark-green transition-all duration-300 ${isActive ? 'text-dark-green font-[600] px-0.5' : ' text-gray-600 px-1'} `} to={'faq'}>FAQ</NavLink>
@@ -30,7 +35,7 @@ const Header = ({isProfileOpen, setIsProfileOpen}) => {
             <div className='justify-self-end flex items-center justify-center'>
                 {
                     user ? (
-                        <img src={user.avatar ? user.avatar.url : profilePic} alt="avatar" className={`w-10 h-10 rounded-full object-cover cursor-pointer hover:outline-3 ${isProfileOpen ? 'outline-3 outline-dark-green hover:dark-green' : "hover:outline-grass-green"}`} onClick={() => navigate('/profile')}/>
+                        <img src={user.avatar ? user.avatar.url : profilePic} alt="avatar" className={`w-7 h-7 rounded-full object-cover cursor-pointer hover:outline-3 ${isProfileOpen ? 'outline-3 outline-dark-green hover:dark-green' : "hover:outline-grass-green"}`} onClick={() => (user?.role === 'admin' ? navigate('/admin/admin-dashboard') : navigate('/profile'))}/>
                     ): (
                         <button className='bg-dark-green text-sm text-white py-2.5 px-7 font-[300] cursor-pointer hover:bg-dark-grass-green rounded-4xl' onClick={() => handleSetModal("signup")}>Get Started</button>
                     )

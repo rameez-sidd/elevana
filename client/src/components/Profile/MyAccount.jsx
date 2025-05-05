@@ -52,29 +52,29 @@ const MyAccount = () => {
 
 
   return (
-    <div className=' flex-1 p-6 px-44  flex items-center justify-center'>
-      <div className=' w-full flex flex-col '>
+    <div className={`flex-1 px-44  flex items-center justify-center ${user?.role === 'admin' && "h-full"}`}>
+      <div className={`min-w-2xl flex flex-col`}>
         <div className='h-[100px] '>
 
         </div>
-        <div className='bg-white rounded-md px-8 pt-24 pb-8 flex items-center justify-center shadow-2xl  relative'>
+        <div className={`bg-white rounded-md px-8 pt-20 pb-8 flex items-center justify-center ${user?.role === 'admin' ? "border border-gray-300" : "shadow-lg"}   relative`}>
           <form className='flex flex-col items-center w-full' onSubmit={handleSubmit}>
-            <div className='absolute top-[-100px] rounded-full flex items-center justify-center shadow-lg'>
-              <img src={previewImage} alt="avatar" width={150} height={150} className='rounded-full border-8 bg-gray-200 border-white' />
+            <div className='absolute top-[-80px] rounded-full flex items-center justify-center shadow-lg'>
+              <img src={previewImage} alt="avatar" width={130} height={130} className='rounded-full border-6 bg-gray-200 border-white' />
               <input type="file" name="" id="avatar" className="hidden" accept="image/png,image/jpg,image/jpeg,image/webp" onChange={handleImageChange}/>
-              <label htmlFor="avatar" className='cursor-pointer absolute bottom-1 right-1 bg-dark-green text-white rounded-full p-2 hover:bg-muted-green'><TbCameraPlus size={23} /></label>
+              <label htmlFor="avatar" className='cursor-pointer absolute bottom-1 right-1 bg-dark-green text-white rounded-full p-1.5 hover:bg-muted-green'><TbCameraPlus size={21} /></label>
             </div>
             {/* <div className='h-[100px] invisible'></div> */}
             <div className='flex items-center gap-7 w-full'>
               <label htmlFor="name" className='min-w-[6%] text-sm'>Name:</label>
-              <input type="text" name="" id="name" value={name} onChange={(e) => setName(e.target.value)} className='text-sm font-[300] bg-gray-100 w-full p-2 px-4 border border-gray-300 rounded-sm outline-none' />
+              <input type="text" name="" id="name" value={name} onChange={(e) => setName(e.target.value)} className='text-sm font-[300] bg-gray-100 w-full p-2 px-3 border border-gray-300 rounded-sm outline-none' />
             </div>
             <div className='flex items-center gap-7 mt-8 w-full'>
               <label htmlFor="email" className='min-w-[6%] text-sm'>Email:</label>
-              <input type="email" name="" id="email" value={user?.email || ""} readOnly className='text-sm font-[300] bg-gray-100 w-full p-2 px-4 border border-gray-300 rounded-sm outline-none' />
+              <input type="email" name="" id="email" value={user?.email || ""} readOnly className='text-sm font-[300] bg-gray-100 w-full p-2 px-3 border border-gray-300 rounded-sm outline-none' />
             </div>
             <div className='mt-8'>
-              <input type="submit" disabled={nameUploading || avatarUploading} value={nameUploading || avatarUploading ? "Saving..." : "Save"} className={`bg-dark-green text-white py-2 px-15 ${nameUploading || avatarUploading ? "bg-gray-300 hover:bg-gray-300 cursor-not-allowed" : "cursor-pointer hover:bg-muted-green "} rounded-4xl text-sm`} />
+              <input type="submit" disabled={nameUploading || avatarUploading} value={nameUploading || avatarUploading ? "Saving..." : "Save"} className={`bg-dark-green text-white py-1.5 px-15 ${nameUploading || avatarUploading ? "bg-gray-300 hover:bg-gray-300 cursor-not-allowed" : "cursor-pointer hover:bg-muted-green "} rounded-sm text-sm`} />
             </div>
           </form>
         </div>

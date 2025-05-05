@@ -15,6 +15,7 @@ body{
   --grass-green: #66A23B;
   --dark-grass-green: #2F642A;
   --muted-green: #385c5b;
+  --muted-green-lighter: #5f8382;
   --orange:  #f3b86e;
   --light-orange: #f2d4ac;
   --mid-orange: #d88856;
@@ -56,6 +57,9 @@ body{
 .font-plaster{
   font-family: "Plaster", system-ui;
 }
+.font-lexend{
+  font-family: "Lexend", sans-serif;
+}
 
 @theme inline {
   --color-background-green: var(--background-green);
@@ -65,6 +69,7 @@ body{
   --color-dark-grass-green: var(--dark-grass-green);
   --color-dark-green: var(--dark-green);
   --color-muted-green: var(--muted-green);
+  --color-muted-green-lighter: var(--muted-green-lighter);
   --color-orange: var(--orange);
   --color-light-orange: var(--light-orange);
   --color-dark-orange: var(--dark-orange);
@@ -193,7 +198,7 @@ box-shadow:  20px 20px 60px #cfd2ce,
 
 
 .bg-profile{
-  background-image: url('assets/images/book7.jpeg');
+  background-image: linear-gradient(rgba(0, 0, 0, 0), #f3f4f7c4), url('assets/images/profile-bg4.jpeg');
   
   
 }

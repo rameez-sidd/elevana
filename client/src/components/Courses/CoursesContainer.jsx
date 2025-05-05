@@ -11,6 +11,8 @@ const CoursesContainer = () => {
         refetch()
     }, [])
 
+    console.log(data?.courses);
+    
 
 
 

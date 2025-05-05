@@ -22,6 +22,11 @@ import CoursesAnalytics from './components/Admin/Analytics/Courses/CoursesAnalyt
 import UsersAnalytics from './components/Admin/Analytics/Users/UsersAnalytics';
 import OrdersAnalytics from './components/Admin/Analytics/Orders/OrdersAnalytics';
 import AllInvoices from './components/Admin/Invoices/AllInvoices';
+import CourseDetailsPage from './pages/CourseDetailsPage';
+import ProfileAdmin from './components/Admin/Profile/ProfileAdmin';
+import ChangePasswordAdmin from './components/Admin/ChangePassword/ChangePasswordAdmin';
+import CourseAccess from './pages/CourseAccessPage';
+import CourseAccessPage from './pages/CourseAccessPage';
 const appRouter = createBrowserRouter([
   {
     path: "/",
@@ -40,6 +45,18 @@ const appRouter = createBrowserRouter([
   {
     path: "/courses",
     element: <Courses />,
+  },
+  {
+    path: "/course/:id",
+    element: <CourseDetailsPage />,
+  },
+  {
+    path: "/course-access/:id",
+    element: <CourseAccessPage />,
+  },
+  {
+    path: "/courses/course/:id",
+    element: <CourseDetailsPage />,
   },
   {
     path: "/admin/admin-dashboard",
@@ -66,6 +83,8 @@ const appRouter = createBrowserRouter([
       { path: "users-analytics", element: <UsersAnalytics /> },
       { path: "orders-analytics", element: <OrdersAnalytics /> },
       { path: "invoices", element: <AllInvoices /> },
+      { path: "profile", element: <ProfileAdmin /> },
+      { path: "change-password", element: <ChangePasswordAdmin /> },
     ]
 
   },

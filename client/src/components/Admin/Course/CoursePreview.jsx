@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { useCreateCourseMutation, useEditCourseMutation, useGetCourseForEditQuery } from '../../../redux/features/courses/coursesApi';
 import { toast } from 'react-toastify';
 import { resetCourseCreation } from '../../../redux/features/courses/courseCreationSlice';
+import { FiUsers } from 'react-icons/fi';
 
 const CoursePreview = () => {
   const dispatch = useDispatch();
@@ -61,14 +62,14 @@ const CoursePreview = () => {
             }
           </div>
 
-          <div className='flex items-center gap-2'>
-            <p className='font-[600] text-4xl'>{courseData?.price === "0" ? "Free" : `$${courseData?.price}`}</p>
-            <p className='self-start line-through text-gray-800 font-[300] text-sm'>${courseData?.estimatedPrice}</p>
-            <p className='ml-3 bg-gray-300 rounded-full px-2 py-1'>{discountPercentage}% off</p>
+          <div className='flex items-center gap-2.5'>
+            <p className='font-[600] text-4xl text-dark-green'>{courseData?.price === "0" ? "Free" : `$${courseData?.price}`}</p>
+            <p className='line-through text-gray-500 font-[300] text-lg'>${courseData?.estimatedPrice}</p>
+            <p className='ml-3 text-green-700  font-[600]'>{discountPercentage}% off</p>
           </div>
 
           <div>
-            <button className='bg-dark-grass-green text-white p-2 px-8 mt-1 rounded-4xl cursor-pointer hover:bg-grass-green'>Buy Now</button>
+            <button className='bg-red-700 text-white p-2 px-8 mt-1 rounded-4xl cursor-pointer hover:bg-grass-green'>Buy Now</button>
           </div>
 
           <div className='mt-4'>
@@ -81,14 +82,14 @@ const CoursePreview = () => {
           </div>
 
           <div className='flex flex-col gap-3 mt-5'>
-            <h2 className='text-3xl font-[700]'>{courseData.name}</h2>
-            <div className='flex items-center gap-4'>
+            <h2 className='text-3xl font-[700] text-grass-green'>{courseData.name}</h2>
+            <div className='flex items-center gap-2 text-sm'>
               <Rating value={0} readOnly />
-              <p className='text-sm text-gray-600'>(0 reviews)</p>
-              <p className='text-sm text-gray-600'>|</p>
-              <p className='text-sm text-gray-600'>0 Students Enrolled</p>
+              <p className=' text-gray-600'>(0 reviews)</p>
+              <p className=' flex items-center gap-3 ml-3 border border-gray-300 rounded-sm px-3 py-1'><span><FiUsers size={15}/></span> 0 Students</p>
             </div>
           </div>
+
 
 
 

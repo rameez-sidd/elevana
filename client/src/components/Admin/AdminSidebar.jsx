@@ -4,7 +4,7 @@ import { TbLayoutDashboardFilled, TbLayoutSidebarRightExpandFilled, TbLayoutSide
 import { GoSidebarExpand } from "react-icons/go";
 import { HiUsers } from "react-icons/hi2";
 import { FaFileInvoiceDollar, FaCartShopping } from "react-icons/fa6";
-import { RiLiveFill, RiVideoAddFill, RiTeamFill, RiSettingsFill, RiProfileFill } from "react-icons/ri";
+import { RiLiveFill, RiVideoAddFill, RiTeamFill, RiSettingsFill, RiProfileFill, RiLockPasswordFill } from "react-icons/ri";
 import { SiGoogleanalytics } from "react-icons/si";
 import { FaUsersCog } from "react-icons/fa";
 import { IoLogOut } from "react-icons/io5";
@@ -157,10 +157,18 @@ const AdminSidebar = ({ openSidebar, setOpenSidebar }) => {
                     <SidebarGroupContent>
                         <SidebarMenu>
                             <SidebarMenuItem>
-                                <SidebarMenuButton asChild className={menuButtonStyle('profile')} onClick={() => navigate('/profile')}>
+                                <SidebarMenuButton asChild className={menuButtonStyle('profile')} onClick={() => navigate('/admin/admin-dashboard/profile')}>
                                     <div className="flex items-center gap-3 cursor-pointer">
                                         <RiProfileFill className="h-5 w-5" />
                                         <span>Profile</span>
+                                    </div>
+                                </SidebarMenuButton>
+                            </SidebarMenuItem>
+                            <SidebarMenuItem>
+                                <SidebarMenuButton asChild className={menuButtonStyle('change-password')} onClick={() => navigate('/admin/admin-dashboard/change-password')}>
+                                    <div className="flex items-center gap-3 cursor-pointer">
+                                        <RiLockPasswordFill className="h-5 w-5" />
+                                        <span>Change Password</span>
                                     </div>
                                 </SidebarMenuButton>
                             </SidebarMenuItem>
