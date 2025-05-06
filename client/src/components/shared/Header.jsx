@@ -22,12 +22,12 @@ const Header = ({isProfileOpen, setIsProfileOpen}) => {
             <h1 className='justify-self-start font-plaster text-3xl text-dark-green'>Elevana</h1>
             <div className='justify-self-center flex items-center gap-8 font-light '>
                 <NavLink className={({isActive}) => `text-sm  p-1 border-b-2 border-transparent hover:text-dark-green hover:border-dark-green transition-all duration-300 ${isActive ? 'text-dark-green font-[600] px-0.5' : ' text-gray-600 px-1'} `} to={'/'}>Home</NavLink>
-                {
-                    user && user?.role === 'admin' ? (<></>) : (
+                {/* {
+                    user && user?.role === 'admin' ? (<></>) : ( */}
 
                         <NavLink className={({isActive}) => `text-sm p-1 border-b-2 border-transparent hover:text-dark-green hover:border-dark-green transition-all duration-300 ${isActive ? 'text-dark-green font-[600] px-0.5' : ' text-gray-600 px-1'} `} to={'/courses'}>Courses</NavLink>
-                    )
-                }
+                    {/* )
+                } */}
                 <NavLink className={({isActive}) => `text-sm p-1 border-b-2 border-transparent hover:text-dark-green hover:border-dark-green transition-all duration-300 ${isActive ? 'text-dark-green font-[600] px-0.5' : ' text-gray-600 px-1'} `} to={'about'}>About</NavLink>
                 <NavLink className={({isActive}) => `text-sm p-1 border-b-2 border-transparent hover:text-dark-green hover:border-dark-green transition-all duration-300 ${isActive ? 'text-dark-green font-[600] px-0.5' : ' text-gray-600 px-1'} `} to={'policy'}>Policy</NavLink>
                 <NavLink className={({isActive}) => `text-sm p-1 border-b-2 border-transparent hover:text-dark-green hover:border-dark-green transition-all duration-300 ${isActive ? 'text-dark-green font-[600] px-0.5' : ' text-gray-600 px-1'} `} to={'faq'}>FAQ</NavLink>

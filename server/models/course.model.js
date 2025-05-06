@@ -19,7 +19,7 @@ const questionSchema = new mongoose.Schema({
     user: Object,
     question: String,
     questionReplies: [Object]
-})
+}, {timestamps: true})
 
 const courseDataSchema = new mongoose.Schema({
     videoUrl: String,

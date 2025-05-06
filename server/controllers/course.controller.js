@@ -232,6 +232,7 @@ export const addQuestion = CatchAsyncError(async (req, res, next) => {
 
         // save the updated COurse
         await course?.save()
+        await redis.set(courseId, JSON.stringify(course), "EX", 604800)  // 7 days
 
         res.status(200).json({
             success: true,
@@ -271,6 +272,8 @@ export const addAnswer = CatchAsyncError(async (req, res, next) => {
         const newAnswer = {
             user: req.user,
             answer,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString()
         }
 
         // add this answer to our course content
@@ -278,6 +281,7 @@ export const addAnswer = CatchAsyncError(async (req, res, next) => {
 
         // save the updated COurse
         await course?.save()
+        await redis.set(courseId, JSON.stringify(course), "EX", 604800)  // 7 days
 
         if (req.user?._id === question.user._id) {
             // create a notification
@@ -357,6 +361,7 @@ export const addReview = CatchAsyncError(async (req, res, next) => {
         }
 
         await course?.save()
+        await redis.set(courseId, JSON.stringify(course), "EX", 604800)  // 7 days
 
         const notification = {
             title: "New Review Recieved",
@@ -364,6 +369,12 @@ export const addReview = CatchAsyncError(async (req, res, next) => {
         }
 
         // create notification
+
+        await notificationModel.create({
+            user: req.user?._id,
+            title: "New Review Recieved",
+            message: `${req.user?.name} has given a review in ${course?.name}`
+        })
 
         res.status(200).json({
             success: true,
@@ -396,6 +407,8 @@ export const addReplyToReview = CatchAsyncError(async (req, res, next) => {
         const replyData = {
             user: req.user,
             comment,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString()
         }
 
         if (!review.commentReplies) {
@@ -405,6 +418,7 @@ export const addReplyToReview = CatchAsyncError(async (req, res, next) => {
         review.commentReplies?.push(replyData)
 
         await course?.save()
+        await redis.set(courseId, JSON.stringify(course), "EX", 604800)  // 7 days
 
         res.status(200).json({
             success: true,
