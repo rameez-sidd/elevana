@@ -31,7 +31,7 @@ const SideBar = () => {
                 <NavLink to='/profile'>
                     <div className='flex items-center gap-4 py-6 px-5 cursor-pointer'>
                         <div className='w-16 h-16 rounded-full relative flex items-center justify-center'>
-                            <img src={user?.avatar?.url || profilePic} alt="avatar" className='w-16 h-16 object-cover object-center rounded-full' />
+                            <img src={user?.avatar?.url || profilePic} alt="avatar" className='w-16 h-16 object-cover object-center rounded-full border border-gray-300' />
                             <GoDotFill size={20} className='text-green-500 absolute top-0 right-0 z-[9999]' />
                         </div>
                         <div className='flex flex-col'>

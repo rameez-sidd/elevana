@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 const CourseCard = ({ course }) => {
     return (
         <Link to={`course/${course._id}`}>
-            <div className='bg-white rounded-md min-w-[290px] w-fit shadow-sm hover:shadow-xl cursor-pointer'>
+            <div className='bg-white rounded-md min-w-[290px] w-fit shadow-sm hover:shadow-xl cursor-pointer border border-gray-100'>
                 <div className='p-2.5 pb-0 flex items-center justify-center'>
                     <div className='w-[270px] h-[150px] flex items-center justify-center bg-black rounded-sm overflow-hidden'>
                         <img src={course?.thumbnail?.url} alt="course-thumbnail" className='object-contain w-full h-full object-center' />

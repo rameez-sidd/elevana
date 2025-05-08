@@ -60,7 +60,7 @@ const MyAccount = () => {
         <div className={`bg-white rounded-md px-8 pt-20 pb-8 flex items-center justify-center ${user?.role === 'admin' ? "border border-gray-300" : "shadow-lg"}   relative`}>
           <form className='flex flex-col items-center w-full' onSubmit={handleSubmit}>
             <div className='absolute top-[-80px] rounded-full flex items-center justify-center shadow-lg'>
-              <img src={previewImage} alt="avatar" width={130} height={130} className='rounded-full border-6 bg-gray-200 border-white' />
+              <img src={previewImage} alt="avatar" width={130} height={130} className='rounded-full outline outline-gray-200 border-6 bg-gray-200 border-white' />
               <input type="file" name="" id="avatar" className="hidden" accept="image/png,image/jpg,image/jpeg,image/webp" onChange={handleImageChange}/>
               <label htmlFor="avatar" className='cursor-pointer absolute bottom-1 right-1 bg-dark-green text-white rounded-full p-1.5 hover:bg-muted-green'><TbCameraPlus size={21} /></label>
             </div>

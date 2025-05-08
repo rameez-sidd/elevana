@@ -4,7 +4,7 @@ import CoursesContainer from '../components/Courses/CoursesContainer'
 
 const Courses = () => {
   return (
-    <div className='bg-background-green'>
+    <div className='bg-background-green min-h-screen'>
         <Header/>
         <CoursesContainer/>
     </div>

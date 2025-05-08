@@ -1,5 +1,6 @@
 import { apiSlice } from "../../api/apiSlice";
 import { userLoggedIn, userLoggedOut, userRegistration } from "./authSlice";
+import { setActiveVideo } from "../courses/courseContentSlice";
 
 export const authApi = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
@@ -58,7 +59,7 @@ export const authApi = apiSlice.injectEndpoints({
                 try {
                     await queryFulfilled;
                     dispatch(userLoggedOut());
-                   
+                    dispatch(setActiveVideo(0));
                 } catch (error) {
                     console.log(error);
                 }

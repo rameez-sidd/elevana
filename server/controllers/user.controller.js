@@ -9,6 +9,7 @@ import { sendToken, accessTokenOptions, refreshTokenOptions } from "../utils/jwt
 import { redis } from "../utils/redis.js";
 import { getAllUsersService, getUserById, updateUserRoleService } from "../services/user.service.js";
 import cloudinary from "cloudinary"
+import { courseModel } from "../models/course.model.js";
 
 const _dirname = path.resolve()
 
@@ -234,10 +235,42 @@ export const updateUserInfo = CatchAsyncError(async (req, res, next) => {
        
         if(name && user){
             user.name = name
+
+            // Update user info in all courses using MongoDB update operators
+            const updateResult = await courseModel.updateMany(
+                {
+                    $or: [
+                        {"reviews.user._id": userId},
+                        {"courseData.questions.user._id": userId},
+                        {"courseData.questions.questionReplies.user._id": userId}
+                    ]
+                },
+                {
+                    $set: {
+                        "reviews.$[review].user.name": name,
+                        "courseData.$[].questions.$[question].user.name": name,
+                        "courseData.$[].questions.$[].questionReplies.$[reply].user.name": name
+                    }
+                },
+                {
+                    arrayFilters: [
+                        { "review.user._id": userId },
+                        { "question.user._id": userId },
+                        { "reply.user._id": userId }
+                    ]
+                }
+            )
+
+
+            // Clear Redis cache for all courses
+            const courses = await courseModel.find()
+            for(const course of courses) {
+                await redis.del(course._id)
+            }
+            await redis.del("allCourses")
         }
 
         await user?.save()
-
         await redis.set(userId, JSON.stringify(user))
 
         res.status(201).json({
@@ -293,12 +326,12 @@ export const updatePassword = CatchAsyncError(async (req, res, next) => {
 export const updateProfilePicture = CatchAsyncError(async (req, res, next) => {
     try {
         const {avatar} = req.body
-
         const userId = req.user?._id
-
         const user = await userModel.findById(userId)
 
         if(avatar && user){
+            let avatarData = null
+
             // if we have one avatar 
             if(user?.avatar?.public_id){
                 // first delete the old image
@@ -308,21 +341,56 @@ export const updateProfilePicture = CatchAsyncError(async (req, res, next) => {
                     width: 150
                 })
     
-                user.avatar = {
-                    public_id : myCloud.public_id,
-                    url: myCloud.secure_url,
+                avatarData = {
+                    public_id: myCloud.public_id,
+                    url: myCloud.secure_url
                 }
-            } else{
+                user.avatar = avatarData
+            } else {
                 const myCloud = await cloudinary.v2.uploader.upload(avatar, {
                     folder: "avatars",
                     width: 150
                 })
     
-                user.avatar = {
-                    public_id : myCloud.public_id,
-                    url: myCloud.secure_url,
+                avatarData = {
+                    public_id: myCloud.public_id,
+                    url: myCloud.secure_url
                 }
+                user.avatar = avatarData
             }
+
+            // Update avatar in all courses using MongoDB update operators
+            const updateResult = await courseModel.updateMany(
+                {
+                    $or: [
+                        {"reviews.user._id": userId},
+                        {"courseData.questions.user._id": userId},
+                        {"courseData.questions.questionReplies.user._id": userId}
+                    ]
+                },
+                {
+                    $set: {
+                        "reviews.$[review].user.avatar": avatarData,
+                        "courseData.$[].questions.$[question].user.avatar": avatarData,
+                        "courseData.$[].questions.$[].questionReplies.$[reply].user.avatar": avatarData
+                    }
+                },
+                {
+                    arrayFilters: [
+                        { "review.user._id": userId },
+                        { "question.user._id": userId },
+                        { "reply.user._id": userId }
+                    ]
+                }
+            )
+
+
+            // Clear Redis cache for all courses
+            const courses = await courseModel.find()
+            for(const course of courses) {
+                await redis.del(course._id)
+            }
+            await redis.del("allCourses")
         }
 
         await user?.save()
