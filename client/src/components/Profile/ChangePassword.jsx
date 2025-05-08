@@ -38,7 +38,7 @@ const ChangePassword = () => {
           )
         }
 
-        <div className={`bg-white rounded-md px-8 ${user?.role === 'admin' ? 'pt-12' : 'pt-20'} pb-8 flex items-center justify-center ${user?.role === 'admin' ? "border border-gray-300" : "shadow-lg"}   relative`}>
+        <div className={`bg-white rounded-md px-8 ${user?.role === 'admin' ? 'pt-12' : 'pt-20'} pb-8 flex items-center justify-center border border-gray-300  ${user?.role === 'admin' ? "shadow-none" : "shadow-lg"}   relative`}>
           <form className='flex flex-col items-center w-full' onSubmit={handlePasswordChange}>
             {
               user?.role !== 'admin' && (

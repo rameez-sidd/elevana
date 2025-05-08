@@ -86,7 +86,8 @@ export const createOrder = CatchAsyncError(async (req, res, next) => {
         const notification = await notificationModel.create({
             user: user?._id,
             title: "New Order",
-            message: `You have a new order from ${course?.name}`
+            message: `You have a new order from ${course?.name}`,
+            adminId: course.createdBy
         })
         
         course.purchased = course.purchased ? course.purchased + 1 : 1;

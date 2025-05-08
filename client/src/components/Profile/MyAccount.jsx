@@ -52,12 +52,12 @@ const MyAccount = () => {
 
 
   return (
-    <div className={`flex-1 px-44  flex items-center justify-center ${user?.role === 'admin' && "h-full"}`}>
+    <div className={`flex-1 px-44  flex items-center justify-center  ${user?.role === 'admin' && "h-full"}`}>
       <div className={`min-w-2xl flex flex-col`}>
         <div className='h-[100px] '>
 
         </div>
-        <div className={`bg-white rounded-md px-8 pt-20 pb-8 flex items-center justify-center ${user?.role === 'admin' ? "border border-gray-300" : "shadow-lg"}   relative`}>
+        <div className={`bg-white rounded-md px-8 pt-20 pb-8 flex items-center justify-center border border-gray-300  ${user?.role === 'admin' ? "shadow-none" : "shadow-lg"}   relative`}>
           <form className='flex flex-col items-center w-full' onSubmit={handleSubmit}>
             <div className='absolute top-[-80px] rounded-full flex items-center justify-center shadow-lg'>
               <img src={previewImage} alt="avatar" width={130} height={130} className='rounded-full outline outline-gray-200 border-6 bg-gray-200 border-white' />

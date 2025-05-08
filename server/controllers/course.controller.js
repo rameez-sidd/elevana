@@ -171,6 +171,39 @@ export const getAllCourses = CatchAsyncError(async (req, res, next) => {
     }
 })
 
+// get enrolled courses -- only for user who purchases
+export const getEnrolledCourses = CatchAsyncError(async (req, res, next) => {
+    try {
+        const userId = req.user._id;
+        const isCacheExist = await redis.get(`enrolledCourses:${userId}`);
+
+        if (isCacheExist) {
+            const courses = JSON.parse(isCacheExist);
+            res.status(200).json({
+                success: true,
+                courses,
+            });
+        } else {
+            // Get course IDs from user's courses array
+            const userCourseIds = req.user.courses.map(course => course._id);
+            
+            const courses = await courseModel.find({
+                _id: { $in: userCourseIds }
+            }).select("-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links");
+
+            await redis.set(`enrolledCourses:${userId}`, JSON.stringify(courses), "EX", 604800); // Cache for 7 days
+
+            res.status(200).json({
+                success: true,
+                courses,
+            });
+        }
+    } catch (error) {
+        return next(new ErrorHandler(error.message, 500));
+    }
+})
+
+
 // get course content -- only for valid user
 export const getCourseByUser = CatchAsyncError(async (req, res, next) => {
     try {
@@ -228,6 +261,7 @@ export const addQuestion = CatchAsyncError(async (req, res, next) => {
             user: req.user?._id,
             title: "New Question Received",
             message: `You have a new message in ${courseContent.title}`,
+            adminId: course.createdBy
         })
 
         // save the updated COurse
@@ -288,7 +322,8 @@ export const addAnswer = CatchAsyncError(async (req, res, next) => {
             await notificationModel.create({
                 user: req.user?._id,
                 title: "New Question Reply Received",
-                message: `You have a new question reply in ${courseContent.title}`
+                message: `You have a new question reply in ${courseContent.title}`,
+                adminId: course.createdBy
             })
         } else {
             const data = {
@@ -372,8 +407,9 @@ export const addReview = CatchAsyncError(async (req, res, next) => {
 
         await notificationModel.create({
             user: req.user?._id,
-            title: "New Review Recieved",
-            message: `${req.user?.name} has given a review in ${course?.name}`
+            title: "New Review Received",
+            message: `${req.user?.name} has given a review in ${course?.name}`,
+            adminId: course.createdBy
         })
 
         res.status(200).json({

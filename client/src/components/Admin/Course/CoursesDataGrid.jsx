@@ -8,12 +8,15 @@ import { format } from 'timeago.js';
 import DeleteCourse from './DeleteCourse';
 import { useGetAllCoursesQuery } from '../../../redux/features/courses/coursesApi';
 import useGetCourseForEdit from '../../../hooks/useGetCourseForEdit';
+import { MdQuestionAnswer } from 'react-icons/md';
+import { useNavigate } from 'react-router-dom';
 
 const CoursesDataGrid = () => {
     const {data, isLoading, error, refetch, isSuccess} = useGetAllCoursesQuery(undefined, {refetchOnFocus: true, refetchOnMountOrArgChange: true, refetchOnReconnect: true})
     const [openDeleteModal, setOpenDeleteModal] = useState(false)
     const [courseIdToDelete, setCourseIdToDelete] = useState("")
     const [courseIdToEdit, setCourseIdToEdit] = useState("")
+    const navigate = useNavigate()
     
     // Using our new custom hook
     const { loading: editLoading } = useGetCourseForEdit(courseIdToEdit);
@@ -28,6 +31,7 @@ const CoursesDataGrid = () => {
         { field: "ratings", headerName: "Ratings", flex: 0.5 },
         { field: "purchased", headerName: "Purchased", flex: 0.5 },
         { field: "created_at", headerName: "Created At", flex: 0.5 },
+        { field: "   ", headerName: "Q/A", flex: 0.4, renderCell: (params) => { return (<Button onClick={() => navigate(`/admin/admin-dashboard/course-qa/${params.row.id}`)}><MdQuestionAnswer size={17} className='text-dark-green' /></Button>) } },
         { field: " ", headerName: "Edit", flex: 0.4, renderCell: (params) => { return (<Button onClick={() => handleEdit(params.row.id)}><RiEditBoxFill size={17} className='text-dark-green' /></Button>) } },
         { field: "  ", headerName: "Delete", flex: 0.4, renderCell: (params) => { return (<Button onClick={() => {
             setOpenDeleteModal(true)

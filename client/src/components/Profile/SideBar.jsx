@@ -18,8 +18,8 @@ const SideBar = () => {
 
 
     return (
-        <div className=' min-w-[320px] flex items-center  p-6'>
-            <div className='bg-white min-h-[400px] rounded-xl flex flex-col overflow-hidden relative shadow-lg'>
+        <div className=' min-w-[320px] flex items-center justify-end  p-6 pr-0 '>
+            <div className='bg-white min-h-[400px] rounded-xl flex flex-col overflow-hidden relative shadow-lg border border-gray-300 '>
                 <div className='bg-dark-green px-2 py-1'>
                     <div className='flex items-center'>
                         <GoDotFill className='text-grass-green mx-[-2px]' />

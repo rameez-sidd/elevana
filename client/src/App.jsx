@@ -25,8 +25,11 @@ import AllInvoices from './components/Admin/Invoices/AllInvoices';
 import CourseDetailsPage from './pages/CourseDetailsPage';
 import ProfileAdmin from './components/Admin/Profile/ProfileAdmin';
 import ChangePasswordAdmin from './components/Admin/ChangePassword/ChangePasswordAdmin';
-import CourseAccess from './pages/CourseAccessPage';
 import CourseAccessPage from './pages/CourseAccessPage';
+import CourseQA from './components/Admin/Course/CourseQA';
+
+
+
 const appRouter = createBrowserRouter([
   {
     path: "/",
@@ -76,6 +79,7 @@ const appRouter = createBrowserRouter([
 
       },
 
+      { path: "course-qa/:id", element: <CourseQA /> },
       { path: "all-courses", element: <AllCourses /> },
       { path: "students", element: <Students /> },
       { path: "categories", element: <Categories /> },

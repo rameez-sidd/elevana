@@ -25,8 +25,8 @@ const CourseDetails = ({ data, stripePromise, clientSecret }) => {
   const navigate = useNavigate()
 
   const handleToggle = (index) => {
-    setOpenSections(prev => 
-      prev.includes(index) 
+    setOpenSections(prev =>
+      prev.includes(index)
         ? prev.filter(i => i !== index)
         : [...prev, index]
     )
@@ -129,6 +129,31 @@ const CourseDetails = ({ data, stripePromise, clientSecret }) => {
               <h2 className='text-3xl font-[600]'>What's this course all about?</h2>
               <div>
                 {data?.description}
+              </div>
+            </div>
+
+
+            <div className='flex flex-col gap-4 mt-6'>
+              <h2 className='text-3xl font-[600]'>Reviews & Ratings</h2>
+              <div className='flex flex-col gap-6'>
+                {
+                  data?.reviews.map((review, index) => (
+                    <div className='flex items-center gap-3' key={index}>
+                      <div className='self-start'>
+                        <img src={review?.user?.avatar ? review?.user?.avatar?.url : profilePic} width={35} height={35} className='rounded-full object-cover border border-gray-300 self-start' />
+                      </div>
+                      <div className='flex-1 flex flex-col gap-0.5'>
+                        <div className='flex items-center gap-1'>
+                          <p className='font-[500] text-sm'>{review?.user?.name}</p>
+                          <p>∙</p>
+                          <Rating readOnly precision={0.5} value={review?.rating} size='small' />
+
+                        </div>
+                        <p className='text-xs text-gray-800'>{review?.comment}</p>
+                      </div>
+                    </div>
+                  ))
+                }
               </div>
             </div>
 

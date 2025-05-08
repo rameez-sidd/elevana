@@ -8,6 +8,10 @@ import { Bounce, ToastContainer } from 'react-toastify'
 import { PersistGate } from "redux-persist/integration/react";
 import Loading from './components/Loading';
 import { apiSlice } from './redux/api/apiSlice';
+import socketIO from 'socket.io-client'
+
+const ENDPOINT = import.meta.env.VITE_PUBLIC_SOCKET_SERVER_URI || ""
+const socketId = socketIO(ENDPOINT, { transports: ["websocket"] })
 
 const Root = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -24,6 +28,12 @@ const Root = () => {
 
     initializeApp();
   }, []);
+ 
+  useEffect(() => {
+    socketId.on("connection", () => {
+      
+    })
+  }, [])
 
   if (isLoading) {
     return <Loading size='screen'/>;

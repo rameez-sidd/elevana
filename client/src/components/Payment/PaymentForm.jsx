@@ -5,6 +5,11 @@ import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
+import socketIO from 'socket.io-client'
+
+const ENDPOINT = import.meta.env.VITE_PUBLIC_SOCKET_SERVER_URI || ""
+const socketId = socketIO(ENDPOINT, { transports: ["websocket"] })
+
 
 const PaymentForm = ({ setOpenPayment, data }) => {
     const stripe = useStripe()
@@ -36,8 +41,19 @@ const PaymentForm = ({ setOpenPayment, data }) => {
             try {
                 await createOrder({ courseId: data._id, paymentInfo: paymentIntent }).unwrap()
                 setLoadUser(true)
+                
                 navigate(`/course-access/${data._id}`)
                 toast.success("Course purchased successfully!");
+
+                socketId.emit("notification", {
+                    adminId: data?.course?.createdBy,
+                    notification: {
+                        title: 'New Order',
+                        message: `You have a new order from ${data?.course?.name}`,
+                        userId: user?._id
+                    }
+                })
+                
             } catch (error) {
                 const message = error?.data?.message || error?.message || "Something went wrong.";
                 toast.error(message);

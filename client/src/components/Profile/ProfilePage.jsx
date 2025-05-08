@@ -7,8 +7,8 @@ const ProfilePage = () => {
  
 
   return (
-    <div className=' h-full flex'>
-      <div className='flex w-full'>
+    <div className='flex h-full'>
+      <div className='flex flex-1 '>
         <SideBar/>
         <Outlet/>
        

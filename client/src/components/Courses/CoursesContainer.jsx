@@ -86,7 +86,7 @@ const CoursesContainer = () => {
                         <div className=' flex-1 grid grid-cols-4 gap-y-8 mt-4 place-items-center'>
                             {
                                 courses && courses?.map((course) => (
-                                    <CourseCard key={course._id} course={course} />
+                                    <CourseCard key={course._id} course={course} isEnrolled={false} />
                                 ))
                             }
                         </div>

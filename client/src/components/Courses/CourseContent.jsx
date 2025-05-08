@@ -13,6 +13,11 @@ import { toast } from 'react-toastify';
 import { format } from 'timeago.js';
 import { MdVerified } from 'react-icons/md';
 
+import socketIO from 'socket.io-client'
+
+const ENDPOINT = import.meta.env.VITE_PUBLIC_SOCKET_SERVER_URI || ""
+const socketId = socketIO(ENDPOINT, { transports: ["websocket"] })
+
 const CourseContent = ({ id, user, courseData, courseRefetch }) => {
 
 
@@ -26,9 +31,9 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
     const [addAnswerInQuestion, { isLoading: isSubmittingAnswer }] = useAddAnswerinQuestionMutation()
     const [addReviewInCourse, { isLoading: isSubmittingReview }] = useAddReviewinCourseMutation()
 
+    const initialDetail = user?.role === 'admin' ? 'qa' : 'overview'
 
-
-    const [activeDetail, setActiveDetail] = useState('overview')
+    const [activeDetail, setActiveDetail] = useState(initialDetail)
     const [openSections, setOpenSections] = useState([])
     const [question, setQuestion] = useState('')
     const [answer, setAnswer] = useState('')
@@ -58,10 +63,10 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
     }
 
 
-    const isReviewExists = courseData?.course?.reviews.find((item) => item?.user?._id === user?._id)
-    
-   
-    
+    const isReviewExists = (courseData?.course?.reviews.find((item) => item?.user?._id === user?._id) || user?.role === 'admin')
+
+
+
 
     const toggleOpenReply = (index) => {
         setOpenReply((prev) => (prev === index ? null : index))
@@ -116,7 +121,16 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
             await addNewQuestion({ question, courseId: id, contentId: videoData?.content[activeVideo]?._id }).unwrap()
             toast.success('Question posted successfully!')
             refetch()
+
             setQuestion("")
+            socketId.emit("notification", {
+                adminId: courseData?.course?.createdBy,
+                notification: {
+                    title: 'New Question Received',
+                    message: `You have a new question in ${videoData?.content[activeVideo]?.title}`,
+                    userId: user?._id
+                }
+            })
         } catch (error) {
             const message = error?.data?.message || error?.message || "Something went wrong.";
             toast.error(message);
@@ -133,6 +147,16 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
             toast.success('Reply added successfully!')
             refetch()
             setAnswer("")
+            if(user?.role !== 'admin'){
+                socketId.emit("notification", {
+                    adminId: courseData?.course?.createdBy,
+                    notification: {
+                        title: 'New Reply Received',
+                        message: `You have a new question reply in ${videoData?.content[activeVideo]?.title}`,
+                        userId: user?._id
+                    }
+                })
+            }
         } catch (error) {
             const message = error?.data?.message || error?.message || "Something went wrong.";
             toast.error(message);
@@ -149,6 +173,14 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
             courseRefetch()
             setReview('')
             setRating(0)
+            socketId.emit("notification", {
+                adminId: courseData?.course?.createdBy,
+                notification: {
+                    title: 'New Review Received',
+                    message: `${user?.name} has given a review in ${courseData?.name}`,
+                    userId: user?._id
+                }
+            })
         } catch (error) {
             const message = error?.data?.message || error?.message || "Something went wrong.";
             toast.error(message);
@@ -158,7 +190,7 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
 
 
     return (
-        <div className='py-16 '>
+        <div className={`${user?.role === 'admin' ? 'p-12' : 'py-16 px-0'}`}>
             <div className='mx-auto max-w-7xl'>
                 <div className='grid grid-cols-6'>
                     <div className='col-span-4 flex flex-col'>
@@ -175,18 +207,25 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
                             {/* Overview, Resources, Q&A, Reviews */}
                             <div className='mt-7 border border-gray-300 rounded-md overflow-hidden'>
                                 <div className='flex items-center bg-light-green text-xs'>
-                                    <p className={`flex-1 text-center cursor-pointer p-2 ${activeDetail === 'overview' ? 'bg-muted-green-lighter text-white' : 'text-black'}`} onClick={() => setActiveDetail('overview')}>Overview</p>
-                                    <p className={`flex-1 text-center cursor-pointer p-2 ${activeDetail === 'resources' ? 'bg-muted-green-lighter text-white' : 'text-black'}`} onClick={() => setActiveDetail('resources')}>Resources</p>
+                                    {
+                                        user?.role !== 'admin' && (
+                                            <>
+
+                                                <p className={`flex-1 text-center cursor-pointer p-2 ${activeDetail === 'overview' ? 'bg-muted-green-lighter text-white' : 'text-black'}`} onClick={() => setActiveDetail('overview')}>Overview</p>
+                                                <p className={`flex-1 text-center cursor-pointer p-2 ${activeDetail === 'resources' ? 'bg-muted-green-lighter text-white' : 'text-black'}`} onClick={() => setActiveDetail('resources')}>Resources</p>
+                                            </>
+                                        )
+                                    }
                                     <p className={`flex-1 text-center cursor-pointer p-2 ${activeDetail === 'qa' ? 'bg-muted-green-lighter text-white' : 'text-black'}`} onClick={() => setActiveDetail('qa')}>Q & A</p>
                                     <p className={`flex-1 text-center cursor-pointer p-2 ${activeDetail === 'reviews' ? 'bg-muted-green-lighter text-white' : 'text-black'}`} onClick={() => setActiveDetail('reviews')}>Reviews</p>
                                 </div>
 
                                 <div className='h-[300px] p-3 py-5 text-sm overflow-y-scroll custom-scrollbar'>
                                     {
-                                        activeDetail === 'overview' && <p>{videoData?.content[activeVideo]?.description}</p>
+                                        activeDetail === 'overview' && user?.role !== 'admin' && <p>{videoData?.content[activeVideo]?.description}</p>
                                     }
                                     {
-                                        activeDetail === 'resources' && (
+                                        activeDetail === 'resources' && user?.role !== 'admin' && (
                                             <div>
                                                 {
                                                     videoData?.content[activeVideo]?.links.map((link) => (
@@ -199,15 +238,20 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
                                     {
                                         activeDetail === 'qa' && (
                                             <>
-                                                <div className='flex flex-col gap-2'>
-                                                    <div className='flex items-center gap-2'>
-                                                        <img src={user?.avatar ? user?.avatar?.url : profilePic} alt="user-avatar" width={35} height={35} className='rounded-full object-cover border border-gray-300 self-start' />
-                                                        <textarea value={question} onChange={(e) => setQuestion(e.target.value)} placeholder='Ask your doubts...' rows={5} className='border border-gray-400 flex-1 resize-none rounded-sm outline-none px-2 py-1 text-xs placeholder:text-xs'></textarea>
-                                                    </div>
-                                                    <div className='flex justify-end'>
-                                                        <button disabled={isSubmittingQuestion} className={`bg-black text-white text-xs px-4 py-1  rounded-sm ${isSubmittingQuestion ? 'cursor-not-allowed bg-gray-300 hover:bg-gray-300' : 'cursor-pointer hover:bg-gray-700'}`} onClick={handleQuestionSubmit}>{isSubmittingQuestion ? 'Submitting...' : 'Submit'}</button>
-                                                    </div>
-                                                </div>
+                                                {
+                                                    user?.role !== 'admin' && (
+                                                        <div className='flex flex-col gap-2'>
+                                                            <div className='flex items-center gap-2'>
+                                                                <img src={user?.avatar ? user?.avatar?.url : profilePic} alt="user-avatar" width={35} height={35} className='rounded-full object-cover border border-gray-300 self-start' />
+                                                                <textarea value={question} onChange={(e) => setQuestion(e.target.value)} placeholder='Ask your doubts...' rows={5} className='border border-gray-400 flex-1 resize-none rounded-sm outline-none px-2 py-1 text-xs placeholder:text-xs'></textarea>
+                                                            </div>
+                                                            <div className='flex justify-end'>
+                                                                <button disabled={isSubmittingQuestion} className={`bg-black text-white text-xs px-4 py-1  rounded-sm ${isSubmittingQuestion ? 'cursor-not-allowed bg-gray-300 hover:bg-gray-300' : 'cursor-pointer hover:bg-gray-700'}`} onClick={handleQuestionSubmit}>{isSubmittingQuestion ? 'Submitting...' : 'Submit'}</button>
+                                                            </div>
+                                                        </div>
+                                                    )
+                                                }
+
 
                                                 {/* All Questions */}
                                                 <div className='mt-4 flex flex-col gap-8'>
@@ -276,7 +320,7 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
                                                     !isReviewExists && (
                                                         <div className='flex flex-col gap-2'>
                                                             <div className='flex items-center gap-2'>
-                                                                <img src={user?.avatar ? user?.avatar?.url : profilePic}  width={35} height={35} className='rounded-full object-cover border border-gray-300 self-start' />
+                                                                <img src={user?.avatar ? user?.avatar?.url : profilePic} width={35} height={35} className='rounded-full object-cover border border-gray-300 self-start' />
                                                                 <div className='flex-1 flex flex-col gap-1'>
                                                                     <Rating value={rating} precision={0.5} onChange={(event, newValue) => {
                                                                         setRating(newValue)
@@ -294,12 +338,16 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
                                                     {
                                                         courseData?.course?.reviews.map((review, index) => (
                                                             <div className='flex items-center gap-3' key={index}>
-                                                                <div>
+                                                                <div className='self-start'>
                                                                     <img src={review?.user?.avatar ? review?.user?.avatar?.url : profilePic} width={35} height={35} className='rounded-full object-cover border border-gray-300 self-start' />
                                                                 </div>
-                                                                <div className='flex-1 flex flex-col'>
-                                                                    <p className='font-[500]'>{review?.user?.name}</p>
-                                                                    <Rating readOnly precision={0.5} value={review?.rating} size='small'/>
+                                                                <div className='flex-1 flex flex-col gap-0.5'>
+                                                                    <div className='flex items-center gap-1'>
+                                                                        <p className='font-[500]'>{review?.user?.name}</p>
+                                                                        <p>∙</p>
+                                                                        <Rating readOnly precision={0.5} value={review?.rating} size='small' />
+
+                                                                    </div>
                                                                     <p className='text-xs text-gray-800'>{review?.comment}</p>
                                                                 </div>
                                                             </div>
@@ -338,7 +386,7 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
                                     <CollapsibleContent className=" flex flex-col text-xs cursor-pointer">
                                         {
                                             content?.videos.map((video, index) => (
-                                                <div className={`flex items-center px-6 py-3 gap-3 ${activeVideo === video?.videoIndex && "bg-dark-green text-white"}`} onClick={() => handleSwitchVideo(video?.videoIndex)} key={index}>
+                                                <div className={`flex items-center px-6 py-3 rounded-sm gap-3 ${activeVideo === video?.videoIndex && "bg-dark-green text-white"}`} onClick={() => handleSwitchVideo(video?.videoIndex)} key={index}>
                                                     <LucideTvMinimalPlay size={20} />
                                                     <div>
                                                         <p>{video?.title}</p>

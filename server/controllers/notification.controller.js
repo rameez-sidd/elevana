@@ -11,7 +11,7 @@ const _dirname = path.resolve()
 // get all notifications - only for admin
 export const getNotifications = CatchAsyncError(async (req, res, next) => {
     try {
-        const notifications = await notificationModel.find().sort({createdAt: -1})
+        const notifications = await notificationModel.find({ adminId: req.user._id }).sort({createdAt: -1})
 
         res.status(200).json({
             success: true,
@@ -31,12 +31,16 @@ export const updateNotification = CatchAsyncError(async (req, res, next) => {
         if(!notification){
             return next(new ErrorHandler("Notification not found", 404))
         } else {
-            notification.status ? notification.status = 'read' : notification?.status
+            notification.status
+          ? (notification.status = "read")
+          : notification?.status;
         }
+
+        
 
         await notification.save()
 
-        const notifications = await notificationModel.find().sort({createdAt : -1})
+        const notifications = await notificationModel.find({ adminId: req.user._id }).sort({createdAt : -1})
 
         res.status(201).json({
             success: true,
