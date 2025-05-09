@@ -21,9 +21,6 @@
     .email-body h1 span {
       color: #66A23B;
     }
-    .head2 span{
-      font-weight: 600;
-    }
 
     .email-footer {
       background-color: #f4f7f2;
@@ -37,7 +34,7 @@
   <div class="email-body">
 
     <h1>Hello, <span><%= name %></span></h1>
-    <p class="head2">A new reply has been added to your question in the video <span>"<%= title %>"</span>.</p>
+    <p>A new reply has been added to your question in the video " <%= title %>".</p>
     <p>Please login to our website to view the reply and continue the discussion.</p>
   </div>
   <footer class="email-footer">

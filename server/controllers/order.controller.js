@@ -101,6 +101,12 @@ export const createOrder = CatchAsyncError(async (req, res, next) => {
         
         await redis.set("allCourses", JSON.stringify(courses))
         
+        // Update enrolled courses cache for the user
+        const enrolledCourses = await courseModel.find({
+            _id: { $in: user.courses }
+        }).select("-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links").sort({ createdAt: -1 });
+        
+        await redis.set(`enrolledCourses:${user._id}`, JSON.stringify(enrolledCourses), "EX", 604800); // Cache for 7 days
 
         newOrder(data, res, next)
 

@@ -7,9 +7,11 @@ import { userModel } from "../models/user.model.js"
 // create new order
 export const newOrder = CatchAsyncError(async (data, res, next) => {
     const order = await orderModel.create(data)
+    const user = await userModel.findById(data.userId).select('-password')
     res.status(201).json({
         success: true,
         order,
+        user
     })
 })
 

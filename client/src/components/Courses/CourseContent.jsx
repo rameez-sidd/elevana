@@ -281,8 +281,11 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
                                                                     }
                                                                     {
                                                                         openAllReplies === index && (
-                                                                            <div className='flex flex-col gap-4 mt-3'>
+                                                                            item?.questionReplies.length > 0 ? (
+
+                                                                                <div className='flex flex-col gap-4 mt-3'>
                                                                                 {
+                                                                                    
                                                                                     item?.questionReplies.map((reply, i) => (
                                                                                         <div className='flex items-center gap-3' key={i}>
                                                                                             <div >
@@ -300,6 +303,9 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
                                                                                     ))
                                                                                 }
                                                                             </div>
+                                                                            ) : (
+                                                                                <></>
+                                                                            )
                                                                         )
                                                                     }
 

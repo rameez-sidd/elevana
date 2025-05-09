@@ -10,7 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Plaster&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: "Lexend", sans-serif;
+        font-family: "Lexend", sans-serif;
     }
 
     a {
@@ -24,11 +24,11 @@
       padding: 8px 5px;
       font-size: 12px;
     }
-
-    .email-header span {
-      color: #66A23B;
+    .email-header span{
+        font-family: "Plaster", system-ui;
+        color: #66A23B;
+        font-size: 28px;
     }
-
     .email-body {
       padding: 10px 5px;
     }
@@ -51,15 +51,14 @@
       <h1>Welcome to <span>Elevana</span></h1>
     </div>
     <div class="email-body">
-      <p class="name">Hello <%= user.name %>,</p>
+      <p class="name">Hello Rameez,</p>
       <p>Thank You for registering with Elevana. To activate your account, please use the following activation code:</p>
-      <h2><%= activationCode %></h2>
+      <h2>7865</h2>
       <p>Please enter this code on the activation page within the next 5 minutes.</p>
       <p>If you did not register for a Elevana account, please ignore this email.</p>
     </div>
     <div class="email-footer">
       <p>If you have any questions, please don't hesitate to contact us at <a href="#">support@elevana.com</a></p>
-      <p>&copy; 2025 Elevana. All rights reserved.</p>
     </div>
   </div>
 </body>

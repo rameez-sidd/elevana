@@ -154,6 +154,13 @@ const CourseDetails = ({ data, stripePromise, clientSecret }) => {
                     </div>
                   ))
                 }
+                {
+                  data?.reviews.length === 0 && (
+                    <div className='text-sm text-gray-500'>
+                      No Reviews Yet!
+                    </div>
+                  )
+                }
               </div>
             </div>
 

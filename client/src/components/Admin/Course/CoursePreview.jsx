@@ -52,12 +52,12 @@ const CoursePreview = () => {
     <div className='px-12 py-12'>
       <div className='flex flex-col gap-12'>
         <div className=' flex flex-col gap-3'>
-          <div className='bg-black  h-[500px] '>
+          <div className='bg-black  h-[500px] rounded-sm'>
             {
               courseData?.demoUrl ? (
-                <video src={courseData?.demoUrl} controls poster={courseData?.thumbnail?.url || courseData?.thumbnail} className='w-full h-full object-contain'></video>
+                <video src={courseData?.demoUrl} controls poster={courseData?.thumbnail?.url || courseData?.thumbnail} className='w-full h-full object-contain rounded-sm'></video>
               ) : (
-                <div className='bg-gray-300 h-[500px] flex items-center justify-center'>No Demo Video</div>
+                <div className='bg-gray-300 h-[500px] flex items-center justify-center rounded-sm'>No Demo Video</div>
               )
             }
           </div>

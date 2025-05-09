@@ -189,7 +189,7 @@ export const getEnrolledCourses = CatchAsyncError(async (req, res, next) => {
             
             const courses = await courseModel.find({
                 _id: { $in: userCourseIds }
-            }).select("-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links");
+            }).select("-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links").sort({ createdAt: -1 });
 
             await redis.set(`enrolledCourses:${userId}`, JSON.stringify(courses), "EX", 604800); // Cache for 7 days
 

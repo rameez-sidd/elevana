@@ -23,11 +23,9 @@ const CourseAccessPage = () => {
       if(!isPurchased){
         navigate('/')
       } 
-      if(error){
-        navigate('/')
-      }
+      
     }
-  }, [user, error])
+  }, [])
 
   // Reset activeVideo when course ID changes
   useEffect(() => {
