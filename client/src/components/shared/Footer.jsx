@@ -1,8 +1,12 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 const Footer = () => {
+    const {user} = useSelector((state) => state.auth)
+    const navigate = useNavigate()
     return (
-        <div className='bg-black text-white py-12'>
+        <div className='bg-black text-white py-12 '>
             <div className='mx-auto max-w-7xl'>
                 <div className='grid grid-cols-4'>
                     <div className='col-span-2'>
@@ -16,9 +20,15 @@ const Footer = () => {
                     <div className='flex flex-col gap-4'>
                         <h5>Quick Links</h5>
                         <div className='font-[300] text-sm flex flex-col gap-2'>
-                            <p className='cursor-pointer hover:underline w-fit'>Courses</p>
-                            <p className='cursor-pointer hover:underline w-fit'>My Account</p>
-                            <p className='cursor-pointer hover:underline w-fit'>Course Dashboard</p>
+                            {
+                                user?.role !== 'admin' && 
+                                <p className='cursor-pointer hover:underline w-fit' onClick={() => navigate('/courses')}>Courses</p>
+                            }
+                            <p className='cursor-pointer hover:underline w-fit' onClick={() => (user?.role === 'admin' ? navigate('/admin/admin-dashboard/profile') : navigate('/profile') )}>My Account</p>
+                            {
+                                user?.role === 'admin' && 
+                                <p className='cursor-pointer hover:underline w-fit' onClick={() => navigate('/admin/admin-dashboard/all-courses')}>Course Dashboard</p>
+                            }
                         </div>
                     </div>
                     <div className='flex justify-center '>

@@ -23,7 +23,7 @@ const Invoices = () => {
     const rows = []
 
     
-    data && data.orders.forEach((item) => {
+    data && data?.orders.slice(0, 6).forEach((item) => {
         rows.push({
             id: item._id,
             name: item.user.name,
@@ -33,7 +33,7 @@ const Invoices = () => {
     })
 
     return (
-        <div>
+        <div className=''>
             {
                 isLoading ? (
                     <Loading size='full' />
@@ -44,7 +44,7 @@ const Invoices = () => {
                                 fontFamily: `"Lexend", sans-serif`,
                                 fontSize: '13px',
                                 border: 'none',
-                                // maxHeight: 220,
+                                maxHeight: 250,
 
                                 "& .MuiDataGrid-columnHeader": {
                                     backgroundColor: 'transparent'

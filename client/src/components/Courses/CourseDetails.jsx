@@ -19,7 +19,7 @@ const CourseDetails = ({ data, stripePromise, clientSecret }) => {
   const dispatch = useDispatch()
   const discount = (((data?.estimatedPrice - data?.price) / data?.estimatedPrice) * 100).toFixed(0)
 
-  const isPurchased = user && user?.courses?.find((item) => item._id === data._id)
+  const isPurchased = (user && user?.courses?.find((item) => item._id === data._id) || data?.price === 0) 
   const [openSections, setOpenSections] = useState([])
   const courseContent = groupBySection(data?.courseData, false)
   const navigate = useNavigate()
@@ -56,6 +56,7 @@ const CourseDetails = ({ data, stripePromise, clientSecret }) => {
                 <p className='flex items-center gap-3 ml-3 border border-gray-300 rounded-sm px-3 py-1'><span><FiUsers size={15} /></span> {data?.purchased} {data?.purchased === 1 ? "Student" : "Students"}</p>
                 <p className='flex items-center gap-3 ml-3 border border-gray-300 rounded-sm px-3 py-1'><span><RxStack size={19} /></span> {courseContent?.length} {courseContent?.length === 1 ? "Chapter" : "Chapters"}</p>
               </div>
+              <div className='text-sm'>Created By: <span className='ml-2 italic text-gray-600 underline'>{data?.createdBy?.name}</span></div>
 
 
 
@@ -82,6 +83,13 @@ const CourseDetails = ({ data, stripePromise, clientSecret }) => {
                     <p className='text-md'>{prerequisite.title}</p>
                   </div>
                 ))}
+              </div>
+            </div>
+
+            <div className='flex flex-col gap-4 mt-6'>
+              <h2 className='text-3xl font-[600]'>What's this course all about?</h2>
+              <div>
+                {data?.description}
               </div>
             </div>
 
@@ -125,12 +133,7 @@ const CourseDetails = ({ data, stripePromise, clientSecret }) => {
               </div>
             </div>
 
-            <div className='flex flex-col gap-4 mt-6'>
-              <h2 className='text-3xl font-[600]'>What's this course all about?</h2>
-              <div>
-                {data?.description}
-              </div>
-            </div>
+            
 
 
             <div className='flex flex-col gap-4 mt-6'>

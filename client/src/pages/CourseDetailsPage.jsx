@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useCreatePaymentIntentMutation, useGetStripePublishableKeyQuery } from '../redux/features/orders/ordersApi'
 import { loadStripe } from '@stripe/stripe-js'
+import Footer from '../components/shared/Footer'
 
 const CourseDetailsPage = () => {
     const { id } = useParams()
@@ -29,7 +30,7 @@ const CourseDetailsPage = () => {
             const publishableKey = config?.publishableKey
             setStripePromise(loadStripe(publishableKey))
         }
-        if (data) {
+        if (data && data?.course?.price > 0) {
             const amount = Math.round(data?.course?.price * 100)
             createPaymentIntent(amount)
         }
@@ -56,6 +57,7 @@ const CourseDetailsPage = () => {
 
                 )
             }
+            <Footer/>
         </div>
     )
 }

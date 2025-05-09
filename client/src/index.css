@@ -167,6 +167,7 @@ button:focus{
 /* Scrollbar styling for WebKit-based browsers */
 .custom-scrollbar::-webkit-scrollbar {
   width: 0px; /* very thin */
+  height: 0px;
   background-color: transparent;
 }
 
@@ -188,20 +189,3 @@ box-shadow:  20px 20px 60px #cfd2ce,
              -20px -20px 60px #ffffff;
 }
 
-.bg{
-  background-size: cover;
-  background-position: top center;
-  background-attachment: fixed;
-  backdrop-filter: blur(20px);
-
-} 
-
-
-.bg-profile{
-  background-image: linear-gradient(rgba(0, 0, 0, 0), #f3f4f7c4), url('assets/images/profile-bg4.jpeg');
-  
-  
-}
-.bg-courses{
-  background-image: url('assets/images/book7.jpeg');
-}

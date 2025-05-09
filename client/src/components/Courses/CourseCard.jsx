@@ -6,7 +6,7 @@ import { Link, useNavigate } from 'react-router-dom'
 const CourseCard = ({ course, isEnrolled }) => {
     const navigate = useNavigate()
     return (
-        <Link to={!isEnrolled && `course/${course._id}`}>
+        <Link to={!isEnrolled && `course/${course._id}`} className='h-fit'>
             <div className={`bg-white rounded-md ${isEnrolled ? 'min-w-[200px]' : 'min-w-[250px]'} w-fit shadow-lg hover:shadow-sm  border border-gray-300`}>
                 <div className='p-2.5 pb-0 flex items-center justify-center'>
                     <div className={`${isEnrolled ? "w-[200px] h-[100px]" : "w-[250px] h-[150px]"}  flex items-center justify-center bg-black rounded-sm overflow-hidden`}>
@@ -16,7 +16,7 @@ const CourseCard = ({ course, isEnrolled }) => {
 
                 </div>
 
-                <div className={`mx-auto p-3 px-0 pt-1.5 flex flex-col   ${isEnrolled ? 'w-[200px]' : 'w-[250px] min-h-[110px]'}`}>
+                <div className={`mx-auto p-2 px-0.5 pt-1.5 flex flex-col   ${isEnrolled ? 'w-[200px]' : 'w-[250px] min-h-[110px]'}`}>
                     <div className={`${isEnrolled ? 'text-sm' : 'text-lg'} font-[600] line-clamp-1 text-ellipsis`}>
                         {course?.name}
                     </div>

@@ -21,8 +21,8 @@ const Home = () => {
             <LatestCourses/>
           )
         }
+        <About/>
         <StudentReviews/>
-        {/* <About/> */}
         <FAQ/>
         <Footer/>
     </div>

@@ -25,9 +25,7 @@
     }
 
     .email-header span {
-      font-family: "Plaster", system-ui;
       color: #66A23B;
-      font-size: 28px;
     }
     .email-header p{
         font-size: 14px;
@@ -37,35 +35,38 @@
     .email-body {
       padding: 10px 5px;
     }
-    .email-body h3{
-      text-align: center;
-    }
-    table, th, td{
-        border: 1px solid black;
-        border-collapse: collapse;
-    }
 
-    .name {
-      font-size: 20px 0;
-    }
-    
-    
-    td, th{
-        padding: 8px 0;
+    .center{
         text-align: center;
-        width: 50%;
     }
-    .table-1 td span{
+    .left{
+        text-align: left;
+    }
+    .right{
+        text-align: right;
+    }
+    .bold{
         font-weight: 600;
-        
     }
+    
     .table-2, .table-3, .table-1{
-        width: 100%;
+        margin: 0px auto;
+        width: 90%;
         margin-top: 18px;
-        border: 2px solid black;
+    }
+    .table-2{
+        margin-top: 40px;
+    }
+    .border{
+        border-bottom: 1px solid black;
+        padding: 20px 0;
+    }
+    .spacing{
+        padding: 10px 0;
     }
 
     .email-footer {
+      margin-top: 18px;
       background-color: #f4f7f2;
       padding: 15px 5px;
       text-align: center;
@@ -80,37 +81,38 @@
         </header>
 
         <div class="email-body">
-            <h3>Order Summary</h3>
             <table class="table-1">
                 <tr>
-                    <td><span>Order ID:</span> <%= order._id %></td>
-                    <td><span>Order Placed:</span> <%= order.date %></td>
+                    <td class="center"><span>Order number:</span> <%= order._id %></td>
                 </tr>
             </table>
 
             <table class="table-2">
                 <thead>
                     <tr>
-                        <th>Course Name</th>
-                        <th>Cost</th>
+                        <th class="left border">Course Name</th>
+                        <th class="right border">Cost</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td><%= order.name %></td>
-                        <td><%= order.price %></td>
+                        <td class="left border"><%= order.name %></td>
+                        <td class="right border"><%= order.price %></td>
                     </tr>
                 </tbody>
             </table>
 
             <table class="table-3">
                 <tr>
-                    <th>Subtotal:</th>
-                    <td><%= order.price %></td>
+                    <td class="Summary spacing bold">Summary</td>
                 </tr>
                 <tr>
-                    <th>Total:</th>
-                    <td><%= order.price %></td>
+                    <td class="left spacing">Subtotal:</td>
+                    <td class="right spacing"><%= order.price %></td>
+                </tr>
+                <tr>
+                    <th class="left">Total:</th>
+                    <td class="right"><%= order.price %></td>
                 </tr>
             </table>
         </div>

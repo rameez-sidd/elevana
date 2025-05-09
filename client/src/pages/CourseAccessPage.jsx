@@ -19,7 +19,7 @@ const CourseAccessPage = () => {
 
   useEffect(() => {
     if(user){
-      const isPurchased = user?.courses.find((item) => item._id === id)
+      const isPurchased = (user?.courses.find((item) => item._id === id) || courseData?.course?.price === 0)
       if(!isPurchased){
         navigate('/')
       } 

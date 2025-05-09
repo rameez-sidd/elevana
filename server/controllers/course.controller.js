@@ -123,7 +123,9 @@ export const getSingleCourse = CatchAsyncError(async (req, res, next) => {
                 course
             })
         } else {
-            const course = await courseModel.findById(courseId).lean(); // .lean() returns a plain JS object
+            const course = await courseModel.findById(courseId)
+                .populate('createdBy', 'name email') // Populate user details
+                .lean(); // .lean() returns a plain JS object
 
             // Remove unwanted fields from courseData
             if (course?.courseData) {
@@ -137,7 +139,6 @@ export const getSingleCourse = CatchAsyncError(async (req, res, next) => {
                 course,
             })
         }
-
 
     } catch (error) {
         return next(new ErrorHandler(error.message, 500))
@@ -186,7 +187,7 @@ export const getEnrolledCourses = CatchAsyncError(async (req, res, next) => {
         } else {
             // Get course IDs from user's courses array
             const userCourseIds = req.user.courses.map(course => course._id);
-            
+
             const courses = await courseModel.find({
                 _id: { $in: userCourseIds }
             }).select("-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links").sort({ createdAt: -1 });
@@ -207,17 +208,31 @@ export const getEnrolledCourses = CatchAsyncError(async (req, res, next) => {
 // get course content -- only for valid user
 export const getCourseByUser = CatchAsyncError(async (req, res, next) => {
     try {
-        const userCourseList = req.user?.courses
         const courseId = req.params.id
+        const course = await courseModel.findById(courseId)
 
-        const courseExist = userCourseList?.find((course) => course._id.toString() === courseId)
+        if (req.user?.role === 'admin') {
+            if (course && course?.createdBy.toString() !== req.user?._id) {
+                return next(new ErrorHandler("You are not eligible to access this course", 400))
+            }
+        }
 
-        if (!courseExist) {
-            return next(new ErrorHandler("You are not eligible to access this course", 400))
+        if (req.user?.role !== 'admin') {
+            if (course?.price > 0) {
+                const userCourseList = req.user?.courses
+
+                const courseExist = userCourseList?.find((course) => course._id.toString() === courseId)
+
+                if (!courseExist) {
+                    return next(new ErrorHandler("You are not eligible to access this course", 400))
+
+                }
+            }
+
 
         }
 
-        const course = await courseModel.findById(courseId)
+
 
         const content = course?.courseData
 

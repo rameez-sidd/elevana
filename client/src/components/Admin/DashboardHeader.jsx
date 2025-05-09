@@ -69,30 +69,33 @@ const DashboardHeader = ({ title }) => {
                         {
                             notifications && notifications.length > 0 && (
                                 <div className='absolute top-[-4px] right-0 bg-red-500 outline-3 outline-white text-white w-4.5 h-4.5 flex justify-center items-center text-[10px] font-light rounded-full'>{notifications && notifications.length}</div>
-                            )     
+                            )
                         }
 
                     </div>
                 </PopoverTrigger>
-                <PopoverContent className='p-0 rounded-xl border-none max-h-[60vh] overflow-y-scroll custom-scrollbar'>
+                <PopoverContent className='p-0 rounded-xl border-none min-w-[370px] max-h-[60vh] overflow-y-scroll custom-scrollbar'>
                     <div className='flex flex-col rounded-xl overflow-hidden'>
                         <div className='bg-green text-center text-white py-1'>Notifications</div>
-                        <div className='flex flex-col'>
+                        <div className='flex flex-col  px-1'>
                             {
                                 notifications && notifications.map((item, index) => (
-                                    <div className='p-2 flex flex-col gap-1 border-b border-t border-gray-200'>
-                                        <div className='flex items-center justify-between'>
-                                            <h4 className='text-sm font-[600]'>{item?.title}</h4>
+                                    <div className='p-2 flex flex-col gap-0 border-b border-t border-gray-200' key={index}>
+                                        <div className='flex items-center gap-12 justify-between'>
+                                            <div className='flex items-center gap-2'>
+                                                <h4 className='text-xs font-[500]'>{item?.title}</h4>
+                                                <div className='text-[10px] text-gray-400'>{format(item?.createdAt)}</div>
+
+                                            </div>
                                             <IoCheckmarkDoneSharp title='Mark as read' size={20} className='bg-white rounded-full p-0.5 cursor-pointer hover:bg-gray-200' onClick={() => handleNotificationStatusChange(item?._id)} />
                                         </div>
-                                        <div className='text-xs font-light'>{item?.message}</div>
-                                        <div className='text-[10px] font-[600]'>{format(item?.createdAt)}</div>
+                                        <div className='text-[11px] font-light w-[80%]'>{item?.message}</div>
                                     </div>
                                 ))
                             }
                             {
                                 notifications && notifications.length === 0 && (
-                                    <div className='text-sm p-5 flex items-center justify-center border-b border-t border-gray-200'>
+                                    <div className='text-xs p-5 text-gray-600 flex items-center justify-center border-b border-t border-gray-200'>
                                         No new notifications
                                     </div>
                                 )

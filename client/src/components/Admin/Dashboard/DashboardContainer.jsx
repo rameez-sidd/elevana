@@ -104,26 +104,40 @@ const DashboardContainer = () => {
                         <div className='flex justify-between bg-zinc-200 rounded-sm p-4'>
                             <div className='flex flex-col gap-0'>
                                 <AiOutlineProduct size={28} className='text-sky-700' />
-                                <p className='text-2xl font-[600] mt-4'>{ordersComparePercentage?.currentMonth}</p>
+                                <p className='text-2xl font-[600] mt-4'>{ordersComparePercentage ? ordersComparePercentage?.currentMonth : "0"}</p>
                                 <p>Orders Placed</p>
                             </div>
                             <div className='flex justify-center items-center flex-col gap-2'>
                                 <Box className="flex items-center flex-col gap-2">
-                                    <CircularProgress variant="determinate" value={ordersComparePercentage?.percentChange > 0 ? 100 : 0} size={45} color="primary" thickness={8} />
-                                    <p>{ordersComparePercentage?.percentChange > 0 ? "+" + ordersComparePercentage?.percentChange.toFixed(2) : "-" + ordersComparePercentage?.percentChange.toFixed(2)} %</p>
+                                    <CircularProgress variant="determinate" value={ordersComparePercentage ? ordersComparePercentage?.percentChange > 0 ? 100 : 0 : 10} size={45} color="primary" thickness={8} />
+                                        {
+                                            ordersComparePercentage ? (
+                                                <p>{ordersComparePercentage?.percentChange > 0 ? "+" + ordersComparePercentage?.percentChange.toFixed(2) : "-" + ordersComparePercentage?.percentChange.toFixed(2)} %</p>
+
+                                            ) : (
+                                                <p>+0.00 %</p>
+                                            )
+                                        }
                                 </Box>
                             </div>
                         </div>
                         <div className='flex justify-between bg-zinc-200 rounded-sm p-4'>
                             <div className='flex flex-col gap-0'>
                                 <PiUsersThree size={28} className='text-sky-700' />
-                                <p className='text-2xl font-[600] mt-4'>{userComparePercentage?.currentMonth}</p>
+                                <p className='text-2xl font-[600] mt-4'>{userComparePercentage ? userComparePercentage?.currentMonth : "0"}</p>
                                 <p>Users Enrolled</p>
                             </div>
                             <div className='flex justify-center items-center flex-col gap-2'>
                                 <Box className="flex items-center flex-col gap-2">
-                                    <CircularProgress variant="determinate" value={userComparePercentage?.percentChange > 0 ? 100 : 0} size={45} color="primary" thickness={8} />
-                                    <p>{userComparePercentage?.percentChange > 0 ? "+" + userComparePercentage?.percentChange.toFixed(2)  : "-" + userComparePercentage?.percentChange.toFixed(2)} %</p>
+                                    <CircularProgress variant="determinate" value={userComparePercentage ? userComparePercentage?.percentChange > 0 ? 100 : 0 : 10} size={45} color="primary" thickness={8} />
+                                        {
+                                            userComparePercentage ? (
+                                                <p>{userComparePercentage?.percentChange > 0 ? "+" + userComparePercentage?.percentChange.toFixed(2)  : "-" + userComparePercentage?.percentChange.toFixed(2)} %</p>
+
+                                            ) : (
+                                                <p>+0.00 %</p>
+                                            )
+                                        }
                                 </Box>
                             </div>
                         </div>
@@ -133,10 +147,10 @@ const DashboardContainer = () => {
 
                 </div>
 
-                <div className='grid grid-cols-5'>
-                    <div className='col-span-2 flex flex-col gap-2 pr-8 self-center'>
+                <div className='grid grid-cols-5 '>
+                    <div className='col-span-2 flex flex-col gap-2 pr-8 self-center '>
                         <h5 className='font-[600]'>Recent Transactions</h5>
-                        <Invoices />
+                        <Invoices /> 
 
                     </div>
 

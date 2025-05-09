@@ -27,7 +27,7 @@ const CoursePreview = () => {
   const handleCreate = async () => {
     try {
       const res = await createCourse(courseData).unwrap();
-      toast.success("Course created successfully!");
+      toast.success("Course published successfully!");
       dispatch(resetCourseCreation())
       navigate('/admin/admin-dashboard/all-courses');
     } catch (error) {
@@ -134,7 +134,7 @@ const CoursePreview = () => {
             isEditing ? (
               <button disabled={isUpdating} className={`bg-dark-green text-white text-sm w-30 hover:bg-dark-grass-green py-1.5 rounded-sm ${isUpdating ? "cursor-not-allowed bg-gray-300 hover:bg-gray-300" : "cursor-pointer hover:bg-dark-grass-green"}`} onClick={handleUpdate}>{isUpdating ? "Updating..." : "Update"}</button>
             ) : (
-              <button disabled={isLoading} className={`bg-dark-green text-white text-sm w-30 hover:bg-dark-grass-green py-1.5 rounded-sm ${isLoading ? "cursor-not-allowed bg-gray-300 hover:bg-gray-300" : "cursor-pointer hover:bg-dark-grass-green"}`} onClick={handleCreate}>{isLoading ? "Creating..." : "Create"}</button>
+              <button disabled={isLoading} className={`bg-dark-green text-white text-sm w-30 hover:bg-dark-grass-green py-1.5 rounded-sm ${isLoading ? "cursor-not-allowed bg-gray-300 hover:bg-gray-300" : "cursor-pointer hover:bg-dark-grass-green"}`} onClick={handleCreate}>{isLoading ? "Publishing..." : "Publish"}</button>
             )
           }
 

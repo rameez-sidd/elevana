@@ -10,9 +10,8 @@ const CategoryContainer = () => {
 
     const { data, isLoading } = useGetLayoutDataQuery("Categories", { refetchOnMountOrArgChange: true, refetchOnFocus: true, refetchOnReconnect: true })
 
-    const [editLayout] = useEditLayoutMutation()
+    const [editLayout, {isLoading: isAddingCategory}] = useEditLayoutMutation()
     
-
     useEffect(() => {
         if (data) {
             setCategories(data.layout.categories)
@@ -20,19 +19,29 @@ const CategoryContainer = () => {
     }, [data])
 
     const handleAddCategory = (id, value) => {
-        setCategories((prevCategory) => prevCategory.map((i) => (i._id === id ? { ...i, title: value } : i)))
+        setCategories((prevCategory) => 
+            prevCategory.map((i) => (i._id === id ? { ...i, title: value } : i))
+        )
     }
 
     const newCategoriesHandler = () => {
-        if (categories[categories.length - 1].title === '') {
+        if (categories.length > 0 && categories[categories.length - 1].title === '') {
             toast.error("Please enter category title")
         } else {
-            setCategories((prevCategory) => [...prevCategory, { title: "" }])
+            // Add a new category with a temporary unique ID
+            const newCategory = {
+                _id: `temp_${Date.now()}`,
+                title: ""
+            }
+            setCategories((prevCategory) => [...prevCategory, newCategory])
         }
     }
 
     const areCategoriesUnchanged = (originalCategories, newCategories) => {
-        return JSON.stringify(originalCategories) === JSON.stringify(newCategories)
+        // Filter out temporary IDs for comparison
+        const cleanOriginal = originalCategories.map(cat => ({ title: cat.title }))
+        const cleanNew = newCategories.map(cat => ({ title: cat.title }))
+        return JSON.stringify(cleanOriginal) === JSON.stringify(cleanNew)
     }
 
     const isAnyCategoryTitleEmpty = (categories) => {
@@ -42,7 +51,13 @@ const CategoryContainer = () => {
     const editCategoriesHandler = async () => {
         if (!areCategoriesUnchanged(data.layout.categories, categories) && !isAnyCategoryTitleEmpty(categories)) {
             try {
-                const res = await editLayout({ type: "Categories", categories })
+                // Remove temporary IDs before sending to server
+                const categoriesToSave = categories.map(cat => ({
+                    title: cat.title,
+                    ...(cat._id && !cat._id.startsWith('temp_') ? { _id: cat._id } : {})
+                }))
+                
+                const res = await editLayout({ type: "Categories", categories: categoriesToSave })
                 toast.success("Categories updated successfully!");
 
             } catch (error) {
@@ -59,16 +74,28 @@ const CategoryContainer = () => {
                     <Loading size='full'/>
                 ) : (
                     <div className=' h-full flex-1 flex items-center justify-center relative'>
-                        <div className='flex flex-col gap-8'>
+                        <div className='flex flex-col gap-8 '>
 
-                            <div className='flex flex-col gap-3'>
+                            <div className='flex flex-col gap-3 max-h-[40vh] overflow-y-scroll custom-scrollbar'>
                                 {
                                     categories && categories.map((item, index) => (
-                                        <div key={index} className='flex items-center gap-12 bg-white p-2 px-4 shadow-sm rounded-sm'>
-                                            <input type="text" value={item.title} onChange={(e) => handleAddCategory(item._id, e.target.value)} className='outline-none border-none placeholder:text-sm placeholder:font-[300]' placeholder='Enter cateogry title...' />
-                                            <MdDelete size={25} onClick={() => {
-                                                setCategories((prevCategory) => prevCategory.filter((i) => i._id !== item._id))
-                                            }} className='hover:bg-gray-200 cursor-pointer p-0.5 rounded-sm' />
+                                        <div key={item._id || index} className='flex items-center gap-12 bg-white border border-gray-300 p-2 px-4 rounded-sm'>
+                                            <input 
+                                                type="text" 
+                                                value={item.title} 
+                                                onChange={(e) => handleAddCategory(item._id, e.target.value)} 
+                                                className='outline-none border-none placeholder:text-sm placeholder:font-[300]' 
+                                                placeholder='Enter category title...' 
+                                                />
+                                            <MdDelete 
+                                                size={25} 
+                                                onClick={() => {
+                                                    setCategories((prevCategory) => 
+                                                        prevCategory.filter((i) => i._id !== item._id)
+                                                    )
+                                                }} 
+                                                className='hover:bg-gray-200 cursor-pointer p-0.5 rounded-sm' 
+                                                />
                                         </div>
                                     ))
                                 }
@@ -78,11 +105,10 @@ const CategoryContainer = () => {
                             </div>
                         </div>
 
-                        <div className={`absolute bottom-4 right-4 bg-dark-green text-white text-sm w-30 hover:bg-dark-grass-green py-1.5 rounded-sm text-center ${areCategoriesUnchanged(data.layout?.categories, categories) || isAnyCategoryTitleEmpty(categories) ? "!cursor-not-allowed bg-gray-400 hover:bg-gray-400" : "!cursor-pointer"}`} onClick={areCategoriesUnchanged(data.layout?.categories, categories) || isAnyCategoryTitleEmpty(categories) ? () => null : editCategoriesHandler }>Save</div>
+                        <div className={`absolute bottom-4 right-4 bg-dark-green text-white text-sm w-30 hover:bg-dark-grass-green py-1.5 rounded-sm text-center ${areCategoriesUnchanged(data.layout?.categories, categories) || isAnyCategoryTitleEmpty(categories) || isAddingCategory ? "!cursor-not-allowed bg-gray-400 hover:bg-gray-400" : "!cursor-pointer"}`} onClick={areCategoriesUnchanged(data.layout?.categories, categories) || isAnyCategoryTitleEmpty(categories) ? () => null : editCategoriesHandler }>{isAddingCategory ? "Saving..." : "Save"}</div>
                     </div>
                 )
             }
-
         </div>
     )
 }

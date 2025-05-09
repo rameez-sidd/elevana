@@ -27,7 +27,7 @@ const LatestCourses = () => {
           <Carousel className='w-full'>
             <CarouselContent className='-ml-1 '>
               {
-                data?.courses && data?.courses.slice(0, 4)?.map((course) => (
+                data?.courses && data?.courses.slice(0, 6)?.map((course) => (
                   <CarouselItem key={course._id} className="pl-1 py-10 md:basis-1/2 lg:basis-1/3 flex items-center justify-center">
                     <div className='p-1'>
                     <CourseCard course={course} />

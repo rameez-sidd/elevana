@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import Header from '../components/shared/Header'
 import ProfilePage from '../components/Profile/ProfilePage'
-import profileBg from '../assets/images/profile-bg.jpg'
 
 const Profile = () => {
     const [isProfileOpen, setIsProfileOpen] = useState(true)

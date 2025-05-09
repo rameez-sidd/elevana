@@ -73,6 +73,7 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
         setOpenAllReplies(null)
     }
     const toggleOpenAllReplies = (index) => {
+        
         setOpenAllReplies((prev) => (prev === index ? null : index))
         setOpenReply(null)
     }
@@ -226,7 +227,7 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
                                     }
                                     {
                                         activeDetail === 'resources' && user?.role !== 'admin' && (
-                                            <div>
+                                            <div className='flex flex-col gap-2'>
                                                 {
                                                     videoData?.content[activeVideo]?.links.map((link) => (
                                                         <p key={link?._id}>{link?.title}: <a href={link?.title} className='ml-2 text-blue-700 font-[300] hover:underline'>{link?.url}</a></p>
@@ -392,7 +393,7 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
                                     <CollapsibleContent className=" flex flex-col text-xs cursor-pointer">
                                         {
                                             content?.videos.map((video, index) => (
-                                                <div className={`flex items-center px-6 py-3 rounded-sm gap-3 ${activeVideo === video?.videoIndex && "bg-dark-green text-white"}`} onClick={() => handleSwitchVideo(video?.videoIndex)} key={index}>
+                                                <div className={`flex items-center px-6 py-3 rounded-sm gap-3 ${activeVideo === video?.videoIndex && "bg-muted-green-lighter text-white"}`} onClick={() => handleSwitchVideo(video?.videoIndex)} key={index}>
                                                     <LucideTvMinimalPlay size={20} />
                                                     <div>
                                                         <p>{video?.title}</p>

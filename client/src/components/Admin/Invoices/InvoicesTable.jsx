@@ -36,7 +36,7 @@ const InvoicesTable = () => {
     const rows = []
 
 
-    data && data.orders.forEach((item) => {
+    data && data?.orders.forEach((item) => {
         rows.push({
             id: item._id,
             name: item.user.name,

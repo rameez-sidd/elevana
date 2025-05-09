@@ -71,23 +71,34 @@ const CoursesContainer = () => {
                 ) : (
                     <div className='mx-auto max-w-7xl flex flex-col gap-6'>
                         {/* <h3 className='text-center text-3xl font-[800] py-4'>Start Your <span className='text-dark-grass-green'>Elevation</span> Journey</h3> */}
-                        <div className='flex items-center justify-between'>
+                        <div className='flex items-center justify-between gap-12'>
 
-                            <div className='flex items-center gap-8'>
-                                <p className={`${category === 'All' ? 'bg-grass-green text-white' : 'bg-white'} px-3.5 py-0.5  rounded-full text-sm text-center border border-gray-200 cursor-pointer`} onClick={() => setCategory('All')}>All</p>
+                            <div className='flex items-center gap-8  overflow-x-scroll custom-scrollbar'>
+                                <p className={`${category === 'All' ? 'bg-grass-green text-white' : 'bg-white'} px-3.5 py-0.5  rounded-full text-sm text-center border border-gray-200 cursor-pointer`} onClick={() => { 
+                                    handleReset() 
+                                    setCategory('All')
+                                    }}>All</p>
                                 {
                                     categories && categories.map((item, index) => (
-                                        <p key={index} className={`${item.title === category ? 'bg-grass-green text-white' : 'bg-white'} px-3.5 py-0.5 pb-1 border border-gray-200 rounded-full text-sm text-center cursor-pointer`} onClick={() => setCategory(item.title)}>{item?.title}</p>
+                                        <p key={index} className={`${item.title === category ? 'bg-grass-green text-white' : 'bg-white'} px-3.5 py-0.5 pb-1 border border-gray-200 rounded-full text-sm text-center cursor-pointer whitespace-nowrap`} onClick={() => {
+                                            handleReset()
+                                            setCategory(item.title)
+                                        }}>{item?.title}</p>
                                     ))
                                 }
                             </div>
                             <button className='text-xs text-blue-600 hover:underline cursor-pointer' onClick={handleReset}>Reset</button>
                         </div>
-                        <div className=' flex-1 grid grid-cols-4 gap-y-8 mt-4 place-items-center'>
+                        <div className=' flex-1 grid grid-cols-4 gap-y-12 mt-4 place-items-center'>
                             {
                                 courses && courses?.map((course) => (
                                     <CourseCard key={course._id} course={course} isEnrolled={false} />
                                 ))
+                            }
+                            {
+                                courses && courses.length === 0  && (
+                                    <p className=' w-full col-span-4 text-center py-24 text-gray-600 text-sm'>Sorry, No courses found :(</p>
+                                )
                             }
                         </div>
                     </div>

@@ -42,7 +42,7 @@ const ChangePassword = () => {
           <form className='flex flex-col items-center w-full' onSubmit={handlePasswordChange}>
             {
               user?.role !== 'admin' && (
-                <div className='absolute top-[-80px] rounded-full bg-light-green  p-2 flex items-center justify-center shadow-lg'>
+                <div className='absolute top-[-80px] rounded-full bg-light-green border border-gray-300 p-2 flex items-center justify-center shadow-lg'>
                   <img src={changePasswordIcon} alt="" width={110} height={110} className='rounded-full bg-white p-2' />
                 </div>
               )

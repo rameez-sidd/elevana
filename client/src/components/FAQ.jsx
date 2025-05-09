@@ -17,7 +17,7 @@ const FAQ = () => {
 
 
     return (
-        <div className='bg-background-green min-h-screen flex items-center py-23'>
+        <div className='bg-background-green min-h-screen flex items-center py-23' id='faq'>
             <div className='mx-auto max-w-7xl flex flex-col gap-14 w-full'>
                 <div className='flex flex-col gap-2'>
                     <h3 className='text-center text-4xl font-[700]'>Frequently Asked <span className='text-grass-green'>Questions</span></h3>

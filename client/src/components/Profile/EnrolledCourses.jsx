@@ -18,19 +18,17 @@ const EnrolledCourses = () => {
     <div className='w-full h-full px-26 py-12 flex justify-center overflow-y-hidden'>
       {
         user?.courses?.length > 0 ? (
-          <div className='grid grid-cols-4 gap-6 overflow-y-scroll max-h-[80vh] custom-scrollbar'>
+          <div className='grid grid-cols-4 gap-6 place-content-start overflow-y-scroll max-h-[75vh] custom-scrollbar'>
             {
               data?.courses && data?.courses?.map((course) => (
                 <>
                 <CourseCard key={course._id} course={course} isEnrolled={true} />
-                {/* <CourseCard key={course._id} course={course} isEnrolled={true} /> */}
-                {/* <CourseCard key={course._id} course={course} /> */}
                 </>
               ))
             }
           </div>
         ) : (
-          <h2 className=''>No Enrolled Courses</h2>
+        <h2 className='flex items-center justify-center text-gray-600 text-sm'>You’re not enrolled in any course yet!</h2>
         )
       }
     </div>
