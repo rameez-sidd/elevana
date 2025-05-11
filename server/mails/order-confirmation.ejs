@@ -51,11 +51,11 @@
     
     .table-2, .table-3, .table-1{
         margin: 0px auto;
-        width: 90%;
+        width: 100%;
         margin-top: 18px;
     }
     .table-2{
-        margin-top: 40px;
+        margin-top: 23px;
     }
     .border{
         border-bottom: 1px solid black;
@@ -63,6 +63,9 @@
     }
     .spacing{
         padding: 10px 0;
+    }
+    .big{
+        font-size: 20px;
     }
 
     .email-footer {
@@ -83,7 +86,7 @@
         <div class="email-body">
             <table class="table-1">
                 <tr>
-                    <td class="center"><span>Order number:</span> <%= order._id %></td>
+                    <td class="center big"><span>Order number:</span> <%= order._id %></td>
                 </tr>
             </table>
 

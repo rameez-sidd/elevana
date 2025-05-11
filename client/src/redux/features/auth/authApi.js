@@ -7,7 +7,7 @@ export const authApi = apiSlice.injectEndpoints({
         // endpoints here
         register: builder.mutation({
             query: (data) => ({
-                url: '/registration',
+                url: 'registration',
                 method: 'POST',
                 body: data,
                 credentials: 'include',
@@ -25,14 +25,14 @@ export const authApi = apiSlice.injectEndpoints({
         }),
         activate: builder.mutation({
             query: ({activation_token, activation_code}) => ({
-                url: "/activate-user",
+                url: "activate-user",
                 method: "POST",
                 body: {activation_token, activation_code},  
             })
         }),
         login: builder.mutation({
             query: ({email, password}) => ({
-                url: "/login",
+                url: "login",
                 method: "POST",
                 body: {email, password},
                 credentials: 'include',
@@ -43,6 +43,27 @@ export const authApi = apiSlice.injectEndpoints({
                     dispatch(userLoggedIn({
                         token: response.data.accessToken,
                         user: response.data.user,
+                        socialAuth: false,
+                    }));
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+        }),
+        socialAuth: builder.mutation({
+            query: ({email, name, avatar}) => ({
+                url: "social-auth",
+                method: "POST",
+                body: {email, name, avatar},
+                credentials: 'include',
+            }),
+            async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+                try {
+                    const response = await queryFulfilled;
+                    dispatch(userLoggedIn({
+                        token: response.data.accessToken,
+                        user: response.data.user,
+                        socialAuth: true,
                     }));
                 } catch (error) {
                     console.log(error);
@@ -73,4 +94,5 @@ export const {
     useActivateMutation, 
     useLoginMutation,
     useLogOutMutation,
+    useSocialAuthMutation
 } = authApi;

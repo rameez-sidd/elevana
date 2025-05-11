@@ -11,6 +11,7 @@ import notificationRouter from "./routes/notification.routes.js"
 import analyticsRouter from "./routes/analytics.routes.js"
 import layoutRouter from "./routes/layout.routes.js"
 import fileUpload from "express-fileupload"
+import coursePurchaseRouter from "./routes/course-purchase.route.js"
 dotenv.config();
 
 
@@ -43,6 +44,7 @@ app.use('/api/v1', orderRouter)
 app.use('/api/v1', notificationRouter)
 app.use('/api/v1', analyticsRouter)
 app.use('/api/v1', layoutRouter)
+app.use('/api/v1', coursePurchaseRouter)
 
 app.get('/test', (req, res, next) => {
     res.status(200).json({

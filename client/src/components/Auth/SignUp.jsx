@@ -4,9 +4,12 @@ import { AiOutlineEye, AiOutlineEyeInvisible, AiOutlineGithub } from 'react-icon
 import { FcGoogle } from 'react-icons/fc'
 import { useFormik } from 'formik'
 import * as Yup from "yup"
-import { useRegisterMutation } from '../../redux/features/auth/authApi'
+import { useRegisterMutation, useSocialAuthMutation } from '../../redux/features/auth/authApi'
 import { toast } from 'react-toastify'
 import { useSelector } from 'react-redux'
+import { useGoogleLogin } from '@react-oauth/google'
+import { jwtDecode } from 'jwt-decode'
+import axios from 'axios'
 
 
 const schema = Yup.object().shape({
@@ -19,8 +22,8 @@ const schema = Yup.object().shape({
 const SignUp = ({ setActiveModal }) => {
     const [showPassword, setShowPassword] = useState(false)
     const [register, { isLoading, isSuccess, error }] = useRegisterMutation()
-   
-    
+
+
 
     const formik = useFormik({
         initialValues: { name: "", email: "", password: "" },
@@ -45,6 +48,29 @@ const SignUp = ({ setActiveModal }) => {
     })
 
     const { errors, touched, values, handleChange, handleSubmit } = formik
+
+    const [socialAuth, { isLoading: isSocialLoading }] = useSocialAuthMutation()
+
+    const handleGoogleLogin = useGoogleLogin({
+        onSuccess: async (response) => {
+            try {
+                const googleData = await axios.get('https://www.googleapis.com/oauth2/v3/userinfo', { headers: { Authorization: `Bearer ${response.access_token}` } })
+                try {
+                    const res = await socialAuth({ email: googleData?.data?.email, name: googleData?.data?.name, avatar: googleData?.data?.profile }).unwrap()
+                    toast.success(`Welcome ${res.user.name}`)
+                    setActiveModal(null)
+                } catch (error) {
+                    const message = error?.data?.message || "Login failed. Please try again.";
+                    toast.error(message)
+                }
+
+            } catch (error) {
+                toast.error(error.message || "Something went wrong");
+
+            }
+        }
+
+    })
 
     return (
         <Modal open onClose={() => setActiveModal(null)} aria-labelledby="modal-modal-title"
@@ -87,11 +113,14 @@ const SignUp = ({ setActiveModal }) => {
                             </div>
 
                             {/* Social Authentication */}
-                            <div className='mt-3 flex flex-col gap-2.5 items-center'>
-                                <p className='text-sm'>or join with</p>
-                                <div className='flex items-center gap-4'>
-                                    <FcGoogle size={28} className='cursor-pointer outline-4 outline-background-green hover:outline-light-green rounded-full' />
-                                    <AiOutlineGithub size={28} className='cursor-pointer outline-4 outline-background-green hover:outline-light-green rounded-full' />
+                            <div className='mt-0 flex flex-col gap-2.5 items-center '>
+                                <p className='text-sm'>or</p>
+                                <div className='flex items-center justify-center gap-4 w-full' onClick={() => handleGoogleLogin()}>
+                                    <div className=' bg-white rounded-full border cursor-pointer hover:bg-gray-200 border-gray-300 flex items-center justify-center gap-2 py-1 pl-1 pr-2'>
+                                        <FcGoogle size={25} className='cursor-pointer rounded-full'  />
+                                        <p className='text-xs pr-1'>Sign In with Google</p>
+                                    </div>
+                                    
                                 </div>
                                 <p className='text-sm font-[300] mt-3'>Already have an account? <span className={`font-[500] text-dark-grass-green hover:underline ${isLoading ? "cursor-not-allowed" : "cursor-pointer"}`} onClick={() => setActiveModal('login')}>Login</span></p>
                             </div>

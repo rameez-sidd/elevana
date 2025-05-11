@@ -3,7 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     user: null,
     token: "",
-    modalOpen: ""
+    modalOpen: "",
+    socialAuth: false,
 }
 
 const authSlice = createSlice({
@@ -16,17 +17,19 @@ const authSlice = createSlice({
         userLoggedIn: (state, action) => {
             state.user = action.payload.user
             state.token = action.payload.token
+            state.socialAuth = action.payload.socialAuth
         },
         userLoggedOut: (state) => {
             state.user = null
             state.token = ""
+            state.socialAuth = false
         },
         setUser: (state, action) => {
             state.user = action.payload.user;  
         },
         setModalOpen: (state, action) => {
             state.modalOpen = action.payload
-        }
+        },
     }
 })
 
