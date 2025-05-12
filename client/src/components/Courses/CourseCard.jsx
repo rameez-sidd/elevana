@@ -33,8 +33,8 @@ const CourseCard = ({ course, isEnrolled }) => {
                                             <div></div>
                                         ) : (
                                             <div className='flex items-center gap-2'>
-                                                <p className='text-2xl font-[550] text-dark-green'>{course?.price === 0 ? "Free" : `$${course?.price}`}</p>
-                                                <p className='text-gray-500 text-sm font-[300] line-through'>${course?.estimatedPrice}</p>
+                                                <p className='text-2xl font-[550] text-dark-green'>{course?.price === 0 ? "Free" : `₹${course?.price}`}</p>
+                                                <p className='text-gray-500 text-sm font-[300] line-through'>₹{course?.estimatedPrice}</p>
                                             </div>
                                         )
                                     }

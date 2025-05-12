@@ -58,6 +58,9 @@ const courseSchema = new mongoose.Schema({
     estimatedPrice:{
         type: Number
     },
+    priceUSD:{
+        type: Number,
+    }, 
     thumbnail:{
         public_id: {
             type: String,
@@ -100,5 +103,13 @@ const courseSchema = new mongoose.Schema({
 },
 { timestamps: true }
 )
+
+courseSchema.pre('save', function (next) {
+    if (this.isModified('price') || this.isNew) {
+        const conversionRate = 1 / 87.2121; // 1 INR = 0.01147 USD (adjust rate as needed)
+        this.priceUSD = parseFloat((this.price * conversionRate).toFixed(2));
+    }
+    next();
+});
 
 export const courseModel = mongoose.model("Course", courseSchema)

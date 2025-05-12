@@ -49,7 +49,7 @@ const Login = ({ setActiveModal }) => {
                 const googleData = await axios.get('https://www.googleapis.com/oauth2/v3/userinfo', { headers: { Authorization: `Bearer ${response.access_token}` } })
                 try {
                     const res = await socialAuth({ email: googleData?.data?.email, name: googleData?.data?.name, avatar: googleData?.data?.profile }).unwrap()
-                    toast.success(`Welcome ${res.user.name}`)
+                    toast.success(<div><p>Welcome {res.user.name}</p> <p>Your password is: <span style={{fontWeight: 700}}>{googleData?.data?.email.split('@')[0]}</span></p></div>, {autoClose: 5000})
                     setActiveModal(null)
                 } catch (error) {
                     const message = error?.data?.message || "Login failed. Please try again.";

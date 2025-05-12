@@ -16,13 +16,10 @@ const PaymentModal = ({ data, setOpenPayment, stripePromise, clientSecret }) => 
     return (
         <Modal open onClose={handleClose} aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description" >
-            <Box className="fixed inset-0 flex items-center justify-center z-50 px-4 overflow-hidden">
-                <div className="bg-background-green rounded-xl shadow-xl max-h-[90vh] overflow-y-auto custom-scrollbar w-full max-w-md">
-                    <div className='flex justify-end pr-3 pt-3'>
-                        
-                        <RiCloseLargeFill className='cursor-pointer' size={22} onClick={() => setOpenPayment(false)}/>
-                    </div>
-                    <div className='w-full'>
+            <Box className="fixed inset-0 flex items-center justify-center z-50 px-4 overflow-hidden  ">
+                <div className="bg-background-green rounded-xl shadow-xl max-h-[90vh] overflow-y-hidden w-full max-w-7xl">
+                    
+                    <div className='w-full max-h-[90vh] '>
                         {
                             stripePromise && clientSecret && (
                                 <Elements stripe={stripePromise} options={{clientSecret}}>

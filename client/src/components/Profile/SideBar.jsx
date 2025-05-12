@@ -12,7 +12,7 @@ import { formatName } from '../../utils/formatName';
 
 const SideBar = () => {
     const [openLogout, setOpenLogout] = useState(false)
-    const { user, socialAuth } = useSelector((state) => state.auth)
+    const { user } = useSelector((state) => state.auth)
     const navigate = useNavigate()
 
 
@@ -43,19 +43,18 @@ const SideBar = () => {
 
                 <div className='flex flex-col gap-3 mt-3'>
 
-                    {
-                        !socialAuth && (
-                            <NavLink to='/profile/change-password' className={({ isActive }) =>
-                                `${isActive ? "bg-dark-green text-white hover:bg-dark-green" : "hover:bg-light-green"} flex items-center gap-4 rounded-4xl mx-6 py-2 px-6 cursor-pointer transition-all duration-300`
-                            }>
-                                <RiLockPasswordFill />
-                                <p className='font-[300] text-sm'>Change Password</p>
-        
-                            </NavLink>
-                        )
-                    }
 
+                    <NavLink to='/profile/change-password' className={({ isActive }) =>
+                        `${isActive ? "bg-dark-green text-white hover:bg-dark-green" : "hover:bg-light-green"} flex items-center gap-4 rounded-4xl mx-6 py-2 px-6 cursor-pointer transition-all duration-300`
+                    }>
+                        <RiLockPasswordFill />
+                        <p className='font-[300] text-sm'>Change Password</p>
+
+                    </NavLink>
                     
+
+
+
 
                     <NavLink to="/profile/enrolled-courses" className={({ isActive }) =>
                         `${isActive ? "bg-dark-green text-white hover:bg-dark-green" : "hover:bg-light-green"} flex items-center gap-4 rounded-4xl mx-6 py-2 px-6 cursor-pointer transition-all duration-300`} >

@@ -17,7 +17,7 @@ const LatestCourses = () => {
 
 
   return (
-    <div className='bg-light-green h-screen flex items-center'>
+    <div className='bg-light-green min-h-screen flex items-center'>
       <div className='mx-auto max-w-7xl flex flex-col gap-4'>
         <div className='flex flex-col gap-2'>
           <h3 className='text-center text-4xl font-[700]'>Level Up with <span className='text-grass-green'>New Courses</span></h3>

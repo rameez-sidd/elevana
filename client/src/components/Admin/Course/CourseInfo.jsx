@@ -114,14 +114,14 @@ const CourseInfo = () => {
                         <div className='flex flex-col gap-0.5 flex-1'>
                             <label htmlFor="price" className='text-sm'>Course Price</label>
                             <div className='flex items-center gap-1.5'>
-                                <p className='text-lg'>$</p>
+                                <p className='text-lg'>₹</p>
                                 <input type="number" disabled={uploading} name="price" id="price" value={courseInfo.price} onChange={handleChange} className='text-sm font-[300] bg-white w-full p-2 px-3 border border-gray-300 rounded-sm outline-none' placeholder='499' />
                             </div>
                         </div>
                         <div className='flex flex-col gap-0.5 flex-1'>
                             <label htmlFor="estimated-price" className='text-sm'>Estimated Price (optional)</label>
                             <div className='flex items-center gap-1.5'>
-                                <p className='text-lg'>$</p>
+                                <p className='text-lg'>₹</p>
                                 <input type="number" disabled={uploading} name="estimatedPrice" id="estimated-price" value={courseInfo.estimatedPrice} onChange={handleChange} className='text-sm font-[300] bg-white w-full p-2 px-3 border border-gray-300 rounded-sm outline-none' placeholder='799' />
                             </div>
                         </div>

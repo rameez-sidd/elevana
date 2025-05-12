@@ -27,7 +27,7 @@ const Invoices = () => {
         rows.push({
             id: item._id,
             name: item.user.name,
-            price: `$${item.course.price}`,
+            price: `₹${item.course.price}`,
             created_at: format(item.createdAt)
         })
     })

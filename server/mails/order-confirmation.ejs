@@ -55,7 +55,7 @@
         margin-top: 18px;
     }
     .table-2{
-        margin-top: 23px;
+        margin-top: 21px;
     }
     .border{
         border-bottom: 1px solid black;
@@ -65,7 +65,7 @@
         padding: 10px 0;
     }
     .big{
-        font-size: 20px;
+        font-size: 16px;
     }
 
     .email-footer {
@@ -86,7 +86,7 @@
         <div class="email-body">
             <table class="table-1">
                 <tr>
-                    <td class="center big"><span>Order number:</span> <%= order._id %></td>
+                    <td class="center big"><span>Order number:</span> #<%= order._id %></td>
                 </tr>
             </table>
 
@@ -100,7 +100,7 @@
                 <tbody>
                     <tr>
                         <td class="left border"><%= order.name %></td>
-                        <td class="right border"><%= order.price %></td>
+                        <td class="right border">$<%= order.price %></td>
                     </tr>
                 </tbody>
             </table>
@@ -111,11 +111,11 @@
                 </tr>
                 <tr>
                     <td class="left spacing">Subtotal:</td>
-                    <td class="right spacing"><%= order.price %></td>
+                    <td class="right spacing">$<%= order.price %></td>
                 </tr>
                 <tr>
                     <th class="left">Total:</th>
-                    <td class="right"><%= order.price %></td>
+                    <td class="right">$<%= order.price %></td>
                 </tr>
             </table>
         </div>

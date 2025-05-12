@@ -63,8 +63,8 @@ const CoursePreview = () => {
           </div>
 
           <div className='flex items-center gap-2.5'>
-            <p className='font-[600] text-4xl text-dark-green'>{courseData?.price === "0" ? "Free" : `$${courseData?.price}`}</p>
-            <p className='line-through text-gray-500 font-[300] text-lg'>${courseData?.estimatedPrice}</p>
+            <p className='font-[600] text-4xl text-dark-green'>{courseData?.price === "0" ? "Free" : `₹${courseData?.price}`}</p>
+            <p className='line-through text-gray-500 font-[300] text-lg'>₹{courseData?.estimatedPrice}</p>
             <p className='ml-3 text-green-700  font-[600]'>{discountPercentage}% off</p>
           </div>
 

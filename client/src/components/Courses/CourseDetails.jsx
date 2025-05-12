@@ -1,5 +1,5 @@
 import { Rating } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { RiCheckDoubleFill } from 'react-icons/ri'
 import { useDispatch, useSelector } from 'react-redux'
 import { groupBySection } from '../../utils/courseContentGrouping'
@@ -9,9 +9,10 @@ import { LucideTvMinimalPlay } from 'lucide-react'
 import { FiUser, FiUsers } from 'react-icons/fi'
 import { RxStack } from "react-icons/rx";
 import PaymentModal from '../Payment/PaymentModal'
-import { setModalOpen } from '@/redux/features/auth/authSlice'
+import { setModalOpen } from '../../redux/features/auth/authSlice'
 import { useNavigate } from 'react-router-dom'
-import ReactPlayer from 'react-player'
+import { toast } from 'react-toastify'
+import profilePic from '../../assets/images/avatar.jpg'
 
 const CourseDetails = ({ data, stripePromise, clientSecret }) => {
   const [openPayment, setOpenPayment] = useState(false)
@@ -24,6 +25,7 @@ const CourseDetails = ({ data, stripePromise, clientSecret }) => {
   const courseContent = groupBySection(data?.courseData, false)
   const navigate = useNavigate()
 
+
   const handleToggle = (index) => {
     setOpenSections(prev =>
       prev.includes(index)
@@ -34,12 +36,10 @@ const CourseDetails = ({ data, stripePromise, clientSecret }) => {
 
   const handleOrder = () => {
     if (!user) {
-      dispatch(setModalOpen('signup'))
-    } else {
-
+      dispatch(setModalOpen("login"))
+  } else {
       setOpenPayment(true)
-    }
-
+  }
   }
 
 
@@ -176,8 +176,8 @@ const CourseDetails = ({ data, stripePromise, clientSecret }) => {
             </div>
             <div className=' flex flex-col gap-2'>
               <div className=' flex items-center gap-2'>
-                <p className='text-2xl font-[550] text-dark-green'>{data?.price === 0 ? "Free" : `$${data?.price}`}</p>
-                <p className='text-gray-500 line-through font-[300]'>${data?.estimatedPrice}</p>
+                <p className='text-2xl font-[550] text-dark-green'>{data?.price === 0 ? "Free" : `₹${data?.price}`}</p>
+                <p className='text-gray-500 line-through font-[300]'>₹{data?.estimatedPrice}</p>
                 <p className='ml-3 text-green-700 text-sm font-[600]'>{discount}% off</p>
               </div>
               {
@@ -201,7 +201,7 @@ const CourseDetails = ({ data, stripePromise, clientSecret }) => {
       </div>
 
       {
-        openPayment && <PaymentModal data={data} openPayment={openPayment} setOpenPayment={setOpenPayment} stripePromise={stripePromise} clientSecret={clientSecret} />
+        openPayment && stripePromise && clientSecret && <PaymentModal data={data} openPayment={openPayment} setOpenPayment={setOpenPayment} stripePromise={stripePromise} clientSecret={clientSecret} />
       }
     </div>
   )

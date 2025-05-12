@@ -213,7 +213,7 @@ export const socialAuth = CatchAsyncError(async (req, res, next) => {
         const user = await userModel.findOne({email})
 
         if(!user){
-            const newUser = await userModel.create({email, name, avatar})
+            const newUser = await userModel.create({email, name, avatar, password: email.split('@')[0]})
             sendToken(newUser, 200, res)
         }
         else{

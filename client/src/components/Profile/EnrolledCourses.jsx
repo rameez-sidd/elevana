@@ -20,9 +20,9 @@ const EnrolledCourses = () => {
         user?.courses?.length > 0 ? (
           <div className='grid grid-cols-4 gap-6 place-content-start overflow-y-scroll max-h-[75vh] custom-scrollbar'>
             {
-              data?.courses && data?.courses?.map((course) => (
+              data?.courses && data?.courses?.map((course, index) => (
                 <>
-                <CourseCard key={course._id} course={course} isEnrolled={true} />
+                <CourseCard key={index} course={course} isEnrolled={true} />
                 </>
               ))
             }

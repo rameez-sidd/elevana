@@ -137,11 +137,23 @@ export const sendStripePublishableKey = CatchAsyncError(async (req, res, next) =
 // new payment 
 export const newPayment = CatchAsyncError(async (req, res, next) => {
     try {
+        const { amount, courseId } = req.body;
+        
+        // Fetch course details
+        const course = await courseModel.findById(courseId);
+        if (!course) {
+            return next(new ErrorHandler("Course not found", 404));
+        }
+
         const myPayment = await stripe.paymentIntents.create({
-            amount: req.body.amount,
+            amount: amount,
             currency: "USD",
             metadata: {
                 company: "Elevana",
+                courseId: course._id.toString(),
+                courseName: course.name,
+                coursePrice: course.price.toString(),
+                courseThumbnail: course.thumbnail?.url || "",
             },
             automatic_payment_methods: {
                 enabled: true,

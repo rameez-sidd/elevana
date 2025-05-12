@@ -43,7 +43,6 @@ export const authApi = apiSlice.injectEndpoints({
                     dispatch(userLoggedIn({
                         token: response.data.accessToken,
                         user: response.data.user,
-                        socialAuth: false,
                     }));
                 } catch (error) {
                     console.log(error);
@@ -63,7 +62,6 @@ export const authApi = apiSlice.injectEndpoints({
                     dispatch(userLoggedIn({
                         token: response.data.accessToken,
                         user: response.data.user,
-                        socialAuth: true,
                     }));
                 } catch (error) {
                     console.log(error);

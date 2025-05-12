@@ -57,7 +57,7 @@ const SignUp = ({ setActiveModal }) => {
                 const googleData = await axios.get('https://www.googleapis.com/oauth2/v3/userinfo', { headers: { Authorization: `Bearer ${response.access_token}` } })
                 try {
                     const res = await socialAuth({ email: googleData?.data?.email, name: googleData?.data?.name, avatar: googleData?.data?.profile }).unwrap()
-                    toast.success(`Welcome ${res.user.name}`)
+                    toast.success(<div><p>Welcome {res.user.name}</p> <p>Your password is: <span style={{fontWeight: 700}}>{googleData?.data?.email.split('@')[0]}</span></p></div>, {autoClose: 8000})
                     setActiveModal(null)
                 } catch (error) {
                     const message = error?.data?.message || "Login failed. Please try again.";
@@ -82,14 +82,14 @@ const SignUp = ({ setActiveModal }) => {
                         <form className='flex flex-col gap-4.5' onSubmit={handleSubmit}>
                             <div className='flex flex-col'>
                                 <label htmlFor="name" className='font-[300] text-sm mb-0.5'>Name</label>
-                                <input type="text" name="" id="name" value={values.name} onChange={handleChange} className={`border ${errors.name && touched.name ? "border-red-600" : "border-gray-400"} outline-none px-2 py-1 rounded-md text-sm`} />
+                                <input type="text" name="name" id="name" value={values.name} onChange={handleChange} className={`border ${errors.name && touched.name ? "border-red-600" : "border-gray-400"} outline-none px-2 py-1 rounded-md text-sm`} />
                                 {errors.name && touched.name && (
                                     <span className="text-red-600 text-xs">{errors.name}</span>
                                 )}
                             </div>
                             <div className='flex flex-col'>
                                 <label htmlFor="email" className='font-[300] text-sm mb-0.5'>Email</label>
-                                <input type="email" name="" id="email" value={values.email} onChange={handleChange} className={`border ${errors.email && touched.email ? "border-red-600" : "border-gray-400"}  outline-none px-2 py-1 rounded-md text-sm`} />
+                                <input type="email" name="email" id="email" value={values.email} onChange={handleChange} className={`border ${errors.email && touched.email ? "border-red-600" : "border-gray-400"}  outline-none px-2 py-1 rounded-md text-sm`} />
                                 {errors.email && touched.email && (
                                     <span className="text-red-600 text-xs">{errors.email}</span>
                                 )}
@@ -97,7 +97,7 @@ const SignUp = ({ setActiveModal }) => {
                             <div className='flex flex-col'>
                                 <label htmlFor="password" className='font-[300] text-sm mb-0.5'>Password</label>
                                 <div className={`flex  border ${errors.password && touched.password ? "border-red-600" : "border-gray-400"}  rounded-md text-sm overflow-hidden`}>
-                                    <input type={!showPassword ? "password" : "text"} name="" id="password" value={values.password} onChange={handleChange} className='w-full outline-none px-2 py-1 ' />
+                                    <input type={!showPassword ? "password" : "text"} name="password" id="password" value={values.password} onChange={handleChange} className='w-full outline-none px-2 py-1 ' />
                                     <div className='px-2 hover:bg-gray-200 grid place-items-center cursor-pointer' onClick={() => setShowPassword(!showPassword)}>
                                         {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
 

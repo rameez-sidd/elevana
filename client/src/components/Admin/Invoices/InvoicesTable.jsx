@@ -42,7 +42,7 @@ const InvoicesTable = () => {
             name: item.user.name,
             email: item.user.email,
             course: item.course.name,
-            price: `$${item.course.price}`,
+            price: `₹${item.course.price}`,
 
         })
     })

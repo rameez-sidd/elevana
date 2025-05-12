@@ -7,6 +7,7 @@ import { useParams } from 'react-router-dom'
 import { useCreatePaymentIntentMutation, useGetStripePublishableKeyQuery } from '../redux/features/orders/ordersApi'
 import { loadStripe } from '@stripe/stripe-js'
 import Footer from '../components/shared/Footer'
+import { useSelector } from 'react-redux'
 
 const CourseDetailsPage = () => {
     const { id } = useParams()
@@ -16,6 +17,7 @@ const CourseDetailsPage = () => {
     const { data: config } = useGetStripePublishableKeyQuery({})
     const [stripePromise, setStripePromise] = useState(null)
     const [clientSecret, setClientSecret] = useState('')
+    const {user} = useSelector((state) => state.auth)
     console.log(data);
     
 
@@ -31,10 +33,10 @@ const CourseDetailsPage = () => {
             setStripePromise(loadStripe(publishableKey))
         }
         if (data && data?.course?.price > 0) {
-            const amount = Math.round(data?.course?.price * 100)
-            createPaymentIntent(amount)
+            const amount = Math.round(data?.course?.priceUSD * 100)
+            createPaymentIntent({ amount, courseId: data?.course?._id })
         }
-    }, [config, data])
+    }, [config, data, user])
 
     useEffect(() => {
         if (paymentIntentData) {

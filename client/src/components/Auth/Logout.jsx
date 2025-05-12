@@ -3,6 +3,7 @@ import React from 'react'
 import { useLogOutMutation } from '../../redux/features/auth/authApi'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import { googleLogout } from '@react-oauth/google'
 
 const Logout = ({ openLogout, setOpenLogout }) => {
     const [logOut, { isLoading }] = useLogOutMutation()
@@ -12,6 +13,7 @@ const Logout = ({ openLogout, setOpenLogout }) => {
         try {
             await logOut().unwrap()
             navigate('/')
+            googleLogout()
             toast.success("Logout successful")
         } catch (error) {
             const message = error?.data?.message || "Logout failed. Please try again."

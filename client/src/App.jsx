@@ -1,5 +1,8 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { apiSlice } from './redux/api/apiSlice';
+import socketIO from 'socket.io-client';
+import Loading from './components/Loading';
 import Home from './pages/Home'
 import Profile from './pages/Profile';
 import ProtectedRoute from './utils/ProtectedRoute';
@@ -28,6 +31,8 @@ import ChangePasswordAdmin from './components/Admin/ChangePassword/ChangePasswor
 import CourseAccessPage from './pages/CourseAccessPage';
 import CourseQA from './components/Admin/Course/CourseQA';
 
+const ENDPOINT = import.meta.env.VITE_PUBLIC_SOCKET_SERVER_URI || ""
+const socketId = socketIO(ENDPOINT, { transports: ["websocket"] })
 
 
 const appRouter = createBrowserRouter([
@@ -97,15 +102,17 @@ const appRouter = createBrowserRouter([
 ])
 
 const App = () => {
+  useEffect(() => {
+    socketId.on('connect', () => {
+      console.log('Socket connected:', socketId.id);
+    });
 
-
-
-
-  return (
-    <>
-      <RouterProvider router={appRouter} />
-    </>
-  )
+    return () => {
+      socketId.off('connect');
+    };
+  }, []);
+  
+  return <RouterProvider router={appRouter} />;
 }
 
 export default App
