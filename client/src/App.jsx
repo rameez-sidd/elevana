@@ -62,10 +62,7 @@ const appRouter = createBrowserRouter([
     path: "/course-access/:id",
     element: <CourseAccessPage />,
   },
-  {
-    path: "/courses/course/:id",
-    element: <CourseDetailsPage />,
-  },
+  
   {
     path: "/admin/admin-dashboard",
     element: <ProtectedRoute><AuthorizeRoles><AdminDashboard /></AuthorizeRoles></ProtectedRoute>,

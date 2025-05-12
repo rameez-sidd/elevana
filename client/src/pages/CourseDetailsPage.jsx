@@ -3,7 +3,7 @@ import CourseDetails from '../components/Courses/CourseDetails'
 import Header from '../components/shared/Header'
 import { useGetCourseDetailsQuery } from '../redux/features/courses/coursesApi'
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useCreatePaymentIntentMutation, useGetStripePublishableKeyQuery } from '../redux/features/orders/ordersApi'
 import { loadStripe } from '@stripe/stripe-js'
 import Footer from '../components/shared/Footer'
@@ -18,8 +18,14 @@ const CourseDetailsPage = () => {
     const [stripePromise, setStripePromise] = useState(null)
     const [clientSecret, setClientSecret] = useState('')
     const {user} = useSelector((state) => state.auth)
+    const navigate = useNavigate()
     console.log(data);
     
+    useEffect(() => {
+        if(user && user?.role === 'admin'){
+            navigate('/')
+        }
+    }, [user])
 
     const [createPaymentIntent, { data: paymentIntentData}] = useCreatePaymentIntentMutation()
 

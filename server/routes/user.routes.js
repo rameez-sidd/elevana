@@ -18,5 +18,4 @@ userRouter.get('/get-users', updateAccessToken, isAuthenticated, authorizeRoles(
 userRouter.put('/update-user-role', updateAccessToken, isAuthenticated, authorizeRoles("admin"), updateUserRole)
 userRouter.delete('/delete-user/:id', updateAccessToken, isAuthenticated, authorizeRoles("admin"), deleteUser)
 
-
 export default userRouter

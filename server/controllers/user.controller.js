@@ -10,17 +10,19 @@ import { redis } from "../utils/redis.js";
 import { getAllUsersService, getUserById, updateUserRoleService } from "../services/user.service.js";
 import cloudinary from "cloudinary"
 import { courseModel } from "../models/course.model.js";
+import Stripe from 'stripe'
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 
 const _dirname = path.resolve()
 
 
 export const registrationUser = CatchAsyncError(async (req, res, next) => {
-    try{
+    try {
 
-        const {name, email, password} = req.body
+        const { name, email, password } = req.body
 
-        const isEmailExist = await userModel.findOne({email})
-        if(isEmailExist){
+        const isEmailExist = await userModel.findOne({ email })
+        if (isEmailExist) {
             return next(new ErrorHandler("Email already exist", 400))
         }
 
@@ -43,7 +45,7 @@ export const registrationUser = CatchAsyncError(async (req, res, next) => {
 
         const html = await ejs.renderFile(path.join(_dirname, "./mails/activation-mail.ejs"), data)
 
-        try{
+        try {
             await sendMail({
                 email: user.email,
                 subject: "Activate your account",
@@ -56,13 +58,13 @@ export const registrationUser = CatchAsyncError(async (req, res, next) => {
                 message: `Please check your email: ${user.email} to activate your account`,
                 activationToken: activationToken.token,
             })
-        } catch(error){
+        } catch (error) {
             return next(new ErrorHandler(error.message, 500))
         }
 
 
     }
-    catch(error){
+    catch (error) {
         return next(new ErrorHandler(error.message, 500))
     }
 })
@@ -70,86 +72,86 @@ export const registrationUser = CatchAsyncError(async (req, res, next) => {
 export const createActivationToken = (user) => {
     const activationCode = Math.floor(1000 + Math.random() * 9000).toString()
 
-    const token = jwt.sign({user, activationCode}, process.env.ACTIVATION_SECRET, {expiresIn:"5m"})
-    
-    return {token, activationCode}
-} 
+    const token = jwt.sign({ user, activationCode }, process.env.ACTIVATION_SECRET, { expiresIn: "5m" })
+
+    return { token, activationCode }
+}
 
 // activate user
-export const activateUser = CatchAsyncError( async (req, res, next) => {
-    try{
-        const {activation_code, activation_token} = req.body
+export const activateUser = CatchAsyncError(async (req, res, next) => {
+    try {
+        const { activation_code, activation_token } = req.body
 
         const newUser = jwt.verify(activation_token, process.env.ACTIVATION_SECRET)
-        if(newUser.activationCode !== activation_code){
+        if (newUser.activationCode !== activation_code) {
             return next(new ErrorHandler("Invalid activation code", 400))
         }
 
-        const {name, email, password} = newUser.user
+        const { name, email, password } = newUser.user
 
-        const existUser = await userModel.findOne({email})
+        const existUser = await userModel.findOne({ email })
 
-        if(existUser){
+        if (existUser) {
             return next(new ErrorHandler("Email already exist", 400))
         }
 
         const user = await userModel.create({
-            name, 
-            email, 
+            name,
+            email,
             password
         })
 
         res.status(201).json({
             success: true,
-            
+
         });
 
-    } catch(error){
+    } catch (error) {
         return next(new ErrorHandler(error.message, 500))
     }
 })
 
 // Login User
 export const loginUser = CatchAsyncError(async (req, res, next) => {
-    try{
-        const {email, password} = req.body
+    try {
+        const { email, password } = req.body
 
-        if(!email || !password){
+        if (!email || !password) {
             return next(new ErrorHandler("Please enter email and password", 400))
         }
 
-        const user = await userModel.findOne({email}).select("+password")
+        const user = await userModel.findOne({ email }).select("+password")
 
-        if(!user){
+        if (!user) {
             return next(new ErrorHandler("Invalid email or password", 400))
         }
 
         const isPasswordMatch = await user.comparePassword(password)
-        if(!isPasswordMatch){
+        if (!isPasswordMatch) {
             return next(new ErrorHandler("Invalid email or password", 400))
         }
 
         sendToken(user, 200, res)
 
-    } catch(error){
+    } catch (error) {
         return next(new ErrorHandler(error.message, 500))
     }
 })
 
 // logout user
 export const logoutUser = CatchAsyncError(async (req, res, next) => {
-    try{
+    try {
         res.cookie("access_token", "", { maxAge: 1 })
         res.cookie("refresh_token", "", { maxAge: 1 })
 
         redis.del(req.user._id || "")
-        
+
         res.status(200).json({
             success: true,
             message: "Logged out successfully",
         })
 
-    } catch(error){
+    } catch (error) {
         return next(new ErrorHandler(error.message, 500))
     }
 })
@@ -160,20 +162,20 @@ export const updateAccessToken = CatchAsyncError(async (req, res, next) => {
         const refresh_token = req.cookies.refresh_token
         const decoded = jwt.verify(refresh_token, process.env.REFRESH_TOKEN)
 
-        if(!decoded){
+        if (!decoded) {
             return next(new ErrorHandler("Could not refresh token", 401))
         }
-        
+
 
         const session = await redis.get(decoded.id)
-        if(!session){
+        if (!session) {
             return next(new ErrorHandler("Please login to access this resource", 401))
         }
         const user = JSON.parse(session)
 
-        const accessToken = jwt.sign({id: user._id}, process.env.ACCESS_TOKEN, { expiresIn: "15m" })
+        const accessToken = jwt.sign({ id: user._id }, process.env.ACCESS_TOKEN, { expiresIn: "15m" })
 
-        const refreshToken = jwt.sign({id: user._id}, process.env.REFRESH_TOKEN, { expiresIn: "30d" })
+        const refreshToken = jwt.sign({ id: user._id }, process.env.REFRESH_TOKEN, { expiresIn: "30d" })
 
         req.user = user
 
@@ -189,7 +191,7 @@ export const updateAccessToken = CatchAsyncError(async (req, res, next) => {
         next()
 
     } catch (error) {
-        
+
         return next(new ErrorHandler(error.message, 500))
     }
 })
@@ -199,8 +201,8 @@ export const updateAccessToken = CatchAsyncError(async (req, res, next) => {
 export const getUserInfo = CatchAsyncError(async (req, res, next) => {
     try {
         const userId = req.user?._id;
-        getUserById(userId,res)
-        
+        getUserById(userId, res)
+
     } catch (error) {
         return next(new ErrorHandler(error.message, 500))
     }
@@ -209,14 +211,30 @@ export const getUserInfo = CatchAsyncError(async (req, res, next) => {
 // social auth
 export const socialAuth = CatchAsyncError(async (req, res, next) => {
     try {
-        const {email, name, avatar} = req.body
-        const user = await userModel.findOne({email})
+        const { email, name, avatar } = req.body
+        const user = await userModel.findOne({ email })
 
-        if(!user){
-            const newUser = await userModel.create({email, name, avatar, password: email.split('@')[0]})
+        if (!user) {
+            const newUser = await userModel.create({ email, name, avatar, password: email.split('@')[0] })
+            const data = {
+                name: name,
+                password: email.split('@')[0],
+            }
+
+            const html = await ejs.renderFile(path.join(_dirname, "./mails/social-login-mail.ejs"), data)
+            try {
+                await sendMail({
+                    email: email,
+                    subject: "Thanks for Registering with Elevana",
+                    template: "social-login-mail.ejs",
+                    data,
+                })
+            } catch (error) {
+                return next(new ErrorHandler(error.message, 500))
+            }
             sendToken(newUser, 200, res)
         }
-        else{
+        else {
             sendToken(user, 200, res)
         }
 
@@ -229,20 +247,20 @@ export const socialAuth = CatchAsyncError(async (req, res, next) => {
 // update user info
 export const updateUserInfo = CatchAsyncError(async (req, res, next) => {
     try {
-        const {name} = req.body
+        const { name } = req.body
         const userId = req.user?._id
         const user = await userModel.findById(userId)
-       
-        if(name && user){
+
+        if (name && user) {
             user.name = name
 
             // Update user info in all courses using MongoDB update operators
             const updateResult = await courseModel.updateMany(
                 {
                     $or: [
-                        {"reviews.user._id": userId},
-                        {"courseData.questions.user._id": userId},
-                        {"courseData.questions.questionReplies.user._id": userId}
+                        { "reviews.user._id": userId },
+                        { "courseData.questions.user._id": userId },
+                        { "courseData.questions.questionReplies.user._id": userId }
                     ]
                 },
                 {
@@ -264,7 +282,7 @@ export const updateUserInfo = CatchAsyncError(async (req, res, next) => {
 
             // Clear Redis cache for all courses
             const courses = await courseModel.find()
-            for(const course of courses) {
+            for (const course of courses) {
                 await redis.del(course._id)
             }
             await redis.del("allCourses")
@@ -286,9 +304,9 @@ export const updateUserInfo = CatchAsyncError(async (req, res, next) => {
 // update user password
 export const updatePassword = CatchAsyncError(async (req, res, next) => {
     try {
-        const {oldPassword, newPassword} = req.body
-        
-        if(!oldPassword || !newPassword){
+        const { oldPassword, newPassword } = req.body
+
+        if (!oldPassword || !newPassword) {
             return next(new ErrorHandler("Please enter old and new password", 400))
 
         }
@@ -296,13 +314,13 @@ export const updatePassword = CatchAsyncError(async (req, res, next) => {
         const user = await userModel.findById(req.user?._id).select("+password")
 
 
-        if(user?.password === undefined){
+        if (user?.password === undefined) {
             return next(new ErrorHandler("Invalid user", 400))
         }
 
         const isPasswordMatch = await user?.comparePassword(oldPassword)
 
-        if(!isPasswordMatch){
+        if (!isPasswordMatch) {
             return next(new ErrorHandler("Invalid Old Password", 400))
         }
 
@@ -325,22 +343,22 @@ export const updatePassword = CatchAsyncError(async (req, res, next) => {
 //update profile picture
 export const updateProfilePicture = CatchAsyncError(async (req, res, next) => {
     try {
-        const {avatar} = req.body
+        const { avatar } = req.body
         const userId = req.user?._id
         const user = await userModel.findById(userId)
 
-        if(avatar && user){
+        if (avatar && user) {
             let avatarData = null
 
             // if we have one avatar 
-            if(user?.avatar?.public_id){
+            if (user?.avatar?.public_id) {
                 // first delete the old image
                 await cloudinary.v2.uploader.destroy(user?.avatar?.public_id)
                 const myCloud = await cloudinary.v2.uploader.upload(avatar, {
                     folder: "avatars",
                     width: 150
                 })
-    
+
                 avatarData = {
                     public_id: myCloud.public_id,
                     url: myCloud.secure_url
@@ -351,7 +369,7 @@ export const updateProfilePicture = CatchAsyncError(async (req, res, next) => {
                     folder: "avatars",
                     width: 150
                 })
-    
+
                 avatarData = {
                     public_id: myCloud.public_id,
                     url: myCloud.secure_url
@@ -363,9 +381,9 @@ export const updateProfilePicture = CatchAsyncError(async (req, res, next) => {
             const updateResult = await courseModel.updateMany(
                 {
                     $or: [
-                        {"reviews.user._id": userId},
-                        {"courseData.questions.user._id": userId},
-                        {"courseData.questions.questionReplies.user._id": userId}
+                        { "reviews.user._id": userId },
+                        { "courseData.questions.user._id": userId },
+                        { "courseData.questions.questionReplies.user._id": userId }
                     ]
                 },
                 {
@@ -387,7 +405,7 @@ export const updateProfilePicture = CatchAsyncError(async (req, res, next) => {
 
             // Clear Redis cache for all courses
             const courses = await courseModel.find()
-            for(const course of courses) {
+            for (const course of courses) {
                 await redis.del(course._id)
             }
             await redis.del("allCourses")
@@ -421,9 +439,9 @@ export const getAllUSers = CatchAsyncError(async (req, res, next) => {
 // update user role -- only for admin
 export const updateUserRole = CatchAsyncError(async (req, res, next) => {
     try {
-        const {id, role} = req.body
+        const { id, role } = req.body
         updateUserRoleService(res, id, role)
-        
+
     } catch (error) {
         return next(new ErrorHandler(error.message, 500))
     }
@@ -433,14 +451,14 @@ export const updateUserRole = CatchAsyncError(async (req, res, next) => {
 // delete user -- only for admin
 export const deleteUser = CatchAsyncError(async (req, res, next) => {
     try {
-        const {id} = req.params
+        const { id } = req.params
         const user = await userModel.findById(id)
 
-        if(!user){
+        if (!user) {
             return next(new ErrorHandler("User not found", 404))
         }
 
-        await user.deleteOne({id})
+        await user.deleteOne({ id })
 
         await redis.del(id)
 
@@ -448,8 +466,9 @@ export const deleteUser = CatchAsyncError(async (req, res, next) => {
             success: true,
             message: "User deleted successfully"
         })
-        
+
     } catch (error) {
         return next(new ErrorHandler(error.message, 500))
     }
 })
+

@@ -10,6 +10,7 @@ import { useSelector } from 'react-redux'
 
 const Home = () => {
   const {user} = useSelector((state) => state.auth)
+  
 
   return (
     <div className='bg-background-green'>

@@ -6,8 +6,7 @@ import { Link, useNavigate } from 'react-router-dom'
 const CourseCard = ({ course, isEnrolled }) => {
     const navigate = useNavigate()
     return (
-        <Link to={!isEnrolled && `course/${course._id}`} className='h-fit'>
-            <div className={`bg-white rounded-md ${isEnrolled ? 'min-w-[200px]' : 'min-w-[250px]'} w-fit shadow-lg hover:shadow-sm  border border-gray-300`}>
+            <div className={`bg-white rounded-md ${isEnrolled ? 'min-w-[200px]' : 'min-w-[250px]'} w-fit shadow-lg hover:shadow-sm cursor-pointer  border border-gray-300`} onClick={() => navigate(`/course/${course?._id}`)}>
                 <div className='p-2.5 pb-0 flex items-center justify-center'>
                     <div className={`${isEnrolled ? "w-[200px] h-[100px]" : "w-[250px] h-[150px]"}  flex items-center justify-center bg-black rounded-sm overflow-hidden`}>
                         <img src={course?.thumbnail?.url} alt="course-thumbnail" className='object-contain w-full h-full object-center' />
@@ -50,7 +49,10 @@ const CourseCard = ({ course, isEnrolled }) => {
                     {
                         isEnrolled && (
                             <div>
-                                <button className='mt-4 w-fit bg-red-700 text-white px-5 py-1.5 rounded-md text-xs cursor-pointer hover:bg-red-500' onClick={() => navigate(`/course-access/${course._id}`)}>Continue</button>
+                                <button className='mt-4 w-fit bg-red-700 text-white px-5 py-1.5 rounded-md text-xs cursor-pointer hover:bg-red-500' onClick={(e) => {
+                                    e.stopPropagation()
+                                    navigate(`/course-access/${course._id}`)
+                                    }}>Continue</button>
                             </div>
                         )
                     }
@@ -58,7 +60,6 @@ const CourseCard = ({ course, isEnrolled }) => {
 
                 </div>
             </div>
-        </Link>
     )
 }
 
