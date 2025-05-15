@@ -16,6 +16,7 @@ const CourseAccessPage = () => {
   const {isLoading, error, data} = useLoadUserQuery(undefined, {})
   const {user} = useSelector((state) => state.auth)
   const { data:courseData, isLoading: isGettingCourse, refetch } = useGetCourseDetailsQuery(id, { refetchOnFocus: true, refetchOnMountOrArgChange: true, refetchOnReconnect: true })
+  
 
   useEffect(() => {
     if(user){
@@ -33,13 +34,24 @@ const CourseAccessPage = () => {
   }, [id, dispatch])
 
   return (
-    <div className='bg-background-green'>
+    <div className={`bg-background-green ${!courseData?.course && "h-screen flex flex-col"}`}>
       <Header />
             {
                 isLoading ? (
                     <Loading size='screen' />
                 ) : (
-                      <CourseContent id={id} user={user} courseData={courseData} courseRefetch={refetch}/>
+                    isGettingCourse ? (
+                      <Loading size='screen'/>
+                    ) : (
+                      !courseData?.course ? (
+                        <div className='flex items-center justify-center h-full'>
+                            <p className='text-gray-600 text-sm'>Sorry, This course has been deleted by its creator :(</p>
+                        </div>
+                      ) : (
+
+                        <CourseContent id={id} user={user} courseData={courseData} courseRefetch={refetch}/>
+                      )
+                    )
                 )
             }
     </div>

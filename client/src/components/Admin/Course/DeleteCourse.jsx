@@ -28,7 +28,7 @@ const DeleteCourse = ({ setOpenDeleteModal, courseId, refetch }) => {
                     <h4 className='font-[600]'>Are you sure you want to delete this course?</h4>
                     <div className='flex items-center justify-between'>
                         <button className='min-w-16 bg-dark-green hover:bg-muted-green text-white font-[300] py-1 px-3 rounded-sm cursor-pointer' onClick={() => setOpenDeleteModal(false)}>Cancel</button>
-                        <button className='min-w-16 bg-red-700 hover:bg-red-500 text-white font-[300] py-1 px-3 rounded-sm cursor-pointer' onClick={handleDelete}>Delete</button>
+                        <button disabled={isLoading} className={`min-w-16 bg-red-700 ${isLoading ? "bg-gray-300 cursor-not-allowed hover:bg-gray-300" : "cursor-pointer hover:bg-red-500"} text-white font-[300] py-1 px-3 rounded-sm`} onClick={handleDelete}>Delete</button>
                     </div>
                 </div>
             </Box>
