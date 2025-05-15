@@ -5,13 +5,17 @@ import { userModel } from "../models/user.model.js";
 import { courseModel } from "../models/course.model.js";
 import { orderModel } from "../models/order.model.js";
 
+const populateCreator = (query) => {
+    return query.populate('createdBy', 'name email');
+};
+
 
 // get user analytics -- only for admin
 
 export const getUsersAnalytics = CatchAsyncError(async (req, res, next) => {
     try {
         // Get all courses created by the admin
-        const adminCourses = await courseModel.find({ createdBy: req.user._id }).select('_id');
+        const adminCourses = await populateCreator(courseModel.find({ createdBy: req.user._id }).select('_id'));
         const courseIds = adminCourses.map(course => course._id);
 
         // Get all orders for these courses
@@ -49,7 +53,7 @@ export const getCoursesAnalytics = CatchAsyncError(async (req, res, next) => {
 export const getOrdersAnalytics = CatchAsyncError(async (req, res, next) => {
     try {
         // Get all courses created by the admin
-        const adminCourses = await courseModel.find({ createdBy: req.user._id }).select('_id');
+        const adminCourses = await populateCreator(courseModel.find({ createdBy: req.user._id }).select('_id'));
         const courseIds = adminCourses.map(course => course._id);
 
         // Get analytics for orders of these courses

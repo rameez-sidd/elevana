@@ -4,6 +4,14 @@ import { courseModel } from "../models/course.model.js"
 import { userModel } from "../models/user.model.js"
 
 
+const populateCreator = (query) => {
+    return query.populate('createdBy', 'name email');
+};
+
+
+
+
+
 // create new order
 export const newOrder = CatchAsyncError(async (data, res, next) => {
     const order = await orderModel.create(data)
@@ -20,7 +28,7 @@ export const newOrder = CatchAsyncError(async (data, res, next) => {
 export const getAllOrdersService = async(res, adminId) => {
     try {
         // First get all courses created by this admin
-        const courses = await courseModel.find({ createdBy: adminId }).select('_id name price');
+        const courses = await populateCreator(courseModel.find({ createdBy: adminId }).select('_id name price'));
         const courseIds = courses.map(course => course._id.toString());
         
         // Create a map of course details for quick lookup

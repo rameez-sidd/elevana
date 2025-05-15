@@ -13,6 +13,11 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 const _dirname = path.resolve()
 
+const populateCreator = (query) => {
+    return query.populate('createdBy', 'name email');
+};
+
+
 
 export const createOrder = CatchAsyncError(async (req, res, next) => {
     try {
@@ -37,7 +42,7 @@ export const createOrder = CatchAsyncError(async (req, res, next) => {
             return next(new ErrorHandler("You have already purchased this course", 400))
         }
         
-        const course = await courseModel.findById(courseId)
+        const course = await populateCreator(courseModel.findById(courseId))
         
         if(!course){
             return next(new ErrorHandler("Course not found", 404))
@@ -97,14 +102,14 @@ export const createOrder = CatchAsyncError(async (req, res, next) => {
         await redis.set(courseId, JSON.stringify(course))
         await course.save()
 
-        const courses = await courseModel.find().select("-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links").sort({ createdAt: -1 })
+        const courses = await populateCreator(courseModel.find().select("-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links")).sort({ createdAt: -1 })
         
         await redis.set("allCourses", JSON.stringify(courses))
         
         // Update enrolled courses cache for the user
-        const enrolledCourses = await courseModel.find({
+        const enrolledCourses = await populateCreator(courseModel.find({
             _id: { $in: user.courses }
-        }).select("-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links").sort({ createdAt: -1 });
+        }).select("-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links")).sort({ createdAt: -1 });
         
         await redis.set(`enrolledCourses:${user._id}`, JSON.stringify(enrolledCourses), "EX", 604800); // Cache for 7 days
 
@@ -140,7 +145,7 @@ export const newPayment = CatchAsyncError(async (req, res, next) => {
         const { amount, courseId } = req.body;
         
         // Fetch course details
-        const course = await courseModel.findById(courseId);
+        const course = await populateCreator(courseModel.findById(courseId));
         if (!course) {
             return next(new ErrorHandler("Course not found", 404));
         }

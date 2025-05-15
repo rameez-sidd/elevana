@@ -16,6 +16,10 @@ import { log } from "console"
 
 const _dirname = path.resolve()
 
+const populateCreator = (query) => {
+    return query.populate('createdBy', 'name email');
+};
+
 // upload course
 export const uploadCourse = CatchAsyncError(async (req, res, next) => {
     try {
@@ -69,16 +73,16 @@ export const editCourse = CatchAsyncError(async (req, res, next) => {
             };
         }
 
-        const course = await courseModel.findByIdAndUpdate(
+        const course = await populateCreator(courseModel.findByIdAndUpdate(
             courseId,
             {
                 $set: data,
             },
             { new: true }
-        );
+        ))
         await redis.set(courseId, JSON.stringify(course)); // update course in redis
 
-        const courses = await courseModel.find().select("-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links").sort({ createdAt: -1 })
+        const courses = await populateCreator(courseModel.find().select("-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links")).sort({ createdAt: -1 })
 
         await redis.set("allCourses", JSON.stringify(courses))
         res.status(201).json({
@@ -157,7 +161,7 @@ export const getAllCourses = CatchAsyncError(async (req, res, next) => {
                 courses,
             })
         } else {
-            const courses = await courseModel.find().select("-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links").sort({ createdAt: -1 })
+            const courses = await populateCreator(courseModel.find().select("-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links")).sort({ createdAt: -1 })
 
             await redis.set("allCourses", JSON.stringify(courses))
 
@@ -188,9 +192,9 @@ export const getEnrolledCourses = CatchAsyncError(async (req, res, next) => {
             // Get course IDs from user's courses array
             const userCourseIds = req.user.courses.map(course => course._id);
 
-            const courses = await courseModel.find({
+            const courses = await populateCreator(courseModel.find({
                 _id: { $in: userCourseIds }
-            }).select("-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links").sort({ createdAt: -1 });
+            }).select("-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links")).sort({ createdAt: -1 });
 
             await redis.set(`enrolledCourses:${userId}`, JSON.stringify(courses), "EX", 604800); // Cache for 7 days
 
@@ -250,7 +254,7 @@ export const getCourseByUser = CatchAsyncError(async (req, res, next) => {
 export const addQuestion = CatchAsyncError(async (req, res, next) => {
     try {
         const { question, courseId, contentId } = req.body
-        const course = await courseModel.findById(courseId)
+        const course = await populateCreator(courseModel.findById(courseId))
 
         if (!mongoose.Types.ObjectId.isValid(contentId)) {
             return next(new ErrorHandler("Invalid Content ID", 400))
@@ -298,7 +302,7 @@ export const addAnswer = CatchAsyncError(async (req, res, next) => {
     try {
         const { answer, courseId, contentId, questionId } = req.body
 
-        const course = await courseModel.findById(courseId)
+        const course = await populateCreator(courseModel.findById(courseId))
 
         if (!mongoose.Types.ObjectId.isValid(contentId)) {
             return next(new ErrorHandler("Invalid Content ID", 400))
@@ -387,7 +391,7 @@ export const addReview = CatchAsyncError(async (req, res, next) => {
             return next(new ErrorHandler("You are not eligible to access this course", 400))
         }
 
-        const course = await courseModel.findById(courseId)
+        const course = await populateCreator(courseModel.findById(courseId))
 
         const { review, rating } = req.body
 
@@ -498,7 +502,7 @@ export const getAllCoursesAdmin = CatchAsyncError(async (req, res, next) => {
 export const deleteCourse = CatchAsyncError(async (req, res, next) => {
     try {
         const { id } = req.params
-        const course = await courseModel.findById(id)
+        const course = await populateCreator(courseModel.findById(id))
 
         if (!course) {
             return next(new ErrorHandler("Course not found", 404))
@@ -510,7 +514,7 @@ export const deleteCourse = CatchAsyncError(async (req, res, next) => {
 
         await redis.del(id)
 
-        const courses = await courseModel.find().select("-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links").sort({ createdAt: -1 })
+        const courses = await populateCreator(courseModel.find().select("-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links")).sort({ createdAt: -1 })
 
         await redis.set("allCourses", JSON.stringify(courses))
 

@@ -11,9 +11,15 @@ import { getAllUsersService, getUserById, updateUserRoleService } from "../servi
 import cloudinary from "cloudinary"
 import { courseModel } from "../models/course.model.js";
 import Stripe from 'stripe'
+import { populate } from "dotenv";
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 
 const _dirname = path.resolve()
+
+const populateCreator = (query) => {
+    return query.populate('createdBy', 'name email');
+};
+
 
 
 export const registrationUser = CatchAsyncError(async (req, res, next) => {
@@ -255,7 +261,7 @@ export const updateUserInfo = CatchAsyncError(async (req, res, next) => {
             user.name = name
 
             // Update user info in all courses using MongoDB update operators
-            const updateResult = await courseModel.updateMany(
+            const updateResult = await populateCreator(courseModel.updateMany(
                 {
                     $or: [
                         { "reviews.user._id": userId },
@@ -277,11 +283,11 @@ export const updateUserInfo = CatchAsyncError(async (req, res, next) => {
                         { "reply.user._id": userId }
                     ]
                 }
-            )
+            ))
 
 
             // Clear Redis cache for all courses
-            const courses = await courseModel.find()
+            const courses = await populateCreator(courseModel.find())
             for (const course of courses) {
                 await redis.del(course._id)
             }
@@ -378,7 +384,7 @@ export const updateProfilePicture = CatchAsyncError(async (req, res, next) => {
             }
 
             // Update avatar in all courses using MongoDB update operators
-            const updateResult = await courseModel.updateMany(
+            const updateResult = await populateCreator(courseModel.updateMany(
                 {
                     $or: [
                         { "reviews.user._id": userId },
@@ -400,11 +406,11 @@ export const updateProfilePicture = CatchAsyncError(async (req, res, next) => {
                         { "reply.user._id": userId }
                     ]
                 }
-            )
+            ))
 
 
             // Clear Redis cache for all courses
-            const courses = await courseModel.find()
+            const courses = await populateCreator(courseModel.find())
             for (const course of courses) {
                 await redis.del(course._id)
             }

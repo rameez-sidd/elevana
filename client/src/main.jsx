@@ -13,7 +13,7 @@ import { apiSlice } from './redux/api/apiSlice';
 import { GoogleOAuthProvider } from '@react-oauth/google'
 
 
-const clientId = "287147152534-n1hkmo0ht88gnjt77hqin59v0o522n51.apps.googleusercontent.com"
+const clientId = "1074928535355-f3sgg6cbjnqbelo6tjl24712hbm75fl1.apps.googleusercontent.com"
 
 // Run async pre-render logic
 const init = async () => {

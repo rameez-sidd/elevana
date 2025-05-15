@@ -64,7 +64,7 @@ const CoursesContainer = () => {
     
 
     return (
-        <div className='py-16 '>
+        <div className='py-16  pb-32'>
             {
                 isLoading ? (
                     <Loading size="screen" />

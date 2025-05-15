@@ -73,7 +73,7 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
         setOpenAllReplies(null)
     }
     const toggleOpenAllReplies = (index) => {
-        
+
         setOpenAllReplies((prev) => (prev === index ? null : index))
         setOpenReply(null)
     }
@@ -148,7 +148,7 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
             toast.success('Reply added successfully!')
             refetch()
             setAnswer("")
-            if(user?.role !== 'admin'){
+            if (user?.role !== 'admin') {
                 socketId.emit("notification", {
                     adminId: courseData?.course?.createdBy,
                     notification: {
@@ -257,63 +257,63 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
                                                 {/* All Questions */}
                                                 <div className='mt-4 flex flex-col gap-8'>
                                                     {
-                                                        videoData?.content[activeVideo]?.questions.map((item, index) => (
-                                                            <div className='flex items-center gap-3' key={index}>
-                                                                <div className='self-start'>
-                                                                    <img src={item?.user?.avatar ? item?.user?.avatar?.url : profilePic} alt="user-avatar" width={35} height={35} className='rounded-full object-cover border border-gray-300 self-start' />
-                                                                </div>
-                                                                <div className='flex-1 flex flex-col gap-0.5 '>
-                                                                    <div className='flex items-center gap-2'>
-                                                                        <p className='font-[500]'>{item?.user?.name}</p>
-                                                                        <p className='text-gray-400 text-[10px]'>{format(item?.createdAt)}</p>
+                                                        videoData?.content[activeVideo]?.questions?.slice().reverse().map((item, index) => (
+                                                                <div className='flex items-center gap-3' key={index}>
+                                                                    <div className='self-start'>
+                                                                        <img src={item?.user?.avatar ? item?.user?.avatar?.url : profilePic} alt="user-avatar" width={35} height={35} className='rounded-full object-cover border border-gray-300 self-start' />
                                                                     </div>
-                                                                    <p className='text-xs text-gray-800'>{item?.question}</p>
-                                                                    <div className='flex items-center gap-2 mt-1.5'>
-                                                                        <button className='text-xs border border-gray-300 hover:bg-gray-200 cursor-pointer px-3 py-1 rounded-full' onClick={() => toggleOpenAllReplies(index)}>{openAllReplies === index ? 'Hide Replies' : `${item?.questionReplies.length} Replies`}</button>
-                                                                        <button className='text-xs border border-gray-300 hover:bg-gray-200 cursor-pointer px-3 py-1 rounded-full' onClick={() => toggleOpenReply(index)}>Reply</button>
-                                                                    </div>
-                                                                    {
-                                                                        openReply === index && (
-                                                                            <div className='flex items-center gap-3 mt-1.5'>
-                                                                                <input type="text" value={answer} onChange={(e) => setAnswer(e.target.value)} className='outline-none border-b border-gray-400 w-full text-xs p-1' placeholder='Add your reply...' />
-                                                                                <button disabled={isSubmittingAnswer} className={`bg-grass-green text-white rounded-full text-xs px-4 py-1 ${isSubmittingAnswer ? "cursor-not-allowed bg-gray-300 hover:bg-gray-300" : "cursor-pointer hover:bg-dark-grass-green"}`} onClick={() => handleAnswerSubmit(item?._id)}>Reply</button>
-                                                                            </div>
-                                                                        )
-                                                                    }
-                                                                    {
-                                                                        openAllReplies === index && (
-                                                                            item?.questionReplies.length > 0 ? (
-
-                                                                                <div className='flex flex-col gap-4 mt-3'>
-                                                                                {
-                                                                                    
-                                                                                    item?.questionReplies.map((reply, i) => (
-                                                                                        <div className='flex items-center gap-3' key={i}>
-                                                                                            <div >
-                                                                                                <img src={reply?.user?.avatar ? reply?.user?.avatar?.url : profilePic} alt="user-avatar" width={28} height={28} className='rounded-full object-cover border border-gray-300 self-start' />
-                                                                                            </div>
-                                                                                            <div className='flex-1 flex flex-col '>
-                                                                                                <div className='flex items-center gap-2'>
-                                                                                                    <p className='font-[500] flex items-center gap-0.5'>{reply?.user?.name} {reply?.user?._id === courseData?.course?.createdBy && <MdVerified className='text-blue-700' size={17} />} </p>
-                                                                                                    <p className='text-gray-400 text-[10px]'>{format(reply?.createdAt)}</p>
-                                                                                                </div>
-                                                                                                <p className='text-xs text-gray-800'>{reply?.answer}</p>
-                                                                                            </div>
-
-                                                                                        </div>
-                                                                                    ))
-                                                                                }
-                                                                            </div>
-                                                                            ) : (
-                                                                                <></>
+                                                                    <div className='flex-1 flex flex-col gap-0.5 '>
+                                                                        <div className='flex items-center gap-2'>
+                                                                            <p className='font-[500]'>{item?.user?.name}</p>
+                                                                            <p className='text-gray-400 text-[10px]'>{format(item?.createdAt)}</p>
+                                                                        </div>
+                                                                        <p className='text-xs text-gray-800'>{item?.question}</p>
+                                                                        <div className='flex items-center gap-2 mt-1.5'>
+                                                                            <button className='text-xs border border-gray-300 hover:bg-gray-200 cursor-pointer px-3 py-1 rounded-full' onClick={() => toggleOpenAllReplies(index)}>{openAllReplies === index ? 'Hide Replies' : `${item?.questionReplies.length} Replies`}</button>
+                                                                            <button className='text-xs border border-gray-300 hover:bg-gray-200 cursor-pointer px-3 py-1 rounded-full' onClick={() => toggleOpenReply(index)}>Reply</button>
+                                                                        </div>
+                                                                        {
+                                                                            openReply === index && (
+                                                                                <div className='flex items-center gap-3 mt-1.5'>
+                                                                                    <input type="text" value={answer} onChange={(e) => setAnswer(e.target.value)} className='outline-none border-b border-gray-400 w-full text-xs p-1' placeholder='Add your reply...' />
+                                                                                    <button disabled={isSubmittingAnswer} className={`bg-grass-green text-white rounded-full text-xs px-4 py-1 ${isSubmittingAnswer ? "cursor-not-allowed bg-gray-300 hover:bg-gray-300" : "cursor-pointer hover:bg-dark-grass-green"}`} onClick={() => handleAnswerSubmit(item?._id)}>Reply</button>
+                                                                                </div>
                                                                             )
-                                                                        )
-                                                                    }
+                                                                        }
+                                                                        {
+                                                                            openAllReplies === index && (
+                                                                                item?.questionReplies.length > 0 ? (
+
+                                                                                    <div className='flex flex-col gap-4 mt-3'>
+                                                                                        {
+
+                                                                                            item?.questionReplies?.slice().reverse().map((reply, i) => (
+                                                                                                <div className='flex items-center gap-3' key={i}>
+                                                                                                    <div >
+                                                                                                        <img src={reply?.user?.avatar ? reply?.user?.avatar?.url : profilePic} alt="user-avatar" width={28} height={28} className='rounded-full object-cover border border-gray-300 self-start' />
+                                                                                                    </div>
+                                                                                                    <div className='flex-1 flex flex-col '>
+                                                                                                        <div className='flex items-center gap-2'>
+                                                                                                            <p className='font-[500] flex items-center gap-0.5'>{reply?.user?.name} {reply?.user?._id === courseData?.course?.createdBy && <MdVerified className='text-blue-700' size={17} />} </p>
+                                                                                                            <p className='text-gray-400 text-[10px]'>{format(reply?.createdAt)}</p>
+                                                                                                        </div>
+                                                                                                        <p className='text-xs text-gray-800'>{reply?.answer}</p>
+                                                                                                    </div>
+
+                                                                                                </div>
+                                                                                            ))
+                                                                                        }
+                                                                                    </div>
+                                                                                ) : (
+                                                                                    <></>
+                                                                                )
+                                                                            )
+                                                                        }
 
 
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                        ))
+                                                            ))
                                                     }
                                                 </div>
                                             </>
@@ -343,7 +343,7 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
                                                 }
                                                 <div className={`${!isReviewExists && "mt-4"} flex flex-col gap-8`}>
                                                     {
-                                                        courseData?.course?.reviews.map((review, index) => (
+                                                        courseData?.course?.reviews?.slice().reverse().map((review, index) => (
                                                             <div className='flex items-center gap-3' key={index}>
                                                                 <div className='self-start'>
                                                                     <img src={review?.user?.avatar ? review?.user?.avatar?.url : profilePic} width={35} height={35} className='rounded-full object-cover border border-gray-300 self-start' />
