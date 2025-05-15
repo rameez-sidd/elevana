@@ -49,7 +49,7 @@ const CourseCard = ({ course, isEnrolled }) => {
                     {
                         isEnrolled && (
                             <div>
-                                <button className='mt-4 w-fit bg-red-700 text-white px-5 py-1.5 rounded-md text-xs cursor-pointer hover:bg-red-500' onClick={(e) => {
+                                <button className='mt-3 w-fit bg-red-700 text-white px-5 py-1.5 rounded-md text-xs cursor-pointer hover:bg-red-500' onClick={(e) => {
                                     e.stopPropagation()
                                     navigate(`/course-access/${course._id}`)
                                     }}>Continue</button>
