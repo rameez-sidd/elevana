@@ -1,5 +1,5 @@
 import React from 'react'
-import aboutImage from '../assets/images/about-us-img.png'
+import aboutImage from '../assets/images/about-us-img2.png'
 import { useSelector } from 'react-redux'
 
 const About = () => {

@@ -8,6 +8,7 @@ import Footer from '../components/shared/Footer'
 import About from '../components/About'
 import { useSelector } from 'react-redux'
 
+
 const Home = () => {
   const {user} = useSelector((state) => state.auth)
   
