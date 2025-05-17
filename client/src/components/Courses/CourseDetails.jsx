@@ -123,7 +123,7 @@ const CourseDetails = ({ data, stripePromise, clientSecret, refetch }) => {
 
             <div className='flex flex-col gap-4 mt-6'>
               <h2 className='text-3xl font-[600]'>What's this course all about?</h2>
-              <div>
+              <div className='leading-6.5'>
                 {data?.description}
               </div>
             </div>
