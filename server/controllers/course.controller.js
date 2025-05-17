@@ -420,6 +420,10 @@ export const addReview = CatchAsyncError(async (req, res, next) => {
         await course?.save()
         await redis.set(courseId, JSON.stringify(course), "EX", 604800)  // 7 days
 
+        const courses = await populateCreator(courseModel.find().select("-courseData.videoUrl -courseData.suggestion -courseData.questions -courseData.links")).sort({ createdAt: -1 })
+
+        await redis.set("allCourses", JSON.stringify(courses))
+
         const notification = {
             title: "New Review Recieved",
             message: `${req.user?.name} has given a review in ${course?.name}`

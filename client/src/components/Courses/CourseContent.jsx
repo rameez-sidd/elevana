@@ -25,7 +25,8 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
 
     const { data: videoData, isLoading, refetch } = useGetCourseContentQuery(id, { refetchOnMountOrArgChange: true, refetchOnFocus: true, refetchOnReconnect: true })
     console.log(videoData);
-
+    console.log(courseData);
+    
 
 
     const { activeVideo } = useSelector((state) => state.courseContent)
@@ -33,7 +34,6 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
 
     const [addNewQuestion, { isLoading: isSubmittingQuestion }] = useAddNewQuestionMutation()
     const [addAnswerInQuestion, { isLoading: isSubmittingAnswer }] = useAddAnswerinQuestionMutation()
-    const [addReviewInCourse, { isLoading: isSubmittingReview }] = useAddReviewinCourseMutation()
 
     const initialDetail = user?.role === 'admin' ? 'qa' : 'overview'
 
@@ -214,10 +214,10 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
                             {
                                 user?.role === 'admin' ? (
                                     <div className='mt-9 bg-white border border-gray-300 rounded-md overflow-hidden'>
-                                        <div className='flex items-center bg-gray-200 text-xs'>
+                                        <div className='flex items-center bg-light-green text-black text-xs'>
 
-                                            <p className={`flex-1 text-center cursor-pointer p-2 ${activeDetail === 'qa' ? 'bg-gray-400 text-white' : 'text-black'}`} onClick={() => setActiveDetail('qa')}>Q & A</p>
-                                            <p className={`flex-1 text-center cursor-pointer p-2 ${activeDetail === 'reviews' ? 'bg-gray-400 text-white' : 'text-black'}`} onClick={() => setActiveDetail('reviews')}>Reviews</p>
+                                            <p className={`flex-1 text-center cursor-pointer p-2 ${activeDetail === 'qa' && 'bg-dark-green text-white'}`} onClick={() => setActiveDetail('qa')}>Q & A</p>
+                                            <p className={`flex-1 text-center cursor-pointer p-2 ${activeDetail === 'reviews' && 'bg-dark-green text-white'}`} onClick={() => setActiveDetail('reviews')}>Reviews</p>
                                         </div>
 
                                         <div className='h-[300px] p-3 py-5 text-sm overflow-y-scroll custom-scrollbar'>
@@ -269,7 +269,7 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
                                                                                             </div>
                                                                                             <div className='flex-1 flex flex-col '>
                                                                                                 <div className='flex items-center gap-2'>
-                                                                                                    <p className='font-[500] flex items-center gap-0.5'>{reply?.user?.name} {reply?.user?._id === courseData?.course?.createdBy && <MdVerified className='text-blue-700' size={17} />} </p>
+                                                                                                    <p className='font-[500] flex items-center gap-0.5'>{reply?.user?.name} {reply?.user?._id === courseData?.course?.createdBy?._id && <MdVerified className='text-blue-700' size={17} />} </p>
                                                                                                     <p className='text-gray-400 text-[10px]'>{format(reply?.createdAt)}</p>
                                                                                                 </div>
                                                                                                 <p className='text-xs text-gray-800'>{reply?.answer}</p>
@@ -430,7 +430,7 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
                                                                                             </div>
                                                                                             <div className='flex-1 flex flex-col '>
                                                                                                 <div className='flex items-center gap-2'>
-                                                                                                    <p className='font-[500] text-sm flex items-center gap-0.5'>{reply?.user?.name} {reply?.user?._id === courseData?.course?.createdBy && <MdVerified className='text-blue-700' size={17} />} </p>
+                                                                                                    <p className='font-[500] text-sm flex items-center gap-0.5'>{reply?.user?.name} {reply?.user?._id === courseData?.course?.createdBy?._id && <MdVerified className='text-blue-700' size={17} />} </p>
                                                                                                     <p className='text-gray-400 text-[10px]'>{format(reply?.createdAt)}</p>
                                                                                                 </div>
                                                                                                 <p className='text-xs text-gray-800'>{reply?.answer}</p>
@@ -485,7 +485,7 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
                                         <CollapsibleContent className=" flex flex-col text-xs cursor-pointer my-1.5">
                                             {
                                                 content?.videos.map((video, index) => (
-                                                    <div className={`flex items-center mx-4 px-3 py-3 rounded-sm gap-3 ${activeVideo === video?.videoIndex && "bg-grass-green  text-white"}`} onClick={() => handleSwitchVideo(video?.videoIndex)} key={index}>
+                                                    <div className={`flex items-center mx-4 px-3 py-3 rounded-sm gap-3 ${activeVideo === video?.videoIndex && (user?.role === 'admin' ? 'bg-dark-green text-white' : 'bg-grass-green text-white')}`} onClick={() => handleSwitchVideo(video?.videoIndex)} key={index}>
                                                         <LucideTvMinimalPlay size={20} />
                                                         <div>
                                                             <p>{video?.title}</p>

@@ -9,6 +9,7 @@ import Logout from '../Auth/Logout';
 import { useSelector } from 'react-redux';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { formatName } from '../../utils/formatName';
+import { IoLogOut } from 'react-icons/io5';
 
 const SideBar = () => {
     const [openLogout, setOpenLogout] = useState(false)
@@ -32,7 +33,6 @@ const SideBar = () => {
                     <div className='flex items-center gap-4 py-6 px-5 cursor-pointer'>
                         <div className='w-16 h-16 rounded-full relative flex items-center justify-center'>
                             <img src={user?.avatar?.url || profilePic} alt="avatar" className='w-16 h-16 object-cover object-center rounded-full border border-gray-300' />
-                            <GoDotFill size={20} className='text-green-500 absolute top-0 right-0 z-[9999]' />
                         </div>
                         <div className='flex flex-col'>
                             <h3 className='text-xl text-dark-green  font-[800] line-clamp-1 text-ellipsis overflow-hidden max-w-[320px]'>{formatName(user?.name)}</h3>
@@ -64,20 +64,10 @@ const SideBar = () => {
                     </NavLink>
 
 
-                    {
-                        user?.role === "admin" && (
-                            <NavLink to="/admin/admin-dashboard" className={({ isActive }) =>
-                                `${isActive ? "bg-dark-green text-white hover:bg-dark-green" : "hover:bg-light-green"} flex items-center gap-4 rounded-4xl mx-6 py-2 px-6 cursor-pointer transition-all duration-300`}>
-                                <RiAdminFill />
-                                <p className='font-[300] text-sm'>Admin Dashboard</p>
-
-                            </NavLink>
-                        )
-                    }
                 </div>
 
                 <div className='flex items-center gap-4 rounded-4xl mx-6 py-2 px-6 cursor-pointer transition-all absolute bottom-4 right-0 left-0  duration-300 hover:bg-light-green' onClick={() => setOpenLogout(true)}>
-                    <RiLogoutCircleRFill />
+                    <IoLogOut />
                     <p className='font-[300] text-sm'>Log Out</p>
 
                 </div>

@@ -20,6 +20,8 @@ const CoursesContainer = () => {
     const [category, setCategory] = useState('All')
 
     console.log(search);
+    console.log(data?.courses);
+    
     
 
     useEffect(() => {

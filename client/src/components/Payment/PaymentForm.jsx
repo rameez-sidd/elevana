@@ -7,7 +7,6 @@ import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
 import socketIO from 'socket.io-client'
 import { IoArrowBackCircleSharp } from 'react-icons/io5'
-import stripeLogo from '../../assets/images/stripe-logo.png'
 
 const ENDPOINT = import.meta.env.VITE_PUBLIC_SOCKET_SERVER_URI || ""
 const socketId = socketIO(ENDPOINT, { transports: ["websocket"] })

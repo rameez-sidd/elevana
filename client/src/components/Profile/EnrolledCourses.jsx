@@ -16,14 +16,14 @@ const EnrolledCourses = () => {
 
 
   return (
-    <div className='w-full h-full px-26 py-12 flex justify-center overflow-y-hidden'>
+    <div className='w-full h-full px-26 py-12 flex justify-center overflow-y-hidden '>
       {
         isLoading ? (
           <Loading size='screen' />
         ) : (
           
             user?.courses?.length > 0 ? (
-            <div className='grid grid-cols-4 gap-6 place-content-start overflow-y-scroll max-h-[75vh] custom-scrollbar'>
+            <div className='grid grid-cols-4 gap-x-14 gap-y-6 place-content-start overflow-y-scroll max-h-[75vh] custom-scrollbar '>
               {
                 data?.courses && data?.courses?.map((course, index) => (
                   <>
