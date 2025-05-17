@@ -2,8 +2,10 @@ import React, { useState } from 'react'
 import { SidebarProvider } from '@/components/ui/sidebar'
 import AdminSidebar from '../../components/Admin/AdminSidebar'
 import { Outlet } from 'react-router-dom'
+import useDocumentTitle from '../../utils/useDocumentTitle'
 
 const AdminDashboard = () => {
+    useDocumentTitle('Elevana | Educator Dashboard')
     const [openSidebar, setOpenSidebar] = useState(true)
     
 

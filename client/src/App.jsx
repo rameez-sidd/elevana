@@ -30,7 +30,6 @@ import ProfileAdmin from './components/Admin/Profile/ProfileAdmin';
 import ChangePasswordAdmin from './components/Admin/ChangePassword/ChangePasswordAdmin';
 import CourseAccessPage from './pages/CourseAccessPage';
 import CourseQA from './components/Admin/Course/CourseQA';
-import Intro from './pages/Intro';
 
 const ENDPOINT = import.meta.env.VITE_PUBLIC_SOCKET_SERVER_URI || ""
 const socketId = socketIO(ENDPOINT, { transports: ["websocket"] })
@@ -40,10 +39,6 @@ const appRouter = createBrowserRouter([
   {
     path: "/",
     element: <Home />,
-  },
-  {
-    path: "/intro",
-    element: <Intro />,
   },
   {
     path: "/profile",

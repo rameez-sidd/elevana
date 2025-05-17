@@ -8,6 +8,7 @@ import { useCreatePaymentIntentMutation, useGetStripePublishableKeyQuery } from 
 import { loadStripe } from '@stripe/stripe-js'
 import Footer from '../components/shared/Footer'
 import { useSelector } from 'react-redux'
+import useDocumentTitle from '../utils/useDocumentTitle'
 
 
 const CourseDetailsPage = () => {
@@ -15,6 +16,7 @@ const CourseDetailsPage = () => {
 
     const { data, isLoading, refetch } = useGetCourseDetailsQuery(id, { refetchOnFocus: true, refetchOnMountOrArgChange: true, refetchOnReconnect: true })
 
+    useDocumentTitle(`Elevana | ${data?.course?.name}`)
     const { data: config } = useGetStripePublishableKeyQuery({})
     const [stripePromise, setStripePromise] = useState(null)
     const [clientSecret, setClientSecret] = useState('')

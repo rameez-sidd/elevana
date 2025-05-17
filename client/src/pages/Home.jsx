@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { use, useEffect, useState } from 'react'
 import Header from '../components/shared/Header'
 import Hero from '../components/Hero'
 import LatestCourses from '../components/LatestCourses'
@@ -8,8 +8,10 @@ import Footer from '../components/shared/Footer'
 import About from '../components/About'
 import { useSelector } from 'react-redux'
 import Intro from './Intro'
+import useDocumentTitle from '../utils/useDocumentTitle'
 
 const Home = () => {
+  useDocumentTitle('Elevana | Where Knowledge Meets Elevation')
   const { user } = useSelector((state) => state.auth)
   const [showIntro, setShowIntro] = useState(false)
 

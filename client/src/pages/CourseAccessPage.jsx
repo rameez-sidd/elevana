@@ -7,6 +7,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useGetCourseDetailsQuery } from '../redux/features/courses/coursesApi'
 import { useSelector, useDispatch } from 'react-redux'
 import { setActiveVideo } from '../redux/features/courses/courseContentSlice'
+import useDocumentTitle from '../utils/useDocumentTitle'
 
 const CourseAccessPage = () => {
   const {id} = useParams()
@@ -17,7 +18,7 @@ const CourseAccessPage = () => {
   const {user} = useSelector((state) => state.auth)
   const { data:courseData, isLoading: isGettingCourse, refetch } = useGetCourseDetailsQuery(id, { refetchOnFocus: true, refetchOnMountOrArgChange: true, refetchOnReconnect: true })
   
-
+  useDocumentTitle(`Elevana | ${courseData?.course?.name}`)
   useEffect(() => {
     if(user){
       const isPurchased = (user?.courses.find((item) => item._id === id) || courseData?.course?.price === 0)
