@@ -182,8 +182,8 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
                                 {
                                     isShowButtons && (
                                         <div className='absolute top-1/2 left-1/2 translate-y-[-50%] translate-x-[-50%] z-10 flex items-center justify-between px-4 w-full '>
-                                            <BiSolidLeftArrow size={70} className='text-[#ffffffd1] p-4 bg-[#000000a6] rounded-full cursor-pointer hover:scale-110 transition-transform duration-300' title='Previous' onClick={handlePrevious} />
-                                            <BiSolidRightArrow size={70} className='text-[#ffffffd1] p-4 bg-[#000000a6] rounded-full cursor-pointer hover:scale-110 transition-transform duration-300' title='Next' onClick={handleNext} />
+                                            <BiSolidLeftArrow size={70} className='text-[#ffffffd1] p-4 pl-3 bg-[#000000a6] rounded-full cursor-pointer hover:scale-110 transition-transform duration-300' title='Previous' onClick={handlePrevious} />
+                                            <BiSolidRightArrow size={70} className='text-[#ffffffd1] p-4 pr-3 bg-[#000000a6] rounded-full cursor-pointer hover:scale-110 transition-transform duration-300' title='Next' onClick={handleNext} />
                                         </div>
                                     )
                                 }
