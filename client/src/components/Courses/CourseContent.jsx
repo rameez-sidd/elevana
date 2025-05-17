@@ -14,6 +14,9 @@ import { format } from 'timeago.js';
 import { MdVerified } from 'react-icons/md';
 
 import socketIO from 'socket.io-client'
+import { BiChevronsLeft, BiChevronsRight } from 'react-icons/bi';
+import { IoMdPlay } from "react-icons/io";
+import { TbPlayerTrackNextFilled, TbPlayerTrackPrevFilled } from 'react-icons/tb';
 
 const ENDPOINT = import.meta.env.VITE_PUBLIC_SOCKET_SERVER_URI || ""
 const socketId = socketIO(ENDPOINT, { transports: ["websocket"] })
@@ -41,6 +44,7 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
     const [review, setReview] = useState('')
     const [openReply, setOpenReply] = useState(null)
     const [openAllReplies, setOpenAllReplies] = useState(null)
+    const [isShowButtons, setIsShowButtons] = useState(false)
 
     useEffect(() => {
         refetch()
@@ -193,32 +197,38 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
     return (
         <div className={`${user?.role === 'admin' ? 'p-12' : 'py-16 px-0'}`}>
             <div className='mx-auto max-w-7xl'>
-                <div className='grid grid-cols-6'>
+                <div className='grid grid-cols-6  mt-4'>
                     <div className='col-span-4 flex flex-col'>
                         <div className='flex flex-col gap-2'>
-                            <div className='p-3 bg-black rounded-sm '>
-                                <video src={videoData?.content[activeVideo]?.videoUrl} controls></video>
+                            <h3 className='text-2xl font-[700] line-clamp-1 '>{videoData?.content[activeVideo]?.title}</h3>
+                            <div className='p-3 bg-black rounded-sm relative' onMouseOver={() => setIsShowButtons(true)} onMouseLeave={() => setIsShowButtons(false)}>
+                                {
+                                    isShowButtons && (
+                                        <div className='absolute top-1/2 left-1/2 translate-y-[-50%] translate-x-[-50%] z-10 flex items-center justify-between px-4 w-full '>
+                                            <TbPlayerTrackPrevFilled size={70} className='text-[#ffffffd1] p-4 bg-[#000000a6] rounded-full cursor-pointer hover:scale-110 transition-transform duration-300' title='Previous' onClick={handlePrevious} />
+                                            <TbPlayerTrackNextFilled size={70} className='text-[#ffffffd1] p-4 bg-[#000000a6] rounded-full cursor-pointer hover:scale-110 transition-transform duration-300' title='Next' onClick={handleNext} />
+                                        </div>
+                                    )
+                                }
+
+                                <video src={videoData?.content[activeVideo]?.videoUrl} controls className='w-full'></video>
                             </div>
-                            <h3 className='text-2xl font-[600]'>{videoData?.content[activeVideo]?.title}</h3>
-                            <div className='flex items-center justify-between mt-3'>
-                                <button className='bg-dark-green text-white text-sm w-30 hover:bg-dark-grass-green py-1.5 rounded-sm cursor-pointer' onClick={handlePrevious}>Previous</button>
-                                <button className='bg-dark-green text-white text-sm w-30 hover:bg-dark-grass-green py-1.5 rounded-sm cursor-pointer' onClick={handleNext}>Next</button>
-                            </div>
+                            
 
                             {/* Overview, Resources, Q&A, Reviews */}
-                            <div className='mt-7 border border-gray-300 rounded-md overflow-hidden'>
-                                <div className='flex items-center bg-light-green text-xs'>
+                            <div className='mt-9 bg-white border border-gray-300 rounded-md overflow-hidden'>
+                                <div className='flex items-center bg-gray-200 text-xs'>
                                     {
                                         user?.role !== 'admin' && (
                                             <>
 
-                                                <p className={`flex-1 text-center cursor-pointer p-2 ${activeDetail === 'overview' ? 'bg-muted-green-lighter text-white' : 'text-black'}`} onClick={() => setActiveDetail('overview')}>Overview</p>
-                                                <p className={`flex-1 text-center cursor-pointer p-2 ${activeDetail === 'resources' ? 'bg-muted-green-lighter text-white' : 'text-black'}`} onClick={() => setActiveDetail('resources')}>Resources</p>
+                                                <p className={`flex-1 text-center cursor-pointer p-2 ${activeDetail === 'overview' ? 'bg-gray-400 text-white' : 'text-black'}`} onClick={() => setActiveDetail('overview')}>Overview</p>
+                                                <p className={`flex-1 text-center cursor-pointer p-2 ${activeDetail === 'resources' ? 'bg-gray-400 text-white' : 'text-black'}`} onClick={() => setActiveDetail('resources')}>Resources</p>
                                             </>
                                         )
                                     }
-                                    <p className={`flex-1 text-center cursor-pointer p-2 ${activeDetail === 'qa' ? 'bg-muted-green-lighter text-white' : 'text-black'}`} onClick={() => setActiveDetail('qa')}>Q & A</p>
-                                    <p className={`flex-1 text-center cursor-pointer p-2 ${activeDetail === 'reviews' ? 'bg-muted-green-lighter text-white' : 'text-black'}`} onClick={() => setActiveDetail('reviews')}>Reviews</p>
+                                    <p className={`flex-1 text-center cursor-pointer p-2 ${activeDetail === 'qa' ? 'bg-gray-400 text-white' : 'text-black'}`} onClick={() => setActiveDetail('qa')}>Q & A</p>
+                                    <p className={`flex-1 text-center cursor-pointer p-2 ${activeDetail === 'reviews' ? 'bg-gray-400 text-white' : 'text-black'}`} onClick={() => setActiveDetail('reviews')}>Reviews</p>
                                 </div>
 
                                 <div className='h-[300px] p-3 py-5 text-sm overflow-y-scroll custom-scrollbar'>
@@ -247,7 +257,7 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
                                                                 <textarea value={question} onChange={(e) => setQuestion(e.target.value)} placeholder='Ask your doubts...' rows={5} className='border border-gray-400 flex-1 resize-none rounded-sm outline-none px-2 py-1 text-xs placeholder:text-xs'></textarea>
                                                             </div>
                                                             <div className='flex justify-end'>
-                                                                <button disabled={isSubmittingQuestion} className={`bg-black text-white text-xs px-4 py-1  rounded-sm ${isSubmittingQuestion ? 'cursor-not-allowed bg-gray-300 hover:bg-gray-300' : 'cursor-pointer hover:bg-gray-700'}`} onClick={handleQuestionSubmit}>{isSubmittingQuestion ? 'Submitting...' : 'Submit'}</button>
+                                                                <button disabled={isSubmittingQuestion} className={`bg-black text-white text-xs px-4 py-1  rounded-full ${isSubmittingQuestion ? 'cursor-not-allowed bg-gray-300 hover:bg-gray-300' : 'cursor-pointer hover:bg-gray-700'}`} onClick={handleQuestionSubmit}>{isSubmittingQuestion ? 'Submitting...' : 'Submit'}</button>
                                                             </div>
                                                         </div>
                                                     )
@@ -258,62 +268,62 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
                                                 <div className='mt-4 flex flex-col gap-8'>
                                                     {
                                                         videoData?.content[activeVideo]?.questions?.slice().reverse().map((item, index) => (
-                                                                <div className='flex items-center gap-3' key={index}>
-                                                                    <div className='self-start'>
-                                                                        <img src={item?.user?.avatar ? item?.user?.avatar?.url : profilePic} alt="user-avatar" width={35} height={35} className='rounded-full object-cover border border-gray-300 self-start' />
-                                                                    </div>
-                                                                    <div className='flex-1 flex flex-col gap-0.5 '>
-                                                                        <div className='flex items-center gap-2'>
-                                                                            <p className='font-[500]'>{item?.user?.name}</p>
-                                                                            <p className='text-gray-400 text-[10px]'>{format(item?.createdAt)}</p>
-                                                                        </div>
-                                                                        <p className='text-xs text-gray-800'>{item?.question}</p>
-                                                                        <div className='flex items-center gap-2 mt-1.5'>
-                                                                            <button className='text-xs border border-gray-300 hover:bg-gray-200 cursor-pointer px-3 py-1 rounded-full' onClick={() => toggleOpenAllReplies(index)}>{openAllReplies === index ? 'Hide Replies' : `${item?.questionReplies.length} Replies`}</button>
-                                                                            <button className='text-xs border border-gray-300 hover:bg-gray-200 cursor-pointer px-3 py-1 rounded-full' onClick={() => toggleOpenReply(index)}>Reply</button>
-                                                                        </div>
-                                                                        {
-                                                                            openReply === index && (
-                                                                                <div className='flex items-center gap-3 mt-1.5'>
-                                                                                    <input type="text" value={answer} onChange={(e) => setAnswer(e.target.value)} className='outline-none border-b border-gray-400 w-full text-xs p-1' placeholder='Add your reply...' />
-                                                                                    <button disabled={isSubmittingAnswer} className={`bg-grass-green text-white rounded-full text-xs px-4 py-1 ${isSubmittingAnswer ? "cursor-not-allowed bg-gray-300 hover:bg-gray-300" : "cursor-pointer hover:bg-dark-grass-green"}`} onClick={() => handleAnswerSubmit(item?._id)}>Reply</button>
-                                                                                </div>
-                                                                            )
-                                                                        }
-                                                                        {
-                                                                            openAllReplies === index && (
-                                                                                item?.questionReplies.length > 0 ? (
-
-                                                                                    <div className='flex flex-col gap-4 mt-3'>
-                                                                                        {
-
-                                                                                            item?.questionReplies?.slice().reverse().map((reply, i) => (
-                                                                                                <div className='flex items-center gap-3' key={i}>
-                                                                                                    <div >
-                                                                                                        <img src={reply?.user?.avatar ? reply?.user?.avatar?.url : profilePic} alt="user-avatar" width={28} height={28} className='rounded-full object-cover border border-gray-300 self-start' />
-                                                                                                    </div>
-                                                                                                    <div className='flex-1 flex flex-col '>
-                                                                                                        <div className='flex items-center gap-2'>
-                                                                                                            <p className='font-[500] flex items-center gap-0.5'>{reply?.user?.name} {reply?.user?._id === courseData?.course?.createdBy && <MdVerified className='text-blue-700' size={17} />} </p>
-                                                                                                            <p className='text-gray-400 text-[10px]'>{format(reply?.createdAt)}</p>
-                                                                                                        </div>
-                                                                                                        <p className='text-xs text-gray-800'>{reply?.answer}</p>
-                                                                                                    </div>
-
-                                                                                                </div>
-                                                                                            ))
-                                                                                        }
-                                                                                    </div>
-                                                                                ) : (
-                                                                                    <></>
-                                                                                )
-                                                                            )
-                                                                        }
-
-
-                                                                    </div>
+                                                            <div className='flex items-center gap-3' key={index}>
+                                                                <div className='self-start'>
+                                                                    <img src={item?.user?.avatar ? item?.user?.avatar?.url : profilePic} alt="user-avatar" width={35} height={35} className='rounded-full object-cover border border-gray-300 self-start' />
                                                                 </div>
-                                                            ))
+                                                                <div className='flex-1 flex flex-col gap-0.5 '>
+                                                                    <div className='flex items-center gap-2'>
+                                                                        <p className='font-[500]'>{item?.user?.name}</p>
+                                                                        <p className='text-gray-400 text-[10px]'>{format(item?.createdAt)}</p>
+                                                                    </div>
+                                                                    <p className='text-xs text-gray-800'>{item?.question}</p>
+                                                                    <div className='flex items-center gap-2 mt-1.5'>
+                                                                        <button className='text-xs border border-gray-300 hover:bg-gray-200 cursor-pointer px-3 py-1 rounded-full' onClick={() => toggleOpenAllReplies(index)}>{openAllReplies === index ? 'Hide Replies' : `${item?.questionReplies.length} Replies`}</button>
+                                                                        <button className='text-xs border border-gray-300 hover:bg-gray-200 cursor-pointer px-3 py-1 rounded-full' onClick={() => toggleOpenReply(index)}>Reply</button>
+                                                                    </div>
+                                                                    {
+                                                                        openReply === index && (
+                                                                            <div className='flex items-center gap-3 mt-1.5'>
+                                                                                <input type="text" value={answer} onChange={(e) => setAnswer(e.target.value)} className='outline-none border-b border-gray-400 w-full text-xs p-1' placeholder='Add your reply...' />
+                                                                                <button disabled={isSubmittingAnswer} className={`bg-grass-green text-white rounded-full text-xs px-4 py-1 ${isSubmittingAnswer ? "cursor-not-allowed bg-gray-300 hover:bg-gray-300" : "cursor-pointer hover:bg-dark-grass-green"}`} onClick={() => handleAnswerSubmit(item?._id)}>Reply</button>
+                                                                            </div>
+                                                                        )
+                                                                    }
+                                                                    {
+                                                                        openAllReplies === index && (
+                                                                            item?.questionReplies.length > 0 ? (
+
+                                                                                <div className='flex flex-col gap-4 mt-3'>
+                                                                                    {
+
+                                                                                        item?.questionReplies?.slice().reverse().map((reply, i) => (
+                                                                                            <div className='flex items-center gap-3' key={i}>
+                                                                                                <div >
+                                                                                                    <img src={reply?.user?.avatar ? reply?.user?.avatar?.url : profilePic} alt="user-avatar" width={28} height={28} className='rounded-full object-cover border border-gray-300 self-start' />
+                                                                                                </div>
+                                                                                                <div className='flex-1 flex flex-col '>
+                                                                                                    <div className='flex items-center gap-2'>
+                                                                                                        <p className='font-[500] flex items-center gap-0.5'>{reply?.user?.name} {reply?.user?._id === courseData?.course?.createdBy && <MdVerified className='text-blue-700' size={17} />} </p>
+                                                                                                        <p className='text-gray-400 text-[10px]'>{format(reply?.createdAt)}</p>
+                                                                                                    </div>
+                                                                                                    <p className='text-xs text-gray-800'>{reply?.answer}</p>
+                                                                                                </div>
+
+                                                                                            </div>
+                                                                                        ))
+                                                                                    }
+                                                                                </div>
+                                                                            ) : (
+                                                                                <></>
+                                                                            )
+                                                                        )
+                                                                    }
+
+
+                                                                </div>
+                                                            </div>
+                                                        ))
                                                     }
                                                 </div>
                                             </>
@@ -336,7 +346,7 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
                                                                 </div>
                                                             </div>
                                                             <div className='flex justify-end'>
-                                                                <button disabled={isSubmittingReview} className={`bg-black text-white text-xs px-4 py-1 rounded-sm ${isSubmittingReview ? "bg-gray-300 cursor-not-allowed hover:bg-gray-300" : "cursor-pointer hover:bg-gray-700"}`} onClick={handleReviewSubmit}>{isSubmittingReview ? "Submitting..." : "Submit"}</button>
+                                                                <button disabled={isSubmittingReview} className={`bg-black text-white text-xs px-4 py-1 rounded-full ${isSubmittingReview ? "bg-gray-300 cursor-not-allowed hover:bg-gray-300" : "cursor-pointer hover:bg-gray-700"}`} onClick={handleReviewSubmit}>{isSubmittingReview ? "Submitting..." : "Submit"}</button>
                                                             </div>
                                                         </div>
                                                     )
@@ -372,41 +382,46 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
                     </div>
 
                     {/*  */}
+
                     <div className='col-span-2 pl-12'>
-                        {
-                            courseBySection && courseBySection.map((content, index) => (
-                                <Collapsible key={index} open={openSections.includes(index)} onOpenChange={() => handleToggle(index)} className="border-b border-gray-300">
-                                    <CollapsibleTrigger className=" w-full flex items-center justify-between  p-2 px-3 cursor-pointer ">
-                                        <div className='flex-1 text-left '>
-                                            <h5 className='font-[600]'>{content?.section}</h5>
-                                            <div className='flex items-center gap-2 text-sm'>
-                                                <p>{content?.videos?.length} {content?.videos?.length === 1 ? "Lesson" : "Lessons"}</p>
-                                                <p>•</p>
-                                                <p>{content?.sectionDuration} </p>
-                                            </div>
-                                        </div>
-                                        {
-                                            openSections.includes(index) ? <IoChevronUp /> : <IoChevronDown />
-                                        }
+                        <h3 className='text-2xl font-[600] opacity-0'>Lessons</h3>
+                        <div className='bg-white border border-gray-300 rounded-sm mt-2'>
 
-                                    </CollapsibleTrigger>
-                                    <CollapsibleContent className=" flex flex-col text-xs cursor-pointer">
-                                        {
-                                            content?.videos.map((video, index) => (
-                                                <div className={`flex items-center px-6 py-3 rounded-sm gap-3 ${activeVideo === video?.videoIndex && "bg-muted-green-lighter text-white"}`} onClick={() => handleSwitchVideo(video?.videoIndex)} key={index}>
-                                                    <LucideTvMinimalPlay size={20} />
-                                                    <div>
-                                                        <p>{video?.title}</p>
-                                                        <p className='text-xs font-[300]'>{video?.length}</p>
-                                                    </div>
+                            {
+                                courseBySection && courseBySection.map((content, index) => (
+                                    <Collapsible key={index} open={openSections.includes(index)} onOpenChange={() => handleToggle(index)} className={`${index !== courseBySection.length - 1 && "border-b border-gray-300"}`}>
+                                        <CollapsibleTrigger className=" w-full flex items-center justify-between  p-2 px-3 cursor-pointer ">
+                                            <div className='flex-1 text-left '>
+                                                <h5 className='font-[600]'>{content?.section}</h5>
+                                                <div className='flex items-center gap-2 text-sm'>
+                                                    <p>{content?.videos?.length} {content?.videos?.length === 1 ? "Lesson" : "Lessons"}</p>
+                                                    <p>•</p>
+                                                    <p>{content?.sectionDuration} </p>
                                                 </div>
+                                            </div>
+                                            {
+                                                openSections.includes(index) ? <IoChevronUp /> : <IoChevronDown />
+                                            }
 
-                                            ))
-                                        }
-                                    </CollapsibleContent>
-                                </Collapsible>
-                            ))
-                        }
+                                        </CollapsibleTrigger>
+                                        <CollapsibleContent className=" flex flex-col text-xs cursor-pointer my-1.5">
+                                            {
+                                                content?.videos.map((video, index) => (
+                                                    <div className={`flex items-center mx-4 px-3 py-3 rounded-sm gap-3 ${activeVideo === video?.videoIndex && "bg-grass-green  text-white"}`} onClick={() => handleSwitchVideo(video?.videoIndex)} key={index}>
+                                                        <LucideTvMinimalPlay size={20} />
+                                                        <div>
+                                                            <p>{video?.title}</p>
+                                                            <p className='text-xs font-[300]'>{video?.length}</p>
+                                                        </div>
+                                                    </div>
+
+                                                ))
+                                            }
+                                        </CollapsibleContent>
+                                    </Collapsible>
+                                ))
+                            }
+                        </div>
                     </div>
                 </div>
             </div>
