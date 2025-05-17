@@ -3,7 +3,7 @@ import { courseProgressModel } from "../models/course-progress.model.js"
 import { courseModel } from "../models/course.model.js"
 
 const populateCreator = (query) => {
-    return query.populate('createdBy', 'name email');
+    return query.populate('createdBy', 'name email avatar');
 };
 
 export const getCourseProgress = CatchAsyncError(async (req, res, next) => {

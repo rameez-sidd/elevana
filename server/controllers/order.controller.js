@@ -14,7 +14,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const _dirname = path.resolve()
 
 const populateCreator = (query) => {
-    return query.populate('createdBy', 'name email');
+    return query.populate('createdBy', 'name email avatar');
 };
 
 

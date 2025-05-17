@@ -5,7 +5,7 @@ import { userModel } from "../models/user.model.js"
 
 
 const populateCreator = (query) => {
-    return query.populate('createdBy', 'name email');
+    return query.populate('createdBy', 'name email avatar');
 };
 
 

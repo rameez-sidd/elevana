@@ -9,6 +9,7 @@ import { loadStripe } from '@stripe/stripe-js'
 import Footer from '../components/shared/Footer'
 import { useSelector } from 'react-redux'
 
+
 const CourseDetailsPage = () => {
     const { id } = useParams()
 
@@ -32,6 +33,8 @@ const CourseDetailsPage = () => {
     useEffect(() => {
         refetch() 
     }, [])
+
+   
 
     useEffect(() => {
         if (config) {
@@ -60,7 +63,7 @@ const CourseDetailsPage = () => {
                     <Loading size='screen' />
                 ) : (
                     
-                    stripePromise && <CourseDetails data={data?.course} stripePromise={stripePromise} clientSecret={clientSecret}/>
+                    stripePromise && <CourseDetails data={data?.course} stripePromise={stripePromise} clientSecret={clientSecret} refetch={refetch}/>
                     
 
                 )

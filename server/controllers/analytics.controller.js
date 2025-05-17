@@ -6,7 +6,7 @@ import { courseModel } from "../models/course.model.js";
 import { orderModel } from "../models/order.model.js";
 
 const populateCreator = (query) => {
-    return query.populate('createdBy', 'name email');
+    return query.populate('createdBy', 'name email avatar');
 };
 
 

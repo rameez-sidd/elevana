@@ -13,17 +13,28 @@ import { setModalOpen } from '../../redux/features/auth/authSlice'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import profilePic from '../../assets/images/avatar.jpg'
+import { useAddReviewinCourseMutation } from '../../redux/features/courses/coursesApi'
+import socketIO from 'socket.io-client'
 
-const CourseDetails = ({ data, stripePromise, clientSecret }) => {
+const ENDPOINT = import.meta.env.VITE_PUBLIC_SOCKET_SERVER_URI || ""
+const socketId = socketIO(ENDPOINT, { transports: ["websocket"] })
+
+const CourseDetails = ({ data, stripePromise, clientSecret, refetch }) => {
   const [openPayment, setOpenPayment] = useState(false)
   const { user, modalOpen } = useSelector((state) => state.auth)
+  const [addReviewInCourse, { isLoading: isSubmittingReview }] = useAddReviewinCourseMutation()
   const dispatch = useDispatch()
   const discount = (((data?.estimatedPrice - data?.price) / data?.estimatedPrice) * 100).toFixed(0)
 
-  const isPurchased = (user && user?.courses?.find((item) => item._id === data._id) || data?.price === 0) 
+  const isPurchased = (user && user?.courses?.find((item) => item._id === data._id) || data?.price === 0)
   const [openSections, setOpenSections] = useState([])
   const courseContent = groupBySection(data?.courseData, false)
   const navigate = useNavigate()
+
+  const isReviewExists = (data?.reviews.find((item) => item?.user?._id === user?._id) || user?.role === 'admin')
+
+  const [rating, setRating] = useState(0)
+  const [review, setReview] = useState('')
 
 
   const handleToggle = (index) => {
@@ -37,10 +48,34 @@ const CourseDetails = ({ data, stripePromise, clientSecret }) => {
   const handleOrder = () => {
     if (!user) {
       dispatch(setModalOpen("login"))
-  } else {
+    } else {
       setOpenPayment(true)
+    }
   }
-  }
+
+  const handleReviewSubmit = async () => {
+          if (review.length === 0) {
+              return
+          }
+          try {
+              await addReviewInCourse({ review, rating, courseId: data?._id }).unwrap()
+              toast.success('Thank You for reviewing this course!')
+              refetch()
+              setReview('')
+              setRating(0)
+              socketId.emit("notification", {
+                  adminId: data?.course?.createdBy,
+                  notification: {
+                      title: 'New Review Received',
+                      message: `${user?.name} has given a review in ${data?.name}`,
+                      userId: user?._id
+                  }
+              })
+          } catch (error) {
+              const message = error?.data?.message || error?.message || "Something went wrong.";
+              toast.error(message);
+          }
+      }
 
 
   return (
@@ -133,11 +168,30 @@ const CourseDetails = ({ data, stripePromise, clientSecret }) => {
               </div>
             </div>
 
-            
+
 
 
             <div className='flex flex-col gap-4 mt-6'>
               <h2 className='text-3xl font-[600]'>Reviews & Ratings</h2>
+              {
+                isPurchased &&
+                !isReviewExists && (
+                  <div className='flex flex-col gap-2'>
+                    <div className='flex items-center gap-2'>
+                      <img src={user?.avatar ? user?.avatar?.url : profilePic} width={35} height={35} className='rounded-full object-cover border border-gray-300 self-start' />
+                      <div className='flex-1 flex flex-col gap-1'>
+                        <Rating value={rating} precision={0.5} onChange={(event, newValue) => {
+                          setRating(newValue)
+                        }} />
+                        <textarea value={review} onChange={(e) => setReview(e.target.value)} placeholder='Write a review...' rows={3} className='border border-gray-400 flex-1 resize-none rounded-sm outline-none px-2 py-1 text-sm placeholder:text-sm'></textarea>
+                      </div>
+                    </div>
+                    <div className='flex justify-end'>
+                      <button disabled={isSubmittingReview} className={`bg-black text-white text-xs px-4 py-1 rounded-full ${isSubmittingReview ? "bg-gray-300 cursor-not-allowed hover:bg-gray-300" : "cursor-pointer hover:bg-gray-700"}`} onClick={handleReviewSubmit}>{isSubmittingReview ? "Submitting..." : "Submit"}</button>
+                    </div>
+                  </div>
+                )
+              }
               <div className='flex flex-col gap-6'>
                 {
                   data?.reviews?.slice().reverse().map((review, index) => (
@@ -158,6 +212,7 @@ const CourseDetails = ({ data, stripePromise, clientSecret }) => {
                   ))
                 }
                 {
+                  !isPurchased &&
                   data?.reviews.length === 0 && (
                     <div className='text-sm text-gray-500'>
                       No Reviews Yet!

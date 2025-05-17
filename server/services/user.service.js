@@ -4,7 +4,7 @@ import { courseModel } from "../models/course.model.js";
 import { redis } from "../utils/redis.js"
 
 const populateCreator = (query) => {
-    return query.populate('createdBy', 'name email');
+    return query.populate('createdBy', 'name email avatar');
 };
 
 

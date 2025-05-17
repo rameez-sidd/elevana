@@ -17,7 +17,7 @@ import { log } from "console"
 const _dirname = path.resolve()
 
 const populateCreator = (query) => {
-    return query.populate('createdBy', 'name email');
+    return query.populate('createdBy', 'name email avatar');
 };
 
 // upload course
@@ -51,7 +51,7 @@ export const editCourse = CatchAsyncError(async (req, res, next) => {
 
         const courseId = req.params.id;
 
-        const courseData = await courseModel.findById(courseId);
+        const courseData = await populateCreator(courseModel.findById(courseId));
 
         if (thumbnail && !thumbnail.startsWith("https")) {
             await cloudinary.v2.uploader.destroy(courseData.thumbnail.public_id);
@@ -100,7 +100,7 @@ export const getCourseForEdit = CatchAsyncError(async (req, res, next) => {
     try {
         const courseId = req.params.id
 
-        const course = await courseModel.findById(courseId)
+        const course = await populateCreator(courseModel.findById(courseId))
 
         res.status(200).json({
             success: true,
@@ -128,7 +128,7 @@ export const getSingleCourse = CatchAsyncError(async (req, res, next) => {
             })
         } else {
             const course = await courseModel.findById(courseId)
-                .populate('createdBy', 'name email') // Populate user details
+                .populate('createdBy', 'name email avatar') // Populate user details
                 .lean(); // .lean() returns a plain JS object
 
             // Remove unwanted fields from courseData
@@ -385,13 +385,16 @@ export const addReview = CatchAsyncError(async (req, res, next) => {
 
         // check if courseId exists in user Course List
 
+        const course = await populateCreator(courseModel.findById(courseId))
         const courseExists = userCourseList?.some((course) => course._id.toString() === courseId.toString())
 
-        if (!courseExists) {
-            return next(new ErrorHandler("You are not eligible to access this course", 400))
+        if (course?.price > 0) {
+            if (!courseExists) {
+                return next(new ErrorHandler("You are not eligible to access this course", 400))
+            }
+
         }
 
-        const course = await populateCreator(courseModel.findById(courseId))
 
         const { review, rating } = req.body
 
