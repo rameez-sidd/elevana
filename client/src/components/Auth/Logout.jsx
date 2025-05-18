@@ -33,7 +33,7 @@ const Logout = ({ openLogout, setOpenLogout }) => {
                             
                             <button disabled={isLoading} className='min-w-28 py-1.5 bg-dark-green text-sm hover:bg-muted-green text-white rounded-md cursor-pointer' onClick={() => setOpenLogout(false)}>Stay</button>
 
-                            <button disabled={isLoading} className={`min-w-28 py-1.5 text-sm bg-red-700  text-white rounded-md ${isLoading ? "cursor-not-allowed bg-gray-300 hover:bg-gray-300" : "cursor-pointer hover:bg-red-500"}`} onClick={handleLogout}>{isLoading ? "Logging out..." : "Yes, Log Out"}</button>
+                            <button disabled={isLoading} className={`min-w-28 py-1.5 text-sm   text-white rounded-md ${isLoading ? "cursor-not-allowed bg-gray-300 hover:bg-gray-300" : "cursor-pointer bg-red-700 hover:bg-red-500"}`} onClick={handleLogout}>{isLoading ? "Logging out..." : "Yes, Log Out"}</button>
                         </div>
                     </div>
 

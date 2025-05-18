@@ -340,23 +340,23 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
                                             <div className='flex items-center gap-2'>
                                                 {
                                                     courseData?.course?.tags.split(", ").map((tag, index) => (
-                                                        <span key={index} className='text-sm text-gray-400'>#{tag}</span>
+                                                        <span key={index} className='text-sm text-gray-400'>#{tag.toLowerCase()}</span>
                                                     ))
                                                 }
                                             </div>
 
                                             <div className='text-sm leading-5.5'>
                                                 {
-                                                    expanded ? (
+                                                    videoData?.content[activeVideo]?.description.length <= 250 || expanded ? (
                                                         <div>
                                                             <p>{videoData?.content[activeVideo]?.description}</p>
 
-                                                            <div className='flex flex-col gap-1 my-6'>
+                                                            <div className='flex flex-col gap-1 mt-6 mb-3'>
                                                                 <h4 className='text-xl font-[600]'>Resources</h4>
                                                                 <div className='flex flex-col '>
                                                                     {
                                                                         videoData?.content[activeVideo]?.links.map((link) => (
-                                                                            <p key={link?._id}>{link?.title}: <a href={link?.title} className='ml-1 text-blue-700 font-[300] hover:underline'>{link?.url}</a></p>
+                                                                            <p key={link?._id}>{link?.title}: <a href={link?.url} target='_blank' className='ml-1 text-blue-700 font-[300] hover:underline'>{link?.url}</a></p>
 
                                                                         ))
                                                                     }
@@ -369,7 +369,7 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
                                                 {videoData?.content[activeVideo]?.description.length > 250 && !expanded && <span className='text-gray-500'>... </span>}
                                                 {videoData?.content[activeVideo]?.description.length > 250 && (
 
-                                                    <button className={`font-[600] cursor-pointer  text-md  ${expanded && 'block mt-2'}`} onClick={() => setExpanded(!expanded)}>{expanded ? 'Show less' : 'more'}</button>
+                                                    <button className={`font-[600] cursor-pointer  text-md  ${expanded && 'block mt-4'}`} onClick={() => setExpanded(!expanded)}>{expanded ? 'Show less' : 'more'}</button>
                                                 )}
 
                                             </div>
