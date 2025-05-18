@@ -18,7 +18,7 @@ const InvoicesTable = () => {
         { field: "name", headerName: "Name", flex: 0.5 },
         { field: "email", headerName: "Email", flex: 0.5 },
         { field: "course", headerName: "Course Title", flex: 0.5 },
-        { field: "price", headerName: "Price", flex: 0.5 },
+        { field: "price", headerName: "Price", flex: 0.3 },
         {
             field: " ",
             headerName: "Email",
