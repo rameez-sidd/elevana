@@ -153,6 +153,7 @@ export const newPayment = CatchAsyncError(async (req, res, next) => {
         const myPayment = await stripe.paymentIntents.create({
             amount: amount,
             currency: "USD",
+            receipt_email: req.user?.email,
             metadata: {
                 company: "Elevana",
                 courseId: course._id.toString(),
