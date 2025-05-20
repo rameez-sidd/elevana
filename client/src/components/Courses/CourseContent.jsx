@@ -1,4 +1,4 @@
-import { DecrementByOne, IncrementByOne, setActiveVideo } from '../../redux/features/courses/courseContentSlice';
+import { decrementCurrentVideo, incrementCurrentVideo, setActiveVideos } from '../../redux/features/courses/courseContentSlice';
 import { useAddAnswerinQuestionMutation, useAddNewQuestionMutation, useAddReviewinCourseMutation, useGetCourseContentQuery } from '../../redux/features/courses/coursesApi'
 import { groupBySection } from '../../utils/courseContentGrouping';
 import React, { useEffect, useState } from 'react'
@@ -29,7 +29,8 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
     
 
 
-    const { activeVideo } = useSelector((state) => state.courseContent)
+    const { activeVideos = [] } = useSelector((state) => state.courseContent)
+    const activeVideo = activeVideos.find((video) => video.id === id)?.currentVideo || 0
     const dispatch = useDispatch()
 
     const [addNewQuestion, { isLoading: isSubmittingQuestion }] = useAddNewQuestionMutation()
@@ -87,7 +88,7 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
         if (activeVideo === videoData?.content?.length - 1) {
             return
         }
-        dispatch(IncrementByOne())
+        dispatch(incrementCurrentVideo({ id }))
         setQuestion('')
         setAnswer('')
        
@@ -100,7 +101,7 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
         if (activeVideo === 0) {
             return
         }
-        dispatch(DecrementByOne())
+        dispatch(decrementCurrentVideo({ id }))
         setQuestion('')
         setAnswer('')
        
@@ -110,7 +111,7 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
     }
 
     const handleSwitchVideo = (index) => {
-        dispatch(setActiveVideo(index))
+        dispatch(setActiveVideos({ id, currentVideo: index }))
         setQuestion('')
         setAnswer('')
         setOpenReply(null)

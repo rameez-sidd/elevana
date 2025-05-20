@@ -29,10 +29,7 @@ const CourseAccessPage = () => {
     }
   }, [])
 
-  // Reset activeVideo when course ID changes
-  useEffect(() => {
-    dispatch(setActiveVideo(0))
-  }, [id, dispatch])
+ 
 
   return (
     <div className={`bg-background-green ${!courseData?.course && "h-screen flex flex-col"}`}>
