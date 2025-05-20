@@ -1,5 +1,5 @@
 import { Rating } from '@mui/material'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { RiCheckDoubleFill } from 'react-icons/ri'
 import { useDispatch, useSelector } from 'react-redux'
 import { groupBySection } from '../../utils/courseContentGrouping'
@@ -15,6 +15,8 @@ import { toast } from 'react-toastify'
 import profilePic from '../../assets/images/avatar.jpg'
 import { useAddReviewinCourseMutation } from '../../redux/features/courses/coursesApi'
 import socketIO from 'socket.io-client'
+import { MdPlayCircle, MdPlayCircleFilled } from 'react-icons/md'
+import { IoIosPlay } from 'react-icons/io'
 
 const ENDPOINT = import.meta.env.VITE_PUBLIC_SOCKET_SERVER_URI || ""
 const socketId = socketIO(ENDPOINT, { transports: ["websocket"] })
@@ -35,6 +37,8 @@ const CourseDetails = ({ data, stripePromise, clientSecret, refetch }) => {
 
   const [rating, setRating] = useState(0)
   const [review, setReview] = useState('')
+  const [showPlayButton, setShowPlayButton] = useState(true)
+  
 
 
   const handleToggle = (index) => {
@@ -54,28 +58,32 @@ const CourseDetails = ({ data, stripePromise, clientSecret, refetch }) => {
   }
 
   const handleReviewSubmit = async () => {
-          if (review.length === 0) {
-              return
-          }
-          try {
-              await addReviewInCourse({ review, rating, courseId: data?._id }).unwrap()
-              toast.success('Thank You for reviewing this course!')
-              refetch()
-              setReview('')
-              setRating(0)
-              socketId.emit("notification", {
-                  adminId: data?.course?.createdBy,
-                  notification: {
-                      title: 'New Review Received',
-                      message: `${user?.name} has given a review in ${data?.name}`,
-                      userId: user?._id
-                  }
-              })
-          } catch (error) {
-              const message = error?.data?.message || error?.message || "Something went wrong.";
-              toast.error(message);
-          }
-      }
+    if (review.length === 0) {
+      return
+    }
+    try {
+      await addReviewInCourse({ review, rating, courseId: data?._id }).unwrap()
+      toast.success('Thank You for reviewing this course!')
+      refetch()
+      setReview('')
+      setRating(0)
+      socketId.emit("notification", {
+        adminId: data?.course?.createdBy,
+        notification: {
+          title: 'New Review Received',
+          message: `${user?.name} has given a review in ${data?.name}`,
+          userId: user?._id
+        }
+      })
+    } catch (error) {
+      const message = error?.data?.message || error?.message || "Something went wrong.";
+      toast.error(message);
+    }
+  }
+
+  const handleVideoClick = () => {
+    setShowPlayButton(!showPlayButton)
+  };
 
 
   return (
@@ -226,8 +234,13 @@ const CourseDetails = ({ data, stripePromise, clientSecret, refetch }) => {
 
           {/* sidepart */}
           <div className='col-span-1 flex flex-col gap-4'>
-            <div className='rounded-sm overflow-hidden'>
-              <video src={data?.demoUrl} poster={data?.thumbnail?.url} controls></video>
+            <div className='rounded-sm overflow-hidden relative'>
+              <video  src={data?.demoUrl} poster={data?.thumbnail?.url} onClick={handleVideoClick} onEnded={() => setShowPlayButton(true)} className='cursor-pointer' controls={false} onMouseEnter={(e) => e.target.setAttribute('controls', 'true')} onMouseLeave={(e) => e.target.removeAttribute('controls')} controlsList='nodownload'></video>
+              {
+                showPlayButton && (
+                    <IoIosPlay className='absolute top-1/2 left-1/2 translate-y-[-50%] translate-x-[-50%] bg-grass-green p-2 pr-0.5 text-white rounded-full' size={50} />
+                )
+              }
             </div>
             <div className=' flex flex-col gap-2'>
               <div className=' flex items-center gap-2'>

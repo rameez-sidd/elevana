@@ -4,7 +4,7 @@ import { groupBySection } from '../../utils/courseContentGrouping';
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '../ui/collapsible';
-import { IoChevronDown, IoChevronUp } from 'react-icons/io5';
+import { IoChevronDown, IoChevronUp, IoPlaySkipBack, IoPlaySkipBackSharp, IoPlaySkipForward, IoPlaySkipForwardSharp } from 'react-icons/io5';
 import { LucideTvMinimalPlay } from 'lucide-react';
 import profilePic from '../../assets/images/avatar.jpg'
 import { data } from 'react-router-dom';
@@ -16,6 +16,7 @@ import { MdVerified } from 'react-icons/md';
 import socketIO from 'socket.io-client'
 import { TbPlayerTrackNextFilled, TbPlayerTrackPrevFilled } from 'react-icons/tb';
 import { BiSolidLeftArrow, BiSolidRightArrow } from 'react-icons/bi';
+import { IoIosPlay } from 'react-icons/io';
 
 const ENDPOINT = import.meta.env.VITE_PUBLIC_SOCKET_SERVER_URI || ""
 const socketId = socketIO(ENDPOINT, { transports: ["websocket"] })
@@ -26,7 +27,7 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
     const { data: videoData, isLoading, refetch } = useGetCourseContentQuery(id, { refetchOnMountOrArgChange: true, refetchOnFocus: true, refetchOnReconnect: true })
     console.log(videoData);
     console.log(courseData);
-    const videoRef = useRef(null);
+    const [showPlayButton, setShowPlayButton] = useState(true)
 
 
 
@@ -120,13 +121,7 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
         setExpanded(false)
     }
     const handleVideoClick = () => {
-        if (videoRef.current) {
-            if (isPlaying) {
-                videoRef.current.pause();
-            } else {
-                videoRef.current.play();
-            }
-        }
+        setShowPlayButton(!showPlayButton);
     };
 
     const handleQuestionSubmit = async () => {
@@ -193,15 +188,19 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
                                 {
                                     isShowButtons && (
                                         <>
-                                            {/* <div className='bg-red-800 absolute top-1/2 left-1/2 translate-y-[-50%] translate-x-[-50%] z-10 flex items-center justify-between px-4 w-full '> */}
-                                            <BiSolidLeftArrow size={70} className='absolute top-1/2 translate-y-[-50%] left-4 z-10 text-[#ffffffd1] p-4 pl-3 bg-[#000000a6] rounded-full cursor-pointer hover:scale-110 transition-transform duration-300' title='Previous' onClick={handlePrevious} />
-                                            <BiSolidRightArrow size={70} className='absolute top-1/2 translate-y-[-50%] right-4 z-10 text-[#ffffffd1] p-4 pr-3 bg-[#000000a6] rounded-full cursor-pointer hover:scale-110 transition-transform duration-300' title='Next' onClick={handleNext} />
-                                            {/* </div> */}
+                                            <IoPlaySkipBackSharp size={60} className='absolute top-1/2 translate-y-[-50%] left-4 z-10 text-[#ffffffb1] p-4 pl-4 shadow-2xl bg-[#00000077] rounded-full cursor-pointer hover:scale-110 transition-transform duration-300' title='Previous' onClick={handlePrevious} />
+                                            <IoPlaySkipForwardSharp size={60} className='absolute top-1/2 translate-y-[-50%] right-4 z-10 text-[#ffffffb1] p-4 pr-4 shadow-2xl bg-[#00000077] rounded-full cursor-pointer hover:scale-110 transition-transform duration-300' title='Next' onClick={handleNext} />
                                         </>
                                     )
                                 }
                                 
-                                <video ref={videoRef} src={videoData?.content[activeVideo]?.videoUrl} controls className='w-full cursor-pointer' onClick={handleVideoClick}></video>
+                                {
+                                    showPlayButton && (
+
+                                        <IoIosPlay className='absolute top-1/2 left-1/2 translate-y-[-50%] translate-x-[-50%] bg-grass-green p-2 pr-0.5 shadow-2xl text-white rounded-full' size={70} />
+                                    )
+                                }
+                                <video  src={videoData?.content[activeVideo]?.videoUrl} controls controlsList='nodownload' className='w-full cursor-pointer' onClick={handleVideoClick} onEnded={() => setShowPlayButton(true)}></video>
                             </div>
                             <h3 className='text-2xl font-[700] line-clamp-1 '>{videoData?.content[activeVideo]?.title}</h3>
                             {
