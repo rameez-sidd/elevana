@@ -352,7 +352,7 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
                                             <div className='flex items-center gap-2'>
                                                 {
                                                     courseData?.course?.tags.split(", ").map((tag, index) => (
-                                                        <span key={index} className='text-sm text-gray-400'>#{tag.toLowerCase()}</span>
+                                                        <span key={index} className='text-sm text-gray-400'>#{tag.toLowerCase().replace(/\s+/g, '')}</span>
                                                     ))
                                                 }
                                             </div>
