@@ -1,7 +1,7 @@
 import { decrementCurrentVideo, incrementCurrentVideo, setActiveVideos } from '../../redux/features/courses/courseContentSlice';
 import { useAddAnswerinQuestionMutation, useAddNewQuestionMutation, useAddReviewinCourseMutation, useGetCourseContentQuery } from '../../redux/features/courses/coursesApi'
 import { groupBySection } from '../../utils/courseContentGrouping';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '../ui/collapsible';
 import { IoChevronDown, IoChevronUp } from 'react-icons/io5';
@@ -26,7 +26,8 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
     const { data: videoData, isLoading, refetch } = useGetCourseContentQuery(id, { refetchOnMountOrArgChange: true, refetchOnFocus: true, refetchOnReconnect: true })
     console.log(videoData);
     console.log(courseData);
-    
+    const videoRef = useRef(null);
+
 
 
     const { activeVideos = [] } = useSelector((state) => state.courseContent)
@@ -42,7 +43,7 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
     const [openSections, setOpenSections] = useState([])
     const [question, setQuestion] = useState('')
     const [answer, setAnswer] = useState('')
-    
+
     const [openReply, setOpenReply] = useState(null)
     const [openAllReplies, setOpenAllReplies] = useState(null)
     const [isShowButtons, setIsShowButtons] = useState(false)
@@ -91,7 +92,7 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
         dispatch(incrementCurrentVideo({ id }))
         setQuestion('')
         setAnswer('')
-       
+
         setOpenReply(null)
         setOpenAllReplies(null)
         setExpanded(false)
@@ -104,7 +105,7 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
         dispatch(decrementCurrentVideo({ id }))
         setQuestion('')
         setAnswer('')
-       
+
         setOpenReply(null)
         setOpenAllReplies(null)
         setExpanded(false)
@@ -118,6 +119,15 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
         setOpenAllReplies(null)
         setExpanded(false)
     }
+    const handleVideoClick = () => {
+        if (videoRef.current) {
+            if (isPlaying) {
+                videoRef.current.pause();
+            } else {
+                videoRef.current.play();
+            }
+        }
+    };
 
     const handleQuestionSubmit = async () => {
         if (question.length === 0) {
@@ -169,7 +179,7 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
         }
     }
 
-    
+
 
 
 
@@ -182,14 +192,16 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
                             <div className='p-3 bg-black rounded-sm relative' onMouseOver={() => setIsShowButtons(true)} onMouseLeave={() => setIsShowButtons(false)}>
                                 {
                                     isShowButtons && (
-                                        <div className='absolute top-1/2 left-1/2 translate-y-[-50%] translate-x-[-50%] z-10 flex items-center justify-between px-4 w-full '>
-                                            <BiSolidLeftArrow size={70} className='text-[#ffffffd1] p-4 pl-3 bg-[#000000a6] rounded-full cursor-pointer hover:scale-110 transition-transform duration-300' title='Previous' onClick={handlePrevious} />
-                                            <BiSolidRightArrow size={70} className='text-[#ffffffd1] p-4 pr-3 bg-[#000000a6] rounded-full cursor-pointer hover:scale-110 transition-transform duration-300' title='Next' onClick={handleNext} />
-                                        </div>
+                                        <>
+                                            {/* <div className='bg-red-800 absolute top-1/2 left-1/2 translate-y-[-50%] translate-x-[-50%] z-10 flex items-center justify-between px-4 w-full '> */}
+                                            <BiSolidLeftArrow size={70} className='absolute top-1/2 translate-y-[-50%] left-4 z-10 text-[#ffffffd1] p-4 pl-3 bg-[#000000a6] rounded-full cursor-pointer hover:scale-110 transition-transform duration-300' title='Previous' onClick={handlePrevious} />
+                                            <BiSolidRightArrow size={70} className='absolute top-1/2 translate-y-[-50%] right-4 z-10 text-[#ffffffd1] p-4 pr-3 bg-[#000000a6] rounded-full cursor-pointer hover:scale-110 transition-transform duration-300' title='Next' onClick={handleNext} />
+                                            {/* </div> */}
+                                        </>
                                     )
                                 }
-
-                                <video src={videoData?.content[activeVideo]?.videoUrl} controls className='w-full'></video>
+                                
+                                <video ref={videoRef} src={videoData?.content[activeVideo]?.videoUrl} controls className='w-full cursor-pointer' onClick={handleVideoClick}></video>
                             </div>
                             <h3 className='text-2xl font-[700] line-clamp-1 '>{videoData?.content[activeVideo]?.title}</h3>
                             {
@@ -232,68 +244,68 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
                                                         </div>
                                                     ) : (
                                                         <div className=' flex flex-col gap-8'>
-                                                {
-                                                    videoData?.content[activeVideo]?.questions?.slice().reverse().map((item, index) => (
-                                                        <div className='flex items-center gap-3' key={index}>
-                                                            <div className='self-start'>
-                                                                <img src={item?.user?.avatar ? item?.user?.avatar?.url : profilePic} alt="user-avatar" width={35} height={35} className='rounded-full object-cover border border-gray-300 self-start' />
-                                                            </div>
-                                                            <div className='flex-1 flex flex-col gap-0.5 '>
-                                                                <div className='flex items-center gap-2'>
-                                                                    <p className='font-[500]'>{item?.user?.name}</p>
-                                                                    <p className='text-gray-400 text-[10px]'>{format(item?.createdAt)}</p>
-                                                                </div>
-                                                                <p className='text-xs text-gray-800'>{item?.question}</p>
-                                                                <div className='flex items-center gap-2 mt-1.5'>
-                                                                    <button className='text-xs border border-gray-300 hover:bg-gray-200 cursor-pointer px-3 py-1 rounded-full' onClick={() => toggleOpenAllReplies(index)}>{openAllReplies === index ? 'Hide Replies' : `${item?.questionReplies.length} Replies`}</button>
-                                                                    <button className='text-xs border border-gray-300 hover:bg-gray-200 cursor-pointer px-3 py-1 rounded-full' onClick={() => toggleOpenReply(index)}>Reply</button>
-                                                                </div>
-                                                                {
-                                                                    openReply === index && (
-                                                                        <div className='flex items-center gap-3 mt-1.5'>
-                                                                            <input type="text" value={answer} onChange={(e) => setAnswer(e.target.value)} className='outline-none border-b border-gray-400 w-full text-xs p-1' placeholder='Add your reply...' />
-                                                                            <button disabled={isSubmittingAnswer} className={`bg-grass-green text-white rounded-full text-xs px-4 py-1 ${isSubmittingAnswer ? "cursor-not-allowed bg-gray-300 hover:bg-gray-300" : "cursor-pointer hover:bg-dark-grass-green"}`} onClick={() => handleAnswerSubmit(item?._id)}>Reply</button>
+                                                            {
+                                                                videoData?.content[activeVideo]?.questions?.slice().reverse().map((item, index) => (
+                                                                    <div className='flex items-center gap-3' key={index}>
+                                                                        <div className='self-start'>
+                                                                            <img src={item?.user?.avatar ? item?.user?.avatar?.url : profilePic} alt="user-avatar" width={35} height={35} className='rounded-full object-cover border border-gray-300 self-start' />
                                                                         </div>
-                                                                    )
-                                                                }
-                                                                {
-                                                                    openAllReplies === index && (
-                                                                        item?.questionReplies.length > 0 ? (
-
-                                                                            <div className='flex flex-col gap-4 mt-3'>
-                                                                                {
-
-                                                                                    item?.questionReplies?.slice().reverse().map((reply, i) => (
-                                                                                        <div className='flex items-center gap-3' key={i}>
-                                                                                            <div >
-                                                                                                <img src={reply?.user?.avatar ? reply?.user?.avatar?.url : profilePic} alt="user-avatar" width={28} height={28} className='rounded-full object-cover border border-gray-300 self-start' />
-                                                                                            </div>
-                                                                                            <div className='flex-1 flex flex-col '>
-                                                                                                <div className='flex items-center gap-2'>
-                                                                                                    <p className='font-[500] flex items-center gap-0.5'>{reply?.user?.name} {reply?.user?._id === courseData?.course?.createdBy?._id && <MdVerified className='text-blue-700' size={17} />} </p>
-                                                                                                    <p className='text-gray-400 text-[10px]'>{format(reply?.createdAt)}</p>
-                                                                                                </div>
-                                                                                                <p className='text-xs text-gray-800'>{reply?.answer}</p>
-                                                                                            </div>
-
-                                                                                        </div>
-                                                                                    ))
-                                                                                }
+                                                                        <div className='flex-1 flex flex-col gap-0.5 '>
+                                                                            <div className='flex items-center gap-2'>
+                                                                                <p className='font-[500]'>{item?.user?.name}</p>
+                                                                                <p className='text-gray-400 text-[10px]'>{format(item?.createdAt)}</p>
                                                                             </div>
-                                                                        ) : (
-                                                                            <></>
-                                                                        )
-                                                                    )
-                                                                }
+                                                                            <p className='text-xs text-gray-800'>{item?.question}</p>
+                                                                            <div className='flex items-center gap-2 mt-1.5'>
+                                                                                <button className='text-xs border border-gray-300 hover:bg-gray-200 cursor-pointer px-3 py-1 rounded-full' onClick={() => toggleOpenAllReplies(index)}>{openAllReplies === index ? 'Hide Replies' : `${item?.questionReplies.length} Replies`}</button>
+                                                                                <button className='text-xs border border-gray-300 hover:bg-gray-200 cursor-pointer px-3 py-1 rounded-full' onClick={() => toggleOpenReply(index)}>Reply</button>
+                                                                            </div>
+                                                                            {
+                                                                                openReply === index && (
+                                                                                    <div className='flex items-center gap-3 mt-1.5'>
+                                                                                        <input type="text" value={answer} onChange={(e) => setAnswer(e.target.value)} className='outline-none border-b border-gray-400 w-full text-xs p-1' placeholder='Add your reply...' />
+                                                                                        <button disabled={isSubmittingAnswer} className={`bg-grass-green text-white rounded-full text-xs px-4 py-1 ${isSubmittingAnswer ? "cursor-not-allowed bg-gray-300 hover:bg-gray-300" : "cursor-pointer hover:bg-dark-grass-green"}`} onClick={() => handleAnswerSubmit(item?._id)}>Reply</button>
+                                                                                    </div>
+                                                                                )
+                                                                            }
+                                                                            {
+                                                                                openAllReplies === index && (
+                                                                                    item?.questionReplies.length > 0 ? (
+
+                                                                                        <div className='flex flex-col gap-4 mt-3'>
+                                                                                            {
+
+                                                                                                item?.questionReplies?.slice().reverse().map((reply, i) => (
+                                                                                                    <div className='flex items-center gap-3' key={i}>
+                                                                                                        <div >
+                                                                                                            <img src={reply?.user?.avatar ? reply?.user?.avatar?.url : profilePic} alt="user-avatar" width={28} height={28} className='rounded-full object-cover border border-gray-300 self-start' />
+                                                                                                        </div>
+                                                                                                        <div className='flex-1 flex flex-col '>
+                                                                                                            <div className='flex items-center gap-2'>
+                                                                                                                <p className='font-[500] flex items-center gap-0.5'>{reply?.user?.name} {reply?.user?._id === courseData?.course?.createdBy?._id && <MdVerified className='text-blue-700' size={17} />} </p>
+                                                                                                                <p className='text-gray-400 text-[10px]'>{format(reply?.createdAt)}</p>
+                                                                                                            </div>
+                                                                                                            <p className='text-xs text-gray-800'>{reply?.answer}</p>
+                                                                                                        </div>
+
+                                                                                                    </div>
+                                                                                                ))
+                                                                                            }
+                                                                                        </div>
+                                                                                    ) : (
+                                                                                        <></>
+                                                                                    )
+                                                                                )
+                                                                            }
 
 
-                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                ))
+                                                            }
                                                         </div>
-                                                    ))
-                                                }
-                                                    </div>
                                                     )
-                                                ) 
+                                                )
                                             }
                                             {
                                                 activeDetail === 'reviews' && (
@@ -324,9 +336,9 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
 
                                                         </div>
                                                     )
-                                                       
-                                                        
-                                                
+
+
+
 
                                                 )
                                             }
