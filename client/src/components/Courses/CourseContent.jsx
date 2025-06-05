@@ -78,12 +78,14 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
 
     const toggleOpenReply = (index) => {
         setOpenReply((prev) => (prev === index ? null : index))
-        setOpenAllReplies(null)
+        // setOpenAllReplies(null)
     }
-    const toggleOpenAllReplies = (index) => {
-
+    const toggleOpenAllReplies = (index, replies) => {
+        if(replies <=0){
+            return
+        }
         setOpenAllReplies((prev) => (prev === index ? null : index))
-        setOpenReply(null)
+        // setOpenReply(null)
     }
 
     const handleNext = () => {
@@ -256,7 +258,7 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
                                                                             </div>
                                                                             <p className='text-xs text-gray-800'>{item?.question}</p>
                                                                             <div className='flex items-center gap-2 mt-1.5'>
-                                                                                <button className='text-xs border border-gray-300 hover:bg-gray-200 cursor-pointer px-3 py-1 rounded-full' onClick={() => toggleOpenAllReplies(index)}>{openAllReplies === index ? 'Hide Replies' : `${item?.questionReplies.length} Replies`}</button>
+                                                                                <button className='text-xs border border-gray-300 hover:bg-gray-200 cursor-pointer px-3 py-1 rounded-full' onClick={() => toggleOpenAllReplies(index, item?.questionReplies.length)}>{openAllReplies === index ? 'Hide Replies' : `${item?.questionReplies.length} Replies`}</button>
                                                                                 <button className='text-xs border border-gray-300 hover:bg-gray-200 cursor-pointer px-3 py-1 rounded-full' onClick={() => toggleOpenReply(index)}>Reply</button>
                                                                             </div>
                                                                             {
@@ -417,7 +419,7 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
                                                                 </div>
                                                                 <p className='text-xs text-gray-800'>{item?.question}</p>
                                                                 <div className='flex items-center gap-2 mt-1.5'>
-                                                                    <button className='text-xs border border-gray-300 hover:bg-gray-200 cursor-pointer px-3 py-1 rounded-full' onClick={() => toggleOpenAllReplies(index)}>{openAllReplies === index ? 'Hide Replies' : `${item?.questionReplies.length} Replies`}</button>
+                                                                    <button className='text-xs border border-gray-300 hover:bg-gray-200 cursor-pointer px-3 py-1 rounded-full' onClick={() => toggleOpenAllReplies(index, item?.questionReplies.length)}>{openAllReplies === index ? 'Hide Replies' : `${item?.questionReplies.length} Replies`}</button>
                                                                     <button className='text-xs border border-gray-300 hover:bg-gray-200 cursor-pointer px-3 py-1 rounded-full' onClick={() => toggleOpenReply(index)}>Reply</button>
                                                                 </div>
                                                                 {
