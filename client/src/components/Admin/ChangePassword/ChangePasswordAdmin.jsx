@@ -1,6 +1,6 @@
 import React from 'react'
 import DashboardHeader from '../DashboardHeader'
-import ChangePassword from '../../../components/Profile/ChangePassword'
+import ChangePassword from '../../Profile/ChangePassword'
 
 const ChangePasswordAdmin = () => {
   return (

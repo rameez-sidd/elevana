@@ -74,10 +74,10 @@ const DashboardHeader = ({ title }) => {
 
                     </div>
                 </PopoverTrigger>
-                <PopoverContent className='p-0 rounded-xl border-none min-w-[370px] max-h-[60vh] overflow-y-scroll custom-scrollbar'>
-                    <div className='flex flex-col rounded-xl overflow-hidden'>
+                <PopoverContent className='p-0 rounded-xl border-none min-w-[370px] '>
+                    <div className='flex flex-col rounded-xl overflow-hidden shadow-lg'>
                         <div className='bg-green text-center text-white py-1'>Notifications</div>
-                        <div className='flex flex-col  px-1'>
+                        <div className='flex flex-col  px-1 max-h-[60vh] overflow-y-scroll custom-scrollbar'>
                             {
                                 notifications && notifications.map((item, index) => (
                                     <div className='p-2 flex flex-col gap-0 border-b border-t border-gray-200' key={index}>

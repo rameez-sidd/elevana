@@ -19,10 +19,7 @@ const CourseQA = () => {
 
     
 
-    // Reset activeVideo when course ID changes
-    useEffect(() => {
-        dispatch(setActiveVideo(0))
-    }, [id, dispatch])
+   
 
     return (
         <div className='flex flex-col h-screen'>
