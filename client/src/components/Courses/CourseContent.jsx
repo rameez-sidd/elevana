@@ -46,7 +46,7 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
     const [answer, setAnswer] = useState('')
 
     const [openReply, setOpenReply] = useState(null)
-    const [openAllReplies, setOpenAllReplies] = useState(null)
+    const [openAllReplies, setOpenAllReplies] = useState([])
     const [isShowButtons, setIsShowButtons] = useState(false)
     const [expanded, setExpanded] = useState(false)
 
@@ -78,14 +78,16 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
 
     const toggleOpenReply = (index) => {
         setOpenReply((prev) => (prev === index ? null : index))
-        // setOpenAllReplies(null)
+        setOpenAllReplies((prev) => prev.filter(i => i !== index))
     }
     const toggleOpenAllReplies = (index, replies) => {
         if(replies <=0){
             return
         }
-        setOpenAllReplies((prev) => (prev === index ? null : index))
-        // setOpenReply(null)
+        setOpenAllReplies((prev) => (prev.includes(index) ? prev.filter(i => i !== index) : [...prev, index]))
+        if(openReply === index){
+            setOpenReply(null)
+        }
     }
 
     const handleNext = () => {
@@ -97,7 +99,7 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
         setAnswer('')
 
         setOpenReply(null)
-        setOpenAllReplies(null)
+        setOpenAllReplies([])
         setExpanded(false)
     }
 
@@ -110,7 +112,7 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
         setAnswer('')
 
         setOpenReply(null)
-        setOpenAllReplies(null)
+        setOpenAllReplies([])
         setExpanded(false)
     }
 
@@ -119,7 +121,7 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
         setQuestion('')
         setAnswer('')
         setOpenReply(null)
-        setOpenAllReplies(null)
+        setOpenAllReplies([])
         setExpanded(false)
     }
     const handleVideoClick = () => {
@@ -258,7 +260,7 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
                                                                             </div>
                                                                             <p className='text-xs text-gray-800'>{item?.question}</p>
                                                                             <div className='flex items-center gap-2 mt-1.5'>
-                                                                                <button className='text-xs border border-gray-300 hover:bg-gray-200 cursor-pointer px-3 py-1 rounded-full' onClick={() => toggleOpenAllReplies(index, item?.questionReplies.length)}>{openAllReplies === index ? 'Hide Replies' : `${item?.questionReplies.length} Replies`}</button>
+                                                                                <button className='text-xs border border-gray-300 hover:bg-gray-200 cursor-pointer px-3 py-1 rounded-full' onClick={() => toggleOpenAllReplies(index, item?.questionReplies.length)}>{openAllReplies.includes(index) ? 'Hide Replies' : `${item?.questionReplies.length} Replies`}</button>
                                                                                 <button className='text-xs border border-gray-300 hover:bg-gray-200 cursor-pointer px-3 py-1 rounded-full' onClick={() => toggleOpenReply(index)}>Reply</button>
                                                                             </div>
                                                                             {
@@ -270,7 +272,7 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
                                                                                 )
                                                                             }
                                                                             {
-                                                                                openAllReplies === index && (
+                                                                                openAllReplies.includes(index) && (
                                                                                     item?.questionReplies.length > 0 ? (
 
                                                                                         <div className='flex flex-col gap-4 mt-3'>
@@ -419,7 +421,7 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
                                                                 </div>
                                                                 <p className='text-xs text-gray-800'>{item?.question}</p>
                                                                 <div className='flex items-center gap-2 mt-1.5'>
-                                                                    <button className='text-xs border border-gray-300 hover:bg-gray-200 cursor-pointer px-3 py-1 rounded-full' onClick={() => toggleOpenAllReplies(index, item?.questionReplies.length)}>{openAllReplies === index ? 'Hide Replies' : `${item?.questionReplies.length} Replies`}</button>
+                                                                    <button className='text-xs border border-gray-300 hover:bg-gray-200 cursor-pointer px-3 py-1 rounded-full' onClick={() => toggleOpenAllReplies(index, item?.questionReplies.length)}>{openAllReplies.includes(index) ? 'Hide Replies' : `${item?.questionReplies.length} Replies`}</button>
                                                                     <button className='text-xs border border-gray-300 hover:bg-gray-200 cursor-pointer px-3 py-1 rounded-full' onClick={() => toggleOpenReply(index)}>Reply</button>
                                                                 </div>
                                                                 {
@@ -431,7 +433,7 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
                                                                     )
                                                                 }
                                                                 {
-                                                                    openAllReplies === index && (
+                                                                    openAllReplies.includes(index) && (
                                                                         item?.questionReplies.length > 0 ? (
 
                                                                             <div className='flex flex-col gap-4 mt-3'>
