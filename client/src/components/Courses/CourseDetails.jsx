@@ -238,7 +238,7 @@ const CourseDetails = ({ data, stripePromise, clientSecret, refetch }) => {
               <video  src={data?.demoUrl} poster={data?.thumbnail?.url} onClick={handleVideoClick} onEnded={() => setShowPlayButton(true)} className='cursor-pointer' controls={false} onMouseEnter={(e) => e.target.setAttribute('controls', 'true')} onMouseLeave={(e) => e.target.removeAttribute('controls')} controlsList='nodownload'></video>
               {
                 showPlayButton && (
-                    <IoIosPlay className='absolute top-1/2 left-1/2 translate-y-[-50%] translate-x-[-50%] bg-grass-green p-2 pr-0.5 cursor-pointer text-white rounded-full' size={50} />
+                    <IoIosPlay className='absolute top-1/2 left-1/2 translate-y-[-50%] translate-x-[-50%] bg-grass-green p-2 pr-0.5 cursor-pointer text-white rounded-full pointer-events-none' size={50} />
                 )
               }
             </div>
