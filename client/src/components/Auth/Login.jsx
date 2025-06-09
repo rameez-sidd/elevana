@@ -100,8 +100,8 @@ const Login = ({ setActiveModal }) => {
                             {/* Social Authentication */}
                             <div className='mt-0 flex flex-col gap-2.5 items-center '>
                                 <p className='text-sm'>or</p>
-                                <div className='flex items-center justify-center gap-4 w-full' onClick={() => handleGoogleLogin()}>
-                                    <div className=' bg-white rounded-full border cursor-pointer hover:bg-gray-200 border-gray-300 flex items-center justify-center gap-2 py-1 pl-1 pr-2'>
+                                <div className='flex items-center justify-center gap-4 w-full' >
+                                    <div className=' bg-white rounded-full border cursor-pointer hover:bg-gray-200 border-gray-300 flex items-center justify-center gap-2 py-1 pl-1 pr-2 ' onClick={() => handleGoogleLogin()}>
                                         <FcGoogle size={25} className='cursor-pointer rounded-full' />
                                         <p className='text-xs pr-1'>Sign in with Google</p>
                                     </div>
