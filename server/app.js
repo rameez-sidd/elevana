@@ -3,7 +3,6 @@ import cors from "cors"
 import cookieParser from "cookie-parser"
 import dotenv from "dotenv"
 import { ErrorMiddleware } from "./middlewares/error.js"
-import { Error } from "mongoose"
 import userRouter from "./routes/user.routes.js"
 import courseRouter from "./routes/course.routes.js"
 import orderRouter from "./routes/order.routes.js"
@@ -11,6 +10,7 @@ import notificationRouter from "./routes/notification.routes.js"
 import analyticsRouter from "./routes/analytics.routes.js"
 import layoutRouter from "./routes/layout.routes.js"
 import fileUpload from "express-fileupload"
+import chatbotRouter from "./routes/chatbot.routes.js"
 dotenv.config();
 
 
@@ -43,6 +43,7 @@ app.use('/api/v1', orderRouter)
 app.use('/api/v1', notificationRouter)
 app.use('/api/v1', analyticsRouter)
 app.use('/api/v1', layoutRouter)
+app.use('/api/v1', chatbotRouter)
 
 app.get('/test', (req, res, next) => {
     res.status(200).json({
