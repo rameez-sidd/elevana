@@ -43,6 +43,12 @@ const userSchema = new mongoose.Schema(
         courseId: { type: String },
       },
     ],
+    chatHistory: [
+      {
+        doubt: { type: String },
+        reply: { type: String }
+      }
+    ]
   },
   { timestamps: true }
 );

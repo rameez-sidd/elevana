@@ -2,18 +2,20 @@ import Header from '../components/shared/Header'
 import CourseContent from '../components/Courses/CourseContent'
 import Loading from '../components/Loading'
 import { useLoadUserQuery } from '../redux/api/apiSlice'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useGetCourseDetailsQuery } from '../redux/features/courses/coursesApi'
 import { useSelector, useDispatch } from 'react-redux'
 import { setActiveVideo } from '../redux/features/courses/courseContentSlice'
 import useDocumentTitle from '../utils/useDocumentTitle'
 import ChatBot from '@/components/Courses/ChatBot'
+import ChatUI from '@/components/Courses/ChatUI'
 
 const CourseAccessPage = () => {
   const { id } = useParams()
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const [showChatBot, setShowChatBot] = useState(false);
 
   const { isLoading, error, data } = useLoadUserQuery(undefined, {})
   const { user } = useSelector((state) => state.auth)
@@ -52,8 +54,19 @@ const CourseAccessPage = () => {
             )
           )
         )
+
       }
-      <ChatBot/>
+      {
+        showChatBot ? (
+          <ChatUI setShowChatBot={setShowChatBot} user={user}/>
+
+        ) : (
+          <div onClick={() => setShowChatBot(true)}>
+
+          <ChatBot/>
+          </div>
+        )
+      }
     </div>
   )
 }

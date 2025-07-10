@@ -5,6 +5,6 @@ import { isAuthenticated } from "../middlewares/auth.js";
 
 const chatbotRouter = express.Router();
 
-chatbotRouter.post('/chat', chat)
+chatbotRouter.post('/chat', updateAccessToken, isAuthenticated, chat)
 
 export default chatbotRouter;
