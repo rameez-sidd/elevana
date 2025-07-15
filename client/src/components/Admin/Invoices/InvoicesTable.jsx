@@ -1,0 +1,138 @@
+import React, { useEffect } from 'react'
+import { useGetAllOrdersQuery } from '../../../redux/features/orders/ordersApi'
+import Loading from '../../../components/Loading'
+import { Box, Button, Toolbar } from '@mui/material'
+import { GridToolbar } from '@mui/x-data-grid/internals'
+import { DataGrid } from '@mui/x-data-grid'
+import { AiFillMail } from 'react-icons/ai'
+
+const InvoicesTable = () => {
+    const { data, isLoading, refetch } = useGetAllOrdersQuery(undefined, { refetchOnFocus: true, refetchOnMountOrArgChange: true, refetchOnReconnect: true })
+
+    useEffect(() => {
+        refetch()
+    }, [])
+
+    const columns = [
+        { field: "id", headerName: "ID", flex: 0.3 },
+        { field: "name", headerName: "Name", flex: 0.5 },
+        { field: "email", headerName: "Email", flex: 0.5 },
+        { field: "course", headerName: "Course Title", flex: 0.5 },
+        { field: "price", headerName: "Price", flex: 0.3 },
+        {
+            field: " ",
+            headerName: "Email",
+            flex: 0.2,
+            renderCell: (params) => {
+                return (
+                    <Button><a href={`mailto:${params.row.email}`} style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}><AiFillMail size={17} className='text-dark-green' /></a></Button>
+
+                );
+            },
+        },
+
+    ]
+
+    const rows = []
+
+
+    data && data?.orders.forEach((item) => {
+        rows.push({
+            id: item._id,
+            name: item.user.name,
+            email: item.user.email,
+            course: item.course.name,
+            price: `₹${item.course.price}`,
+
+        })
+    })
+
+
+    return (
+        <div className='px-12 py-12'>
+            {
+                isLoading ? (
+                    <Loading size='screen'/>
+                ) : (
+                    <Box>
+                        <DataGrid checkboxSelection rows={rows} columns={columns} rowHeight={37} pagination pageSize={1} rowsPerPageOptions={[10, 25, 50]} components={{Toolbar: GridToolbar,}} showToolbar
+                            sx={{
+                                fontFamily: `"Lexend", sans-serif`,
+                                fontSize: '13px',
+                                border: 'none',
+                                border: '1px solid #d1d5db',
+                                height: 500,
+
+                                "& .MuiDataGrid-columnHeader": {
+                                    backgroundColor: 'transparent'
+                                },
+                                '& .css-yseucu-MuiDataGrid-columnHeaderRow': {
+                                    backgroundColor: '#163d3b !important',
+                                    height: '42px !important',
+                                    color: 'white'
+                                },
+                                '& .MuiSvgIcon-root': {
+                                    color: 'white'
+                                },
+                                '& input[name="select_all_rows"] + .MuiSvgIcon-root': {
+                                    color: 'white'
+                                },
+                                '& input[name="select_row"] + .MuiSvgIcon-root': {
+                                    color: 'black !important',
+                                },
+
+
+                                '& .MuiTablePagination-selectIcon': {
+                                    color: 'black'
+                                },
+                                '& .MuiSvgIcon-root[data-testid="KeyboardArrowLeftIcon"]': {
+                                    color: 'black'
+                                },
+                                '& .MuiSvgIcon-root[data-testid="KeyboardArrowRightIcon"]': {
+                                    color: 'black'
+                                },
+                                '& .MuiDataGrid-row': {
+                                    minHeight: 30,
+                                    maxHeight: 30,
+                                },
+                                "& .MuiDataGrid-columnHeaderTitle": {
+                                    fontWeight: '400',
+                                    fontSize: '14px'
+                                },
+                                '& .MuiDataGrid-footerContainer': {
+                                    backgroundColor: '#dce7d8',
+                                    fontSize: '12px',
+                                    fontWeight: '500',
+                                    borderTop: '1px solid #ddd',
+                                },
+                                '& .MuiTablePagination-displayedRows': {
+                                    fontFamily: `"Lexend", sans-serif`,
+                                },
+                                '& .MuiTablePagination-selectLabel': {
+                                    fontFamily: `"Lexend", sans-serif`,
+                                },
+                                '& .css-mmygx2-MuiSelect-select-MuiInputBase-input': {
+                                    fontFamily: `"Lexend", sans-serif`,
+
+                                },
+                                '& .MuiDataGrid-columnSeparator': {
+                                    opacity: 0,
+                                },
+                                '& .MuiDataGrid-toolbar': {
+                                    backgroundColor: '#163d3b',
+                                },
+                                '& .MuiOutlinedInput-root': {
+                                    color: 'white',
+                                    outline: 'none'
+                                }
+
+                            }} />
+                    </Box>
+                )
+            }
+
+        </div>
+    )
+}
+
+export default InvoicesTable
