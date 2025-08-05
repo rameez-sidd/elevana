@@ -69,14 +69,13 @@ const CoursesDataGrid = () => {
                             sx={{
                                 fontFamily: `"Lexend", sans-serif`,
                                 fontSize: '13px',
-                                border: 'none',
                                 border: '1px solid #d1d5db',
                                 height: 500,
 
                                 "& .MuiDataGrid-columnHeader": {
                                     backgroundColor: 'transparent'
                                 },
-                                '& .css-yseucu-MuiDataGrid-columnHeaderRow': {
+                                '& .MuiDataGrid-row--borderBottom': {
                                     backgroundColor: '#163d3b !important',
                                     height: '42px !important',
                                     color: 'white'
@@ -95,11 +94,10 @@ const CoursesDataGrid = () => {
                                 '& .MuiTablePagination-selectIcon': {
                                     color: 'black'
                                 },
-                                '& .MuiSvgIcon-root[data-testid="KeyboardArrowLeftIcon"]': {
-                                    color: 'black'
-                                },
-                                '& .MuiSvgIcon-root[data-testid="KeyboardArrowRightIcon"]': {
-                                    color: 'black'
+                                '& .MuiSvgIcon-fontSizeMedium': {
+                                    color: 'black',
+                                    fontFamily: `"Lexend", sans-serif`,
+
                                 },
                                 '& .MuiDataGrid-row': {
                                     minHeight: 30,
@@ -116,19 +114,17 @@ const CoursesDataGrid = () => {
                                     borderTop: '1px solid #ddd',
                                 },
                                 '& .MuiTablePagination-displayedRows': {
-                                    fontFamily: `"Lexend", sans-serif`,
+                                    fontFamily: `"Lexend", sans-serif !important`,
+                                },
+                                '& .MuiSelect-select': {
+                                    fontFamily: `"Lexend", sans-serif !important`,
                                 },
                                 '& .MuiTablePagination-selectLabel': {
                                     fontFamily: `"Lexend", sans-serif`,
                                 },
-                                '& .css-mmygx2-MuiSelect-select-MuiInputBase-input': {
-                                    fontFamily: `"Lexend", sans-serif`,
-
-                                },
                                 '& .MuiDataGrid-columnSeparator': {
                                     opacity: 0,
                                 }
-
                             }} />
                     </Box>
                 )
