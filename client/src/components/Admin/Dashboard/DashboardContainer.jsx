@@ -100,7 +100,7 @@ const DashboardContainer = () => {
                         </div>
                     </div>
 
-                    <div className='col-span-1 pl-8 flex flex-col justify-evenly'>
+                    <div className='col-span-1 pl-8 flex flex-col justify-between '>
                         <div className='flex justify-between bg-zinc-200 rounded-sm p-4'>
                             <div className='flex flex-col gap-0'>
                                 <AiOutlineProduct size={28} className='text-sky-700' />

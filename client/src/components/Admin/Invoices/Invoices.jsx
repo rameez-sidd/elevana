@@ -44,12 +44,12 @@ const Invoices = () => {
                                 fontFamily: `"Lexend", sans-serif`,
                                 fontSize: '13px',
                                 border: 'none',
-                                maxHeight: 250,
+                                height: 250,
 
                                 "& .MuiDataGrid-columnHeader": {
                                     backgroundColor: 'transparent'
                                 },
-                                '& .css-yseucu-MuiDataGrid-columnHeaderRow': {
+                                '& .MuiDataGrid-row--borderBottom': {
                                     backgroundColor: '#163d3b !important',
                                     height: '42px !important',
                                     color: 'white'
@@ -68,11 +68,10 @@ const Invoices = () => {
                                 '& .MuiTablePagination-selectIcon': {
                                     color: 'black'
                                 },
-                                '& .MuiSvgIcon-root[data-testid="KeyboardArrowLeftIcon"]': {
-                                    color: 'black'
-                                },
-                                '& .MuiSvgIcon-root[data-testid="KeyboardArrowRightIcon"]': {
-                                    color: 'black'
+                                '& .MuiSvgIcon-fontSizeMedium': {
+                                    color: 'black',
+                                    fontFamily: `"Lexend", sans-serif`,
+
                                 },
                                 '& .MuiDataGrid-row': {
                                     minHeight: 30,
@@ -89,17 +88,13 @@ const Invoices = () => {
                                     borderTop: '1px solid #ddd',
                                 },
                                 '& .MuiTablePagination-displayedRows': {
-                                    fontFamily: `"Lexend", sans-serif`,
-                                    fontSize: '12px'
+                                    fontFamily: `"Lexend", sans-serif !important`,
+                                },
+                                '& .MuiSelect-select': {
+                                    fontFamily: `"Lexend", sans-serif !important`,
                                 },
                                 '& .MuiTablePagination-selectLabel': {
                                     fontFamily: `"Lexend", sans-serif`,
-                                    fontSize: '12px'
-                                },
-                                '& .css-mmygx2-MuiSelect-select-MuiInputBase-input': {
-                                    fontFamily: `"Lexend", sans-serif`,
-                                    fontSize: '12px'
-
                                 },
                                 '& .MuiDataGrid-columnSeparator': {
                                     opacity: 0,
