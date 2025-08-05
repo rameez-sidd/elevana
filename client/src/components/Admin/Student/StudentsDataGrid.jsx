@@ -56,7 +56,6 @@ const StudentsDataGrid = () => {
                             sx={{
                                 fontFamily: `"Lexend", sans-serif`,
                                 fontSize: '13px',
-                                border: 'none',
                                 border: '1px solid #d1d5db',
                                 height: 500,
 
