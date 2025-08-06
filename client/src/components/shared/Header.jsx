@@ -58,7 +58,7 @@ const Header = ({ isProfileOpen, setIsProfileOpen }) => {
 
             {
                 openMenu && (
-                    <div className='fixed top-0 left-0 h-full w-full bg-[#00000061]' onClick={closeMenu}>
+                    <div className='fixed top-0 left-0 h-screen w-screen bg-[#00000061]' onClick={closeMenu}>
                         <div className='visible-part bg-white w-[60%] h-full shadow-lg flex flex-col gap-3 py-3 px-2'>
                             <NavLink className={() => `text-sm bg-background-green p-2 rounded-md`} to={'/'}>Home</NavLink>
                             <Link className={`text-sm p-2 rounded-md`} onClick={() => scrollToSection('about')}>About</Link>
