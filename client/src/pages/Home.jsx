@@ -42,11 +42,11 @@ const Home = () => {
     <div className='bg-background-green relative'>
       {showIntro && <Intro onComplete={() => setShowIntro(false)} />}
       <div className={showIntro ? 'pointer-events-none' : 'pointer-events-auto'}>
-        {/* <Header />
+        <Header />
         <Hero />
         {user && user.role === 'admin' ? null : <LatestCourses />}
         <About />
-        <StudentReviews /> */}
+        <StudentReviews />
         <FAQ />
         <Footer />
       </div>
