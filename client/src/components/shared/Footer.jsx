@@ -6,10 +6,10 @@ const Footer = () => {
     const {user} = useSelector((state) => state.auth)
     const navigate = useNavigate()
     return (
-        <div className='bg-black text-white py-12 '>
+        <div className='bg-black text-white py-12 px-3 sm:px-6 md:px-3'>
             <div className='mx-auto max-w-7xl'>
-                <div className='grid grid-cols-4'>
-                    <div className='col-span-2'>
+                <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 space-y-10'>
+                    <div className='sm:col-span-4 md:col-span-2'>
                         <h2 className='font-plaster text-4xl'>Elevana</h2>
                         <h5 className='mt-6'>Contact Us:</h5>
                         <div className='mt-3 font-[300] text-sm'>
@@ -17,7 +17,7 @@ const Footer = () => {
                             <p>Email:  <a href='#' className='hover:underline'>hello@elevana.com</a></p>
                         </div>
                     </div>
-                    <div className='flex flex-col gap-4'>
+                    <div className='flex flex-col gap-4 sm:col-span-1'>
                         <h5>Quick Links</h5>
                         <div className='font-[300] text-sm flex flex-col gap-2'>
                             {
@@ -31,7 +31,7 @@ const Footer = () => {
                             }
                         </div>
                     </div>
-                    <div className='flex justify-center '>
+                    <div className='flex justify-start md:justify-center ml-[-8px] sm:ml-0 sm:col-span-1'>
                         <div className='flex flex-col gap-4 '>
 
                         <h5 className='px-2'>Social Links</h5>

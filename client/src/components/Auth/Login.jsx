@@ -66,10 +66,10 @@ const Login = ({ setActiveModal }) => {
 
     return (
         <Modal open onClose={() => setActiveModal(null)} aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description">
-            <Box className="absolute top-1/2 left-1/2 translate-y-[-50%] translate-x-[-50%] outline-none border-none rounded-xl shadow-xl bg-background-green overflow-hidden">
+            aria-describedby="modal-modal-description" className='flex items-center justify-center'>
+            <Box className="max-w-sm w-[95%] sm:w-fit mx-auto outline-none border-none rounded-xl shadow-xl bg-background-green overflow-hidden">
                 <div className='flex flex-col '>
-                    <h2 className='text-2xl font-[600] bg-light-green px-7 py-5 text-center'>Login with <span className='font-plaster text-dark-green'>Elevana</span></h2>
+                    <h2 className='text-xl sm:text-2xl font-[600] bg-light-green px-7 py-5 text-center'>Login with <span className='font-plaster text-dark-green'>Elevana</span></h2>
                     <div className='px-7 py-5'>
                         <form className='flex flex-col gap-4.5' onSubmit={handleSubmit}>
                             <div className='flex flex-col gap-0.5'>

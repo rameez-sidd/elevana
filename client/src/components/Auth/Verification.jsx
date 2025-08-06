@@ -68,10 +68,11 @@ const Verification = ({ setActiveModal }) => {
             aria-describedby="modal-modal-description"
             disableEscapeKeyDown
             disableBackdropClick
+            className='flex items-center justify-center'
         >
-            <Box className="absolute top-1/2 left-1/2 translate-y-[-50%] translate-x-[-50%] outline-none border-none rounded-xl shadow-xl bg-background-green overflow-hidden">
+            <Box className="max-w-sm w-[95%] sm:w-fit mx-auto outline-none border-none rounded-xl shadow-xl bg-background-green overflow-hidden">
                 <div className='flex flex-col '>
-                    <h2 className='text-2xl font-[600] bg-light-green px-7 py-5 text-center'>Verify Your Account</h2>
+                    <h2 className='text-xl sm:text-2xl font-[600] bg-light-green px-7 py-5 text-center'>Verify Your Account</h2>
                     <div className='px-7 py-5 flex flex-col gap-5'>
                         <div className='grid place-items-center'>
                             <img src={verifyImage} alt="verify" width={140} />
