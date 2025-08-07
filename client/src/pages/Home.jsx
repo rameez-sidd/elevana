@@ -43,8 +43,8 @@ const Home = () => {
       {showIntro && <Intro onComplete={() => setShowIntro(false)} />}
       <div className={showIntro ? 'pointer-events-none' : 'pointer-events-auto'}>
         <Header />
-        {/* <Hero />
-        {user && user.role === 'admin' ? null : <LatestCourses />} */}
+        {/* <Hero /> */}
+        {user && user.role === 'admin' ? null : <LatestCourses />}
         <About />
         <StudentReviews />
         <FAQ />

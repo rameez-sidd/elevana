@@ -17,15 +17,15 @@ const LatestCourses = () => {
 
 
   return (
-    <div className='bg-light-green min-h-screen flex items-center'>
-      <div className='mx-auto max-w-7xl w-7xl flex flex-col gap-4'>
-        <div className='flex flex-col gap-2'>
-          <h3 className='text-center text-4xl font-[700]'>Level Up with <span className='text-grass-green'>New Courses</span></h3>
-          <p className='text-center text-lg text-gray-600'>Fresh content designed to push your potential further</p>
+    <div className='bg-light-green min-h-screen flex items-center py-12 pb-14 sm:py-18 sm:pb-20 md:py-23 md:pb-24'>
+      <div className='mx-auto max-w-7xl w-7xl flex flex-col gap-4 overflow-hidden'>
+        <div className='flex flex-col gap-0 sm:gap-1.5 md:gap-2 px-2 md:px-0'>
+          <h3 className='text-center text-[23px] sm:text-2xl md:text-3xl lg:text-4xl font-[700]'>Level Up with <span className='text-grass-green'>New Courses</span></h3>
+          <p className='text-center text-[13px] sm:text-[15px] md:text-[17px] lg:text-lg text-gray-600'>Fresh content crafted to elevate your skills</p>
         </div>
         <div className=''>
           <Carousel className='w-full'>
-            <CarouselContent className='-ml-1 '>
+            <CarouselContent className='-ml-1'>
               {
                 data?.courses && data?.courses.slice(0, 6)?.map((course) => (
                   <CarouselItem key={course._id} className="pl-1 py-10 md:basis-1/2 lg:basis-1/3 flex items-center justify-center">
@@ -37,8 +37,8 @@ const LatestCourses = () => {
                 ))
               }
             </CarouselContent>
-            <CarouselPrevious className='cursor-pointer'/>
-            <CarouselNext className='cursor-pointer'/>
+            <CarouselPrevious className='cursor-pointer left-1.5 xs:left-6 sm:left-20 md:left-3 lg:left-1 xl:left-0'/>
+            <CarouselNext className='cursor-pointer right-1.5 xs:right-6 sm:right-20 md:right-3 lg:right-1 xl:right-0'/>
           </Carousel>
         </div>
 
