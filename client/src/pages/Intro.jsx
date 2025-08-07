@@ -57,7 +57,7 @@ const Intro = ({ onComplete }) => {
       className="w-screen h-screen bg-dark-green text-background-green flex items-center justify-center font-plaster fixed top-0 left-0 z-50"
       style={{ overflow: 'hidden' }}
     >
-      <h1 className="text-[100px] font-bold flex gap-0 tracking-wide overflow-hidden leading-none">
+      <h1 className="text-[40px] lg:text-[70px] xl:text-[100px] font-bold flex gap-0 tracking-wide overflow-hidden leading-none">
         {/* Left side: "Ele" */}
         <span ref={(el) => (eleRefs.current[0] = el)}>E</span>
         <span ref={(el) => (eleRefs.current[1] = el)}>l</span>

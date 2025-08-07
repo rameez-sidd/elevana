@@ -13,7 +13,7 @@ import useDocumentTitle from '../utils/useDocumentTitle'
 const Home = () => {
   useDocumentTitle('Elevana | Where Knowledge Meets Elevation')
   const { user } = useSelector((state) => state.auth)
-  const [showIntro, setShowIntro] = useState(false)
+  const [showIntro, setShowIntro] = useState(true)
 
   useEffect(() => {
     // Check if intro has already been shown this session
@@ -40,7 +40,7 @@ const Home = () => {
 
   return (
     <div className='bg-background-green relative'>
-      {showIntro && <Intro onComplete={() => setShowIntro(false)} />}
+      {/* {showIntro && <Intro onComplete={() => setShowIntro(false)} />}
       <div className={showIntro ? 'pointer-events-none' : 'pointer-events-auto'}>
         <Header />
         <Hero />
@@ -49,7 +49,8 @@ const Home = () => {
         <StudentReviews />
         <FAQ />
         <Footer />
-      </div>
+      </div> */}
+      <Intro/>
     </div>
   )
 }
