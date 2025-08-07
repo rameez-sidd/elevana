@@ -14,16 +14,26 @@ const Home = () => {
   useDocumentTitle('Elevana | Where Knowledge Meets Elevation')
   const { user } = useSelector((state) => state.auth)
   const [showIntro, setShowIntro] = useState(false)
+  const [isClient, setIsClient] = useState(false)
 
   useEffect(() => {
+    // This ensures we're on the client side where sessionStorage exists
+    setIsClient(true)
+  }, [])
+
+  useEffect(() => {
+    if (!isClient) return
+
     // Check if intro has already been shown this session
     const hasIntroPlayed = sessionStorage.getItem('introPlayed')
     if (!hasIntroPlayed) {
       setShowIntro(true)
     }
-  }, [])
+  }, [isClient])
 
   useEffect(() => {
+    if (!isClient) return
+
     if (!showIntro) {
       // Mark that intro has played once
       sessionStorage.setItem('introPlayed', 'true')
@@ -36,8 +46,12 @@ const Home = () => {
     return () => {
       document.body.style.overflow = ''
     }
-  }, [showIntro])
+  }, [showIntro, isClient])
 
+  // Wait for client-side detection before rendering
+  if (!isClient) {
+    return null
+  }
   return (
     <div className='bg-background-green relative'>
       {showIntro && <Intro onComplete={() => setShowIntro(false)} />}
@@ -50,7 +64,6 @@ const Home = () => {
         <FAQ />
         <Footer />
       </div>
-      <Intro/>
     </div>
   )
 }
