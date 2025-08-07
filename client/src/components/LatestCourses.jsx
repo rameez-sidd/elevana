@@ -17,7 +17,7 @@ const LatestCourses = () => {
 
 
   return (
-    <div className='bg-light-green flex items-center py-12 pb-14 sm:py-18 sm:pb-20 md:py-23 md:pb-24'>
+    <div className='bg-light-green flex items-center py-12 pb-6 sm:py-18 sm:pb-13 md:py-23 md:pb-18'>
       <div className='mx-auto max-w-7xl w-7xl flex flex-col gap-0 md:gap-2 lg:gap-4 overflow-hidden'>
         <div className='flex flex-col gap-0 sm:gap-1.5 md:gap-2 px-2 md:px-0'>
           <h3 className='text-center text-[23px] sm:text-2xl md:text-3xl lg:text-4xl font-[700]'>Level Up with <span className='text-grass-green'>New Courses</span></h3>
