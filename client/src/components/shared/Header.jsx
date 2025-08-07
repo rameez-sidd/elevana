@@ -60,13 +60,13 @@ const Header = ({ isProfileOpen, setIsProfileOpen }) => {
                 openMenu && (
                     <div className='fixed top-0 left-0 h-screen w-screen bg-[#00000061]' onClick={closeMenu}>
                         <div className='visible-part bg-white w-[60%] h-full shadow-lg flex flex-col gap-3 py-3 px-2'>
-                            <NavLink className={() => `text-sm bg-background-green p-2 rounded-md`} to={'/'}>Home</NavLink>
-                            <Link className={`text-sm p-2 rounded-md`} onClick={() => scrollToSection('about')}>About</Link>
-                            <Link className={`text-sm p-2 rounded-md`} onClick={() => scrollToSection('faq')}>FAQ</Link>
+                            <NavLink className={() => `text-sm p-2 rounded-sm hover:bg-background-green`} to={'/'}>Home</NavLink>
+                            <Link className={`text-sm p-2 rounded-sm hover:bg-background-green`} onClick={() => scrollToSection('about')}>About</Link>
+                            <Link className={`text-sm p-2 rounded-sm hover:bg-background-green`} onClick={() => scrollToSection('faq')}>FAQ</Link>
                             {
                                 user && user?.role === 'admin' ? (<></>) : (
 
-                                    <NavLink className={() => `text-sm p-2 rounded-md `} to={'/courses'}>Courses</NavLink>
+                                    <NavLink className={() => `text-sm p-2 rounded-sm hover:bg-background-green `} to={'/courses'}>Courses</NavLink>
                                 )
                             }
                         </div>

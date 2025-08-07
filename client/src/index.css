@@ -117,6 +117,8 @@ body{
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
 
+  --breakpoint-xs:450px;
+
 }
 button{
   outline: none;
