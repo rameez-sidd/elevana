@@ -17,7 +17,7 @@ const FAQ = () => {
 
 
     return (
-        <div className='bg-background-green min-h-screen flex items-center py-12 pb-14 sm:py-18 sm:pb-20 md:py-23 md:pb-24' id='faq'>
+        <div className='bg-background-green flex items-center py-12 pb-14 sm:py-18 sm:pb-20 md:py-23 md:pb-24' id='faq'>
             <div className='mx-1.5 md:mx-3 lg:mx-4 xl:mx-auto max-w-7xl flex flex-col gap-6 sm:gap-9 md:gap-14 w-full'>
                 <div className='flex flex-col gap-0 sm:gap-1.5 md:gap-2'>
                     <h3 className='text-center text-[23px] sm:text-2xl md:text-3xl lg:text-4xl font-[700]'>Frequently Asked <span className='text-grass-green'>Questions</span></h3>
