@@ -118,6 +118,11 @@ body{
   --radius-xl: calc(var(--radius) + 4px);
 
   --breakpoint-xs:450px;
+  --breakpoint-bsm:490px;
+  --breakpoint-bsm2:540px;
+  --breakpoint-bmd:700px;
+  --breakpoint-blg:900px;
+  --breakpoint-bxl:1100px;
 
 }
 button{
