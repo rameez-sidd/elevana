@@ -11,7 +11,7 @@ const About = () => {
           <div className='flex items-center p-2 xs:p-5 md:p-0'>
             <img src={aboutImage} alt="" width={1350} className='md:w-[2500px] lg:w-[1350px]' />
           </div>
-          <div className='flex flex-col px-2 xs:px-2.5 sm:px-3.5 md:pl-6 md:pr-2 xl:pr-6 2xl:px-0 gap-5 sm:gap-7 md:gap-6 lg:gap-10 items-center justify-center'>
+          <div className='flex flex-col px-3.5 md:pl-6 md:pr-2 xl:pr-6 2xl:px-0 gap-5 sm:gap-7 md:gap-6 lg:gap-10 items-center justify-center'>
             <div className='flex flex-col gap-0 sm:gap-1.5 md:gap-2'>
               <h3 className='text-center text-[23px] sm:text-2xl md:text-3xl lg:text-4xl font-[700]'>A Look Inside <span className='text-grass-green'>Elevana</span></h3>
               <p className='text-center text-[13px] sm:text-[15px] md:text-[17px] lg:text-lg g text-gray-600'>The purpose and people behind the platform</p>

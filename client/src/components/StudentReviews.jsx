@@ -36,7 +36,7 @@ export const reviews = [
 
 const StudentReviews = () => {
     return (
-        <div className='min-h-screen flex items-center bg-dark-green py-12 pb-14 sm:py-18 sm:pb-20 md:py-23 md:pb-24 px-1.5 sm:px-3 md:px-5'>
+        <div className='min-h-screen flex items-center bg-dark-green py-12 pb-14 sm:py-18 sm:pb-20 md:py-23 md:pb-24 px-2 sm:px-3 md:px-5'>
             <div className='mx-auto max-w-7xl flex flex-col gap-6 sm:gap-9 md:gap-14 w-full'>
                 <div className='flex flex-col gap-0 sm:gap-1.5 md:gap-2'>
                     <h3 className='text-center text-[23px] sm:text-2xl md:text-3xl lg:text-4xl font-[700] text-white'>Trusted by <span className='text-grass-green'>Learners</span></h3>
