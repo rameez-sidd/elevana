@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import SignUp from '../Auth/SignUp'
 import Login from '../Auth/Login'
@@ -14,6 +14,19 @@ const Header = ({ isProfileOpen, setIsProfileOpen }) => {
     const navigate = useNavigate()
     const [openMenu, setOpenMenu] = useState(false);
 
+    useEffect(() => {
+        if (openMenu) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'auto';
+        }
+
+        // Cleanup: Re-enable scrolling when component unmounts
+        return () => {
+            document.body.style.overflow = 'auto';
+        };
+    }, [openMenu]);
+
     const handleSetModal = (modal) => {
         dispatch(setModalOpen(modal))
     }
@@ -26,15 +39,16 @@ const Header = ({ isProfileOpen, setIsProfileOpen }) => {
     }
 
     const closeMenu = (e) => {
-        if(!e.target.classList.contains("visible-part")){
+        if (!e.target.classList.contains("visible-part")) {
             setOpenMenu(false);
         }
+
     }
 
     return (
         <div className='flex justify-between md:grid md:grid-cols-3 items-center mx-auto max-w-7xl py-0.5 pr-1 sm:p-1.5 md:p-2 lg:p-3 lg:py-5 w-full '>
             <h1 className='hidden md:inline justify-self-start font-plaster text-2xl lg:text-3xl text-dark-green'>Elevana</h1>
-            <h1 className='md:hidden flex items-center justify-center font-plaster text-4xl text-dark-green h-10 w-10 text-center align-middle rounded-full hover:bg-zinc-200' onClick={()=> setOpenMenu(true)}>v</h1>
+            <h1 className='md:hidden flex items-center justify-center font-plaster text-4xl text-dark-green h-10 w-10 text-center align-middle rounded-full hover:bg-zinc-200' onClick={() => setOpenMenu(true)}>v</h1>
             <div className='justify-self-center md:flex items-center gap-7 lg:gap-8 font-light hidden'>
                 <NavLink className={({ isActive }) => `text-[13px] lg:text-sm  p-1 border-b-2 border-transparent hover:text-dark-green hover:border-dark-green transition-all duration-300 ${isActive ? 'text-dark-green font-[600] px-0.5' : ' text-gray-600 px-1'} `} to={'/'}>Home</NavLink>
                 <Link className={`text-[13px] lg:text-sm p-1 border-b-2 border-transparent hover:text-dark-green hover:border-dark-green transition-all duration-300 text-gray-600 px-1`} onClick={() => scrollToSection('about')}>About</Link>
@@ -58,7 +72,7 @@ const Header = ({ isProfileOpen, setIsProfileOpen }) => {
 
             {
                 openMenu && (
-                    <div className='fixed top-0 left-0 h-screen w-screen bg-[#00000061]' onClick={closeMenu}>
+                    <div className='z-[999] fixed top-0 left-0 h-screen w-screen bg-[#00000061]' onClick={closeMenu}>
                         <div className='visible-part bg-white w-[60%] h-full shadow-lg flex flex-col gap-3 py-3 px-2'>
                             <NavLink className={() => `text-sm p-2 rounded-sm hover:bg-background-green`} to={'/'}>Home</NavLink>
                             <Link className={`text-sm p-2 rounded-sm hover:bg-background-green`} onClick={() => scrollToSection('about')}>About</Link>
