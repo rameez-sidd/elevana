@@ -123,7 +123,7 @@ const CoursesContainer = () => {
                             }
                             {
                                 courses && courses.length === 0 && (
-                                    <p className=' w-full col-span-4 text-center py-24 text-gray-600 text-sm'>Sorry, No courses found :(</p>
+                                    <p className=' w-full col-span-4 text-center py-48 text-gray-600 text-sm'>Sorry, No courses found :(</p>
                                 )
                             }
                         </div>
