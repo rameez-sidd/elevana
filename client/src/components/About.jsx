@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux'
 const About = () => {
   const { user } = useSelector((state) => state.auth)
   return (
-    <div className={`${user && user?.role === 'admin' ? 'bg-light-green' : 'bg-background-green'} pb-14 md:py-23 md:px-4 md:pt-14 xl:px-0 min-h-screen flex items-center`} id='about'>
+    <div className={`${user && user?.role === 'admin' ? 'bg-light-green' : 'bg-background-green'} pb-14 md:py-23 md:pb-24 md:px-4 xl:px-0 flex items-center`} id='about'>
       <div className='mx-auto max-w-7xl w-full'>
         <div className='flex flex-col md:flex-row gap-8 md:gap-0 xl:gap-18 '>
           <div className='flex items-center p-2 xs:p-5 md:p-0'>
