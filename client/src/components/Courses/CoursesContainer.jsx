@@ -115,7 +115,7 @@ const CoursesContainer = () => {
                             </Popover>
                             <button className='text-xs text-blue-600 hover:underline cursor-pointer' onClick={handleReset}>Reset</button>
                         </div>
-                        <div className=' flex-1 grid grid-cols-1 sm:grid-cols-2 blg:grid-cols-3! b2xl:grid-cols-4! gap-y-6 sm:px-5 md:px-18 md:gap-y-8 blg2:px-24! blg2:gap-y-12! blg:px-0! bxl:px-12! b2xl:px-0! mt-4 place-items-center'>
+                        <div className={`min-h-[500px] ${courses.length === 0 ? "items-center" : "items-start"} flex-1 grid grid-cols-1 sm:grid-cols-2 blg:grid-cols-3! b2xl:grid-cols-4! gap-y-6 sm:px-5 md:px-18 md:gap-y-8 blg2:px-24! blg2:gap-y-12! blg:px-0! bxl:px-12! b2xl:px-0! mt-4 place-items-center`}>
                             {
                                 courses && courses?.map((course) => (
                                     <CourseCard key={course._id} course={course} isEnrolled={false} />
@@ -123,7 +123,7 @@ const CoursesContainer = () => {
                             }
                             {
                                 courses && courses.length === 0 && (
-                                    <p className=' w-full col-span-4 text-center py-48 text-gray-600 text-sm'>Sorry, No courses found :(</p>
+                                    <p className=' w-full col-span-4 text-center text-gray-600 text-sm'>Sorry, No courses found :(</p>
                                 )
                             }
                         </div>
