@@ -1,5 +1,6 @@
 import React from 'react'
 import aboutImage from '../assets/images/about-us-img2.png'
+import aboutImage2 from '../assets/images/about-us-img.png'
 import { useSelector } from 'react-redux'
 
 const About = () => {
@@ -9,7 +10,8 @@ const About = () => {
       <div className='mx-auto max-w-7xl w-full'>
         <div className='flex flex-col md:flex-row gap-8 md:gap-0 xl:gap-18 '>
           <div className='flex items-center p-2 xs:p-5 md:p-0'>
-            <img src={aboutImage} alt="" width={1350} className='md:w-[2500px] lg:w-[1350px]' />
+            <img src={aboutImage} alt="" width={1350} className='md:w-[2500px] lg:w-[1350px] blg2:hidden lg:block' />
+            <img src={aboutImage2} alt="" width={1350} className='md:w-[2500px] lg:w-[1350px] hidden blg2:block lg:hidden' />
           </div>
           <div className='flex flex-col px-3.5 md:pl-6 md:pr-2 xl:pr-6 2xl:px-0 gap-5 sm:gap-7 md:gap-6 lg:gap-10 items-center justify-center'>
             <div className='flex flex-col gap-0 sm:gap-1.5 md:gap-2'>
