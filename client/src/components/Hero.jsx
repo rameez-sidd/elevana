@@ -26,9 +26,9 @@ const Hero = () => {
                     <div className='flex flex-col gap-5 xs:gap-6 md:gap-4 lg:gap-5 xl:gap-7'>
                         <h1 className='text-[2.9rem]/12 xs:text-[3.2rem] bmd:text-[3.5rem] md:text-[2.8rem]/11 blg:text-[3.2rem]/13! lg:text-[3.7rem]/14 bxl:text-[3.9rem]/15! xl:text-[5.5em]/23! md:text-left text-center'>Elevate Your Mind, Discover Your <span className='text-grass-green'>Nirvana</span>.</h1>
                         <p className='text-center md:text-left text-sm sm:text-base md:text-sm blg:text-[16px]! font-light w-[97%] xl:w-[92%] self-center md:self-start text-gray-800'>Embark on a journey of self-improvement with Elevana, where learning and growth come together to help you reach new heights.</p>
-                        <form className='flex self-center md:self-start border-2 border-dark-orange w-[95%] xl:w-[70%]! rounded-4xl overflow-hidden mt-2' onSubmit={handleSearch}>
+                        <form className='flex self-center md:self-start border-2 border-dark-orange w-[95%] xl:w-[70%]! rounded-4xl overflow-hidden mt-2 bg-dark-orange' onSubmit={handleSearch}>
 
-                            <input className=' w-full p-3.5 py-2.5 outline-none border-none text-dark-orange font-[500] placeholder:text-dark-orange placeholder:font-[300]' value={search} onChange={(e) => setSearch(e.target.value)} placeholder='Search Courses...' type="search" name="searchCourses" id="" />
+                            <input className=' w-full p-3.5 py-2.5 outline-none border-none text-dark-orange font-[500] placeholder:text-dark-orange placeholder:font-[300] bg-background-green' value={search} onChange={(e) => setSearch(e.target.value)} placeholder='Search Courses...' type="search" name="searchCourses" id="" />
                             <button type='submit' className='cursor-pointer bg-dark-orange flex-1  px-4 text-white '><RiSearchLine size={23} /></button>
                         </form>
                     </div>
