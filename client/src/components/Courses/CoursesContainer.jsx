@@ -95,7 +95,7 @@ const CoursesContainer = () => {
                             <button className='text-xs text-blue-600 hover:underline cursor-pointer' onClick={handleReset}>Reset</button>
                         </div>
 
-                        <div className='flex items-center justify-between px-4 sm:px-9 md:px-18 blg2:px-24! blg:px-4! blg:hidden'>
+                        <div className='flex items-center justify-between px-4 pl-3 sm:px-9 sm:pl-9 md:px-18 md:pl-17 blg2:px-24! blg2:pl-23! blg:hidden'>
                             <Popover>
 
                                 <PopoverTrigger className='bg-white px-2.5 py-0.5 rounded-full text-[12px] text-center border border-gray-200 cursor-pointer flex items-center gap-1.5'>
