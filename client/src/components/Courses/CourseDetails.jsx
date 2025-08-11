@@ -100,7 +100,7 @@ const CourseDetails = ({ data, stripePromise, clientSecret, refetch }) => {
                   )
                 }
               </div>
-              <h2 className='text-3xl/8 mt-[-10px] md:text-4xl md:mt-[-7px] lg:text-5xl font-[700] lg:mt-0 text-grass-green'>{data?.name}</h2>
+              <h2 className='text-3xl/8 mt-[-10px] md:text-4xl sm:mt-[-7px] md:mt-[-5px] lg:text-5xl font-[700] lg:mt-0 text-grass-green'>{data?.name}</h2>
               <div className='flex flex-col lg:flex-row items-start lg:items-center gap-4 lg:gap-5'>
 
                 <div className='flex items-center gap-2 text-sm mt-[-5px] lg:mt-0'>
