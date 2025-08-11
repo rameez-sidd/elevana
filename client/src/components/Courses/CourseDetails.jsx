@@ -89,8 +89,8 @@ const CourseDetails = ({ data, stripePromise, clientSecret, refetch }) => {
   return (
     <div className='py-12 lg:py-24'>
       <div className='mx-auto max-w-7xl'>
-        <div className='grid grid-cols-4 '>
-          <div className='col-span-4 lg:col-span-3 flex flex-col gap-5 px-3 lg:pr-8 lg:pl-0'>
+        <div className='grid grid-cols-4 lg:px-3 xl:px-0'>
+          <div className='col-span-4 lg:col-span-3 flex flex-col gap-5 px-3 sm:px-4 lg:pr-8 lg:pl-0'>
             <div className='flex flex-col gap-4 '>
               <div className='rounded-sm overflow-hidden relative lg:hidden'>
                 <video src={data?.demoUrl} poster={data?.thumbnail?.url} onClick={handleVideoClick} onEnded={() => setShowPlayButton(true)} className='cursor-pointer' controls={false} onMouseEnter={(e) => e.target.setAttribute('controls', 'true')} onMouseLeave={(e) => e.target.removeAttribute('controls')} controlsList='nodownload'></video>
@@ -100,45 +100,45 @@ const CourseDetails = ({ data, stripePromise, clientSecret, refetch }) => {
                   )
                 }
               </div>
-              <h2 className='text-3xl/8 mt-[-10px] lg:mt-0 lg:text-5xl font-[700] text-grass-green'>{data?.name}</h2>
+              <h2 className='text-3xl/8 mt-[-10px] md:text-4xl md:mt-[-7px] lg:text-5xl font-[700] lg:mt-0 text-grass-green'>{data?.name}</h2>
               <div className='flex flex-col lg:flex-row items-start lg:items-center gap-4 lg:gap-5'>
 
-                <div className='flex items-center gap-2 text-sm'>
-                  <span className='hidden lg:inline'><Rating value={data?.ratings} precision={0.5} readOnly /></span>
-                  <span className='lg:hidden'><Rating value={data?.ratings} precision={0.5} readOnly size='small' /></span>
-                  <p className='text-gray-600 text-xs lg:text-sm'>({data?.reviews?.length} {data?.reviews?.length === 1 ? "Review" : "Reviews"})</p>
+                <div className='flex items-center gap-2 text-sm mt-[-5px] lg:mt-0'>
+                  <span className='hidden md:inline'><Rating value={data?.ratings} precision={0.5} readOnly /></span>
+                  <span className='md:hidden'><Rating value={data?.ratings} precision={0.5} readOnly size='small' /></span>
+                  <p className='text-gray-600 text-xs md:text-sm'>({data?.reviews?.length} {data?.reviews?.length === 1 ? "Review" : "Reviews"})</p>
 
                 </div>
 
                 <div className='flex items-center gap-3 lg:gap-5 text-sm mt-[-4px] lg:mt-0 w-full lg:w-fit'>
-                  <p className='w-full lg:w-fit flex items-center justify-center lg:justify-start gap-3 border border-gray-300 rounded-sm px-3 py-1'><span><FiUsers size={15} /></span> {data?.purchased} {data?.purchased === 1 ? "Student" : "Students"}</p>
-                  <p className='w-full lg:w-fit flex items-center justify-center lg:justify-start gap-3 border border-gray-300 rounded-sm px-3 py-1'><span><RxStack size={19} /></span> {courseContent?.length} {courseContent?.length === 1 ? "Chapter" : "Chapters"}</p>
+                  <p className='w-full lg:w-fit flex items-center justify-center lg:justify-start gap-3 border border-gray-300 rounded-sm px-3 py-1 md:py-1.5 lg:py-1'><span><FiUsers size={15} /></span> {data?.purchased} {data?.purchased === 1 ? "Student" : "Students"}</p>
+                  <p className='w-full lg:w-fit flex items-center justify-center lg:justify-start gap-3 border border-gray-300 rounded-sm px-3 py-1 md:py-1.5 lg:py-1'><span><RxStack size={19} /></span> {courseContent?.length} {courseContent?.length === 1 ? "Chapter" : "Chapters"}</p>
                 </div>
 
               </div>
-              <div className='text-[12px] lg:text-sm hidden'>Created By: <span className='ml-2 italic text-gray-600 underline'>{data?.createdBy?.name}</span></div>
+              <div className='text-[11px] md:text-xs lg:text-sm'>Created By: <span className='ml-2 italic text-gray-600 underline'>{data?.createdBy?.name}</span></div>
 
 
 
             </div>
 
-            <div className='lg:hidden mt-[-6px]'>
+            <div className='lg:hidden mt-[-13px] lg:mt-0'>
               <div className=' flex flex-col gap-2'>
                 <div className=' flex items-center gap-2'>
-                  <p className='text-2xl font-[550] text-dark-green'>{data?.price === 0 ? "Free" : `₹${data?.price}`}</p>
+                  <p className='text-[27px] md:text-[29px] font-[550] text-dark-green'>{data?.price === 0 ? "Free" : `₹${data?.price}`}</p>
                   <p className='text-gray-500 line-through font-[300]'>₹{data?.estimatedPrice}</p>
-                  <p className='ml-1.5 text-green-700 text-sm font-[600]'>{discount}% off</p>
+                  <p className='ml-1 text-green-700 text-sm font-[600]'>{discount}% off</p>
                 </div>
                 {
                   !isPurchased ? (
-                    <button onClick={handleOrder} className='w-full bg-red-700 text-white px-5 py-1.5 rounded-full cursor-pointer hover:bg-red-500'>Buy Now</button>
+                    <button onClick={handleOrder} className='w-full bg-red-700 text-white px-5 py-1.5 sm:py-2 rounded-full cursor-pointer hover:bg-red-500'>Buy Now</button>
                   ) : (
-                    <button className='w-full bg-red-700 text-white px-5 py-1.5 rounded-full cursor-pointer hover:bg-red-500' onClick={() => navigate(`/course-access/${data._id}`)}>Start Learning</button>
+                    <button className='w-full bg-red-700 text-white px-5 py-1.5 sm:py-2 rounded-full cursor-pointer hover:bg-red-500' onClick={() => navigate(`/course-access/${data._id}`)}>Start Learning</button>
                   )
                 }
               </div>
-              <div className='mt-5 ml-2'>
-                <ul className='list-disc list-inside text-xs flex flex-col gap-1.5'>
+              <div className='mt-5 ml-2 md:ml-1'>
+                <ul className='list-disc list-inside text-xs md:text-[13px] flex flex-col gap-1.5'>
                   <li>Source Code Included</li>
                   <li>Full Lifetime Access</li>
                   <li>Certificate of Completion</li>
@@ -148,52 +148,52 @@ const CourseDetails = ({ data, stripePromise, clientSecret, refetch }) => {
             </div>
 
             <div className='flex flex-col gap-4 mt-6'>
-              <h2 className='text-[22px]/7 lg:text-3xl font-[600]'>Why should you join us?</h2>
-              <div className='flex flex-col gap-2 pl-2 lg:pl-0'>
+              <h2 className='text-[22px]/7 md:text-2xl lg:text-3xl font-[600]'>Why should you join us?</h2>
+              <div className='flex flex-col gap-2 pl-2 md:pl-0'>
                 {data?.benefits?.map((benefit, index) => (
                   <div key={index} className='flex items-baseline lg:items-center gap-2'>
-                    <span className='text-[15px] lg:text-[20px]'><RiCheckDoubleFill /></span>
-                    <p className='text-sm lg:text-base'>{benefit.title}</p>
+                    <span className='text-[15px] md:text-[17px] translate-y-1 lg:translate-y-0 lg:text-[20px]'><RiCheckDoubleFill /></span>
+                    <p className='text-sm md:text-[15px] lg:text-base'>{benefit.title}</p>
                   </div>
                 ))}
               </div>
             </div>
 
             <div className='flex flex-col gap-4 mt-6'>
-              <h2 className='text-[22px]/7 lg:text-3xl font-[600]'>What do you need before starting?</h2>
-              <div className='flex flex-col gap-2 pl-2 lg:pl-0'>
+              <h2 className='text-[22px]/7 md:text-2xl lg:text-3xl font-[600]'>What do you need before starting?</h2>
+              <div className='flex flex-col gap-2 pl-2 md:pl-0'>
                 {data?.prerequisites?.map((prerequisite, index) => (
                   <div key={index} className='flex items-baseline lg:items-center gap-2'>
-                    <span className='text-[15px] lg:text-[20px]'><RiCheckDoubleFill /></span>
-                    <p className='text-sm lg:text-base'>{prerequisite.title}</p>
+                    <span className='text-[15px] md:text-[17px] translate-y-1 lg:translate-y-0 lg:text-[20px]'><RiCheckDoubleFill /></span>
+                    <p className='text-sm md:text-[15px] lg:text-base'>{prerequisite.title}</p>
                   </div>
                 ))}
               </div>
             </div>
 
             <div className='flex flex-col gap-4 mt-6'>
-              <h2 className='text-[22px]/7 lg:text-3xl font-[600]'>What's this course all about?</h2>
-              <div className='leading-6.5 text-sm lg:text-base'>
+              <h2 className='text-[22px]/7 md:text-2xl lg:text-3xl font-[600]'>What's this course all about?</h2>
+              <div className='leading-6.5 text-sm md:text-[15px] lg:text-base'>
                 {data?.description}
               </div>
             </div>
 
             <div className='flex flex-col gap-4 mt-6'>
-              <h2 className='text-[22px]/7 lg:text-3xl font-[600]'>Course Curriculum</h2>
-              <div className='flex flex-col gap-1.5 lg:gap-3'>
+              <h2 className='text-[22px]/7 md:text-2xl lg:text-3xl font-[600]'>Course Curriculum</h2>
+              <div className='flex flex-col gap-1.5 md:gap-2 lg:gap-3'>
                 {
                   courseContent && courseContent.map((content, index) => (
                     <Collapsible key={index} open={openSections.includes(index)} onOpenChange={() => handleToggle(index)} className="border border-gray-300 rounded-sm">
-                      <CollapsibleTrigger className=" w-full flex items-center justify-between p-2 px-2.5 lg:p-2 lg:px-3 cursor-pointer">
+                      <CollapsibleTrigger className=" w-full flex items-center justify-between p-2 px-2.5 md:px-3 cursor-pointer">
                         <div className='flex-1 text-left '>
-                          <h5 className='text-sm lg:text-base font-[600] line-clamp-1'>{content?.section}</h5>
-                          <div className='flex items-center gap-2 text-xs lg:text-sm mt-0.5 lg:mt-0'>
+                          <h5 className='text-sm md:text-base font-[600] line-clamp-1'>{content?.section}</h5>
+                          <div className='flex items-center gap-2 text-xs md:text-sm mt-0.5 md:mt-0'>
                             <p>{content?.videos?.length} {content?.videos?.length === 1 ? "Lesson" : "Lessons"}</p>
                             <p>•</p>
                             <p>{content?.sectionDuration} </p>
                           </div>
                         </div>
-                        <span className='text-sm lg:text-base'>
+                        <span className='text-sm md:text-base'>
 
                         {
                           openSections.includes(index) ? <IoChevronUp /> : <IoChevronDown />
@@ -208,7 +208,7 @@ const CourseDetails = ({ data, stripePromise, clientSecret, refetch }) => {
                               <LucideTvMinimalPlay size={20} />
                               <div>
                                 <p className='text-sm'>{video?.title}</p>
-                                <p className='text-[11px] lg:text-xs font-[300]'>{video?.length}</p>
+                                <p className='text-[11px] md:text-xs font-[300]'>{video?.length}</p>
                               </div>
                             </div>
 
@@ -225,11 +225,11 @@ const CourseDetails = ({ data, stripePromise, clientSecret, refetch }) => {
 
 
             <div className='flex flex-col gap-4 mt-6'>
-              <h2 className='text-[22px]/7 lg:text-3xl font-[600]'>Reviews & Ratings</h2>
+              <h2 className='text-[22px]/7 md:text-2xl lg:text-3xl font-[600]'>Reviews & Ratings</h2>
               {
                 isPurchased &&
                 !isReviewExists && (
-                  <div className='flex flex-col gap-2 px-1 lg:px-0'>
+                  <div className='flex flex-col gap-2 px-1 md:px-0'>
                     <div className='flex items-center gap-2'>
                       <img src={user?.avatar ? user?.avatar?.url : profilePic} className='w-[28px] h-[28px] lg:w-[35px] lg:h-[35px] rounded-full object-cover border border-gray-300 self-start' />
                       <div className='flex-1 flex flex-col gap-1'>
@@ -245,14 +245,14 @@ const CourseDetails = ({ data, stripePromise, clientSecret, refetch }) => {
                   </div>
                 )
               }
-              <div className='flex flex-col gap-6 px-1 lg:px-0'>
+              <div className='flex flex-col gap-6 px-1 md:px-0'>
                 {
                   data?.reviews?.slice().reverse().map((review, index) => (
                     <div className='flex items-center gap-2.5 lg:gap-3' key={index}>
                       <div className='self-start'>
                         <img src={review?.user?.avatar ? review?.user?.avatar?.url : profilePic} className='w-[28px] h-[28px] lg:w-[35px] lg:h-[35px] rounded-full object-cover border border-gray-300 self-start' />
                       </div>
-                      <div className='flex-1 flex flex-col gap-0 lg:gap-0.5'>
+                      <div className='flex-1 flex flex-col gap-0 md:gap-0.5'>
                         <div className='flex items-center gap-1'>
                           <p className='font-[500] text-sm'>{review?.user?.name}</p>
                           <p>∙</p>
@@ -291,7 +291,7 @@ const CourseDetails = ({ data, stripePromise, clientSecret, refetch }) => {
               <div className=' flex items-center gap-2'>
                 <p className='text-2xl font-[550] text-dark-green'>{data?.price === 0 ? "Free" : `₹${data?.price}`}</p>
                 <p className='text-gray-500 line-through font-[300]'>₹{data?.estimatedPrice}</p>
-                <p className='ml-3 text-green-700 text-sm font-[600]'>{discount}% off</p>
+                <p className='ml-1 text-green-700 text-sm font-[600]'>{discount}% off</p>
               </div>
               {
                 !isPurchased ? (
