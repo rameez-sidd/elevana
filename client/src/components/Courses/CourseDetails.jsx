@@ -229,13 +229,16 @@ const CourseDetails = ({ data, stripePromise, clientSecret, refetch }) => {
               {
                 isPurchased &&
                 !isReviewExists && (
-                  <div className='flex flex-col gap-2 px-1 md:px-0'>
+                  <div className='flex flex-col gap-2'>
                     <div className='flex items-center gap-2'>
-                      <img src={user?.avatar ? user?.avatar?.url : profilePic} className='w-[28px] h-[28px] lg:w-[35px] lg:h-[35px] rounded-full object-cover border border-gray-300 self-start' />
-                      <div className='flex-1 flex flex-col gap-1'>
-                        <Rating value={rating} precision={0.5} onChange={(event, newValue) => {
+                      <img src={user?.avatar ? user?.avatar?.url : profilePic} className='w-[28px] h-[28px] md:w-[31px] md:h-[31px] lg:w-[35px] lg:h-[35px] rounded-full object-cover border border-gray-300 self-start' />
+                      <div className='flex-1 flex flex-col gap-0 md:gap-0.5 lg:gap-1'>
+                        <span className='md:hidden'><Rating value={rating} size='small' precision={0.5} onChange={(event, newValue) => {
                           setRating(newValue)
-                        }} />
+                        }} /></span>
+                        <span className='hidden md:inline'><Rating value={rating} precision={0.5} onChange={(event, newValue) => {
+                          setRating(newValue)
+                        }} /></span>
                         <textarea value={review} onChange={(e) => setReview(e.target.value)} placeholder='Write a review...' rows={3} className='border border-gray-400 flex-1 resize-none rounded-sm outline-none px-2 py-1 text-sm placeholder:text-sm'></textarea>
                       </div>
                     </div>
