@@ -140,7 +140,7 @@ const CourseDetails = ({ data, stripePromise, clientSecret, refetch }) => {
           <div className='col-span-4 lg:col-span-3 flex flex-col gap-5 px-3 sm:px-4 lg:pr-8 lg:pl-0'>
             <div className='flex flex-col gap-4 '>
               <div className='rounded-sm overflow-hidden relative lg:hidden'>
-                <video src={data?.demoUrl} poster={data?.thumbnail?.url} controls={isPlaying} onClick={handleVideoClick} onEnded={() => setShowPlayButton(true)} controlsList='nodownload'></video>
+                <video src={data?.demoUrl} poster={data?.thumbnail?.url} controls={isPlaying} controlsList='nodownload'></video>
                 {
                   showPlayButton && (
                     <IoIosPlay className='absolute top-1/2 left-1/2 translate-y-[-50%] translate-x-[-50%] bg-grass-green p-2 pr-0.5 cursor-pointer text-white rounded-full pointer-events-none' size={50} />
