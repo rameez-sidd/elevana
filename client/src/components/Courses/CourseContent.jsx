@@ -27,7 +27,7 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
     const { data: videoData, isLoading, refetch } = useGetCourseContentQuery(id, { refetchOnMountOrArgChange: true, refetchOnFocus: true, refetchOnReconnect: true })
     console.log(videoData);
     console.log(courseData);
-    const [showPlayButton, setShowPlayButton] = useState(true)
+
 
 
 
@@ -49,6 +49,40 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
     const [openAllReplies, setOpenAllReplies] = useState([])
     const [isShowButtons, setIsShowButtons] = useState(false)
     const [expanded, setExpanded] = useState(false)
+
+    const videoRef = useRef(null);
+    const [isPlaying, setIsPlaying] = useState(false);
+    const [showPlayButton, setShowPlayButton] = useState(true);
+
+    useEffect(() => {
+        const video = videoRef.current;
+        if (!video) return;
+
+        const handlePlay = () => {
+            setIsPlaying(true);
+            setShowPlayButton(false);
+        };
+
+        const handlePause = () => {
+            setIsPlaying(false);
+            setShowPlayButton(true);
+        };
+
+        const handleEnded = () => {
+            setIsPlaying(false);
+            setShowPlayButton(true);
+        };
+
+        video.addEventListener('play', handlePlay);
+        video.addEventListener('pause', handlePause);
+        video.addEventListener('ended', handleEnded);
+
+        return () => {
+            video.removeEventListener('play', handlePlay);
+            video.removeEventListener('pause', handlePause);
+            video.removeEventListener('ended', handleEnded);
+        };
+    }, []);
 
     useEffect(() => {
         refetch()
@@ -81,11 +115,11 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
         setOpenAllReplies((prev) => prev.filter(i => i !== index))
     }
     const toggleOpenAllReplies = (index, replies) => {
-        if(replies <=0){
+        if (replies <= 0) {
             return
         }
         setOpenAllReplies((prev) => (prev.includes(index) ? prev.filter(i => i !== index) : [...prev, index]))
-        if(openReply === index){
+        if (openReply === index) {
             setOpenReply(null)
         }
     }
@@ -124,8 +158,23 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
         setOpenAllReplies([])
         setExpanded(false)
     }
-    const handleVideoClick = () => {
-        setShowPlayButton(!showPlayButton);
+    const handleVideoClick = (e) => {
+        e.preventDefault();
+        const video = videoRef.current;
+        if (!video) return;
+
+        if (isPlaying) {
+            video.pause();
+        } else {
+            video.play()
+                .then(() => {
+                    setIsPlaying(true);
+                    setShowPlayButton(false);
+                })
+                .catch(error => {
+                    console.error("Error playing video:", error);
+                });
+        }
     };
 
     const handleQuestionSubmit = async () => {
@@ -197,14 +246,14 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
                                         </>
                                     )
                                 }
-                                
+
                                 {
                                     showPlayButton && (
 
                                         <IoIosPlay className='absolute top-1/2 left-1/2 translate-y-[-50%] translate-x-[-50%] bg-grass-green p-2 pr-0.5 shadow-2xl text-white rounded-full' size={70} />
                                     )
                                 }
-                                <video  src={videoData?.content[activeVideo]?.videoUrl} controls controlsList='nodownload' className='w-full cursor-pointer' onClick={handleVideoClick} onEnded={() => setShowPlayButton(true)}></video>
+                                <video ref={videoRef} src={videoData?.content[activeVideo]?.videoUrl} controls controlsList='nodownload' className='w-full cursor-pointer' onClick={handleVideoClick} onEnded={() => setShowPlayButton(true)}></video>
                             </div>
                             <h3 className='text-2xl font-[700] line-clamp-1 '>{videoData?.content[activeVideo]?.title}</h3>
                             {

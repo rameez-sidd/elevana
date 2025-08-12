@@ -141,11 +141,6 @@ const CourseDetails = ({ data, stripePromise, clientSecret, refetch }) => {
             <div className='flex flex-col gap-4 '>
               <div className='rounded-sm overflow-hidden relative lg:hidden'>
                 <video src={data?.demoUrl} poster={data?.thumbnail?.url} onClick={handleVideoClick} controls controlsList='nodownload'></video>
-                {/* {
-                  showPlayButton && (
-                    <IoIosPlay className='absolute top-1/2 left-1/2 translate-y-[-50%] translate-x-[-50%] bg-grass-green p-2 pr-0.5 cursor-pointer text-white rounded-full pointer-events-none' size={50} />
-                  )
-                } */}
               </div>
               <h2 className='text-3xl/8 mt-[-10px] md:text-4xl sm:mt-[-7px] md:mt-[-5px] lg:text-5xl font-[700] lg:mt-0 text-grass-green'>{data?.name}</h2>
               <div className='flex flex-col lg:flex-row items-start lg:items-center gap-4 lg:gap-5'>
