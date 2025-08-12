@@ -37,8 +37,40 @@ const CourseDetails = ({ data, stripePromise, clientSecret, refetch }) => {
 
   const [rating, setRating] = useState(0)
   const [review, setReview] = useState('')
-  const [showPlayButton, setShowPlayButton] = useState(true)
 
+  const videoRef = useRef(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [showPlayButton, setShowPlayButton] = useState(true);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const handlePlay = () => {
+      setIsPlaying(true);
+      setShowPlayButton(false);
+    };
+
+    const handlePause = () => {
+      setIsPlaying(false);
+      setShowPlayButton(true);
+    };
+
+    const handleEnded = () => {
+      setIsPlaying(false);
+      setShowPlayButton(true);
+    };
+
+    video.addEventListener('play', handlePlay);
+    video.addEventListener('pause', handlePause);
+    video.addEventListener('ended', handleEnded);
+
+    return () => {
+      video.removeEventListener('play', handlePlay);
+      video.removeEventListener('pause', handlePause);
+      video.removeEventListener('ended', handleEnded);
+    };
+  }, []);
 
 
   const handleToggle = (index) => {
@@ -81,8 +113,23 @@ const CourseDetails = ({ data, stripePromise, clientSecret, refetch }) => {
     }
   }
 
-  const handleVideoClick = () => {
-    setShowPlayButton(!showPlayButton)
+  const handleVideoClick = (e) => {
+    e.preventDefault();
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (isPlaying) {
+      video.pause();
+    } else {
+      video.play()
+        .then(() => {
+          setIsPlaying(true);
+          setShowPlayButton(false);
+        })
+        .catch(error => {
+          console.error("Error playing video:", error);
+        });
+    }
   };
 
 
@@ -93,7 +140,7 @@ const CourseDetails = ({ data, stripePromise, clientSecret, refetch }) => {
           <div className='col-span-4 lg:col-span-3 flex flex-col gap-5 px-3 sm:px-4 lg:pr-8 lg:pl-0'>
             <div className='flex flex-col gap-4 '>
               <div className='rounded-sm overflow-hidden relative lg:hidden'>
-                <video src={data?.demoUrl} poster={data?.thumbnail?.url} onClick={handleVideoClick} onEnded={() => setShowPlayButton(true)} className='cursor-pointer' controls={false} onMouseEnter={(e) => e.target.setAttribute('controls', 'true')} onMouseLeave={(e) => e.target.removeAttribute('controls')} controlsList='nodownload'></video>
+                <video src={data?.demoUrl} poster={data?.thumbnail?.url} controls={isPlaying} onClick={handleVideoClick} onEnded={() => setShowPlayButton(true)} controlsList='nodownload'></video>
                 {
                   showPlayButton && (
                     <IoIosPlay className='absolute top-1/2 left-1/2 translate-y-[-50%] translate-x-[-50%] bg-grass-green p-2 pr-0.5 cursor-pointer text-white rounded-full pointer-events-none' size={50} />
@@ -195,9 +242,9 @@ const CourseDetails = ({ data, stripePromise, clientSecret, refetch }) => {
                         </div>
                         <span className='text-sm md:text-base'>
 
-                        {
-                          openSections.includes(index) ? <IoChevronUp /> : <IoChevronDown />
-                        }
+                          {
+                            openSections.includes(index) ? <IoChevronUp /> : <IoChevronDown />
+                          }
                         </span>
 
                       </CollapsibleTrigger>
@@ -283,12 +330,13 @@ const CourseDetails = ({ data, stripePromise, clientSecret, refetch }) => {
           {/* sidepart */}
           <div className='col-span-1 lg:flex flex-col gap-4 hidden'>
             <div className='rounded-sm overflow-hidden relative'>
-              <video src={data?.demoUrl} poster={data?.thumbnail?.url} onClick={handleVideoClick} onEnded={() => setShowPlayButton(true)} className='cursor-pointer' controls={false} onMouseEnter={(e) => e.target.setAttribute('controls', 'true')} onMouseLeave={(e) => e.target.removeAttribute('controls')} controlsList='nodownload'></video>
+              <video ref={videoRef} src={data?.demoUrl} poster={data?.thumbnail?.url} controls={isPlaying} onClick={handleVideoClick} onEnded={() => setShowPlayButton(true)} className='cursor-pointer' controlsList='nodownload'></video>
               {
                 showPlayButton && (
-                  <IoIosPlay className='absolute top-1/2 left-1/2 translate-y-[-50%] translate-x-[-50%] bg-grass-green p-2 pr-0.5 cursor-pointer text-white rounded-full pointer-events-none' size={50} />
+                  <IoIosPlay className='absolute top-1/2 left-1/2 translate-y-[-50%] translate-x-[-50%] bg-grass-green p-2 pr-0.5 cursor-pointer text-white rounded-full ' size={50} />
                 )
               }
+
             </div>
             <div className=' flex flex-col gap-2'>
               <div className=' flex items-center gap-2'>
