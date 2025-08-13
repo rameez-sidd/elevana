@@ -641,7 +641,7 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
             {/* mobile - chapters */}
             {
                 showChapters && (
-                    <div className={`bg-white p-1 fixed ${showChapters ? "top-[50px]" : "top-[100%]"} left-0 w-full h-full rounded-t-md shadow-[0_-3px_9px_0px_#00000015] transition-all duration-1000 lg:hidden`}>
+                    <div className={`bg-white p-1 fixed ${showChapters ? "top-[50px]" : "top-[100%]"} left-0 z-20 w-full h-full rounded-t-md shadow-[0_-3px_9px_0px_#00000015] transition-all duration-1000 lg:hidden`}>
                         <div className='flex items-center justify-between px-1.5 py-2'>
                             <p className='font-bold'>All Chapters</p>
                             <span className='text-[20px] hover:bg-gray-100 rounded-full p-1' onClick={() => setShowChapters(false)}><CgClose /></span>
