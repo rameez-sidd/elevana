@@ -17,6 +17,7 @@ import socketIO from 'socket.io-client'
 import { TbPlayerTrackNextFilled, TbPlayerTrackPrevFilled } from 'react-icons/tb';
 import { BiSolidLeftArrow, BiSolidRightArrow } from 'react-icons/bi';
 import { IoIosPlay } from 'react-icons/io';
+import useInteractionType from '@/utils/DeviceScreenDetector';
 
 const ENDPOINT = import.meta.env.VITE_PUBLIC_SOCKET_SERVER_URI || ""
 const socketId = socketIO(ENDPOINT, { transports: ["websocket"] })
@@ -47,12 +48,47 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
 
     const [openReply, setOpenReply] = useState(null)
     const [openAllReplies, setOpenAllReplies] = useState([])
-    const [isShowButtons, setIsShowButtons] = useState(true)
+    const [isShowButtons, setIsShowButtons] = useState(false)
     const [expanded, setExpanded] = useState(false)
 
     const videoRef = useRef(null);
     const [isPlaying, setIsPlaying] = useState(false);
     const [showPlayButton, setShowPlayButton] = useState(true);
+    const [controlsTimeout, setControlsTimeout] = useState(null);
+
+    const { isTouchDevice, hasHover } = useInteractionType();
+
+    const toggleControls = () => {
+        if (controlsTimeout) {
+            clearTimeout(controlsTimeout);
+            setControlsTimeout(null);
+        }
+
+        setIsShowButtons(prev => !prev);
+
+        if (!isShowButtons) {
+            const timeout = setTimeout(() => {
+                setIsShowButtons(false);
+            }, 3000);
+            setControlsTimeout(timeout);
+        }
+    };
+
+    const hideControls = () => {
+        setIsShowButtons(false);
+        if (controlsTimeout) {
+            clearTimeout(controlsTimeout);
+            setControlsTimeout(null);
+        }
+    };
+
+    useEffect(() => {
+        return () => {
+            if (controlsTimeout) {
+                clearTimeout(controlsTimeout);
+            }
+        };
+    }, [controlsTimeout]);
 
     useEffect(() => {
         const video = videoRef.current;
@@ -170,6 +206,7 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
                 .then(() => {
                     setIsPlaying(true);
                     setShowPlayButton(false);
+                    hideControls();
                 })
                 .catch(error => {
                     console.error("Error playing video:", error);
@@ -237,7 +274,7 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
                 <div className='grid grid-cols-6 mt-0 lg:mt-4'>
                     <div className='col-span-6 lg:col-span-4 flex flex-col px-3 sm:px-4 lg:px-3 bxl:px-4! xl:px-0! '>
                         <div className='flex flex-col gap-2 max-w-full'>
-                            <div className='p-3 bg-black rounded-sm relative' onMouseOver={() => setIsShowButtons(true)} onMouseLeave={() => setIsShowButtons(false)}>
+                            <div className='p-3 bg-black rounded-sm relative' onMouseOver={() => hasHover && setIsShowButtons(true)} onTouchStart={() => isTouchDevice && toggleControls()} onMouseLeave={() => hasHover && hideControls()}>
                                 {
                                     isShowButtons && (
                                         <>
@@ -265,7 +302,7 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
                                         <div className='flex flex-col gap-0  max-w-full'>
                                             <div className='flex items-center gap-2 overflow-x-hidden'>
                                                 <p className='text-sm lg:text-base font-[500] max-w-[250px] lg:max-w-[300px] whitespace-nowrap text-ellipsis overflow-x-hidden '>{courseData?.course?.createdBy?.name}</p>
-                                                <span className='text-[17px]'><MdVerified className='text-blue-700'/></span>
+                                                <span className='text-[17px]'><MdVerified className='text-blue-700' /></span>
                                             </div>
                                             <p className='text-gray-700 font-[300] text-[11px] lg:text-xs'>Author</p>
                                         </div>
