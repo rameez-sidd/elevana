@@ -303,8 +303,8 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
                                 {
                                     isShowButtons && (
                                         <>
-                                            <span className='text-[45px] sm:text-[60px] '><IoPlaySkipBackSharp className='absolute top-1/2 translate-y-[-50%] left-4 z-10 text-[#ffffffb1] p-3 pl-3 sm:p-4 sm:pl-4 shadow-2xl bg-[#00000077] rounded-full cursor-pointer hover:scale-110 transition-transform duration-300' title='Previous' onClick={handlePrevious} /></span>
-                                            <span className='text-[45px] sm:text-[60px] '><IoPlaySkipForwardSharp className='absolute top-1/2 translate-y-[-50%] right-4 z-10 text-[#ffffffb1] p-3 pr-3 sm:p-4 sm:pr-4 shadow-2xl bg-[#00000077] rounded-full cursor-pointer hover:scale-110 transition-transform duration-300' title='Next' onClick={handleNext} /></span>
+                                            <span className='text-[45px] sm:text-[60px] ' onClick={handlePrevious} ><IoPlaySkipBackSharp className='absolute top-1/2 translate-y-[-50%] left-4 z-10 text-[#ffffffb1] p-3 pl-3 sm:p-4 sm:pl-4 shadow-2xl bg-[#00000077] rounded-full cursor-pointer hover:scale-110 transition-transform duration-300' title='Previous' /></span>
+                                            <span className='text-[45px] sm:text-[60px] ' onClick={handleNext} ><IoPlaySkipForwardSharp className='absolute top-1/2 translate-y-[-50%] right-4 z-10 text-[#ffffffb1] p-3 pr-3 sm:p-4 sm:pr-4 shadow-2xl bg-[#00000077] rounded-full cursor-pointer hover:scale-110 transition-transform duration-300' title='Next' /></span>
                                         </>
                                     )
                                 }
