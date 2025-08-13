@@ -73,7 +73,11 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
         };
     }, [showChapters]);
 
-    const toggleControls = () => {
+    const toggleControls = (e) => {
+        console.log('sdlf');
+        
+        console.log(e.target.classList);
+        
         if (controlsTimeout) {
             clearTimeout(controlsTimeout);
             setControlsTimeout(null);
@@ -84,7 +88,7 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
         if (!isShowButtons) {
             const timeout = setTimeout(() => {
                 setIsShowButtons(false);
-            }, 3000);
+            }, 5000);
             setControlsTimeout(timeout);
         }
     };
@@ -175,7 +179,8 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
         }
     }
 
-    const handleNext = () => {
+    const handleNext = (e) => {
+        e.stopPropagation();
         if (activeVideo === videoData?.content?.length - 1) {
             return
         }
@@ -188,7 +193,8 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
         setExpanded(false)
     }
 
-    const handlePrevious = () => {
+    const handlePrevious = (e) => {
+        e.stopPropagation();
         if (activeVideo === 0) {
             return
         }
@@ -299,12 +305,12 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
 
                     <div className='col-span-6 lg:col-span-4  flex flex-col px-3 sm:px-4 lg:px-3 bxl:px-4! xl:px-0! '>
                         <div className='flex flex-col gap-2 max-w-full'>
-                            <div className='p-3 bg-black rounded-sm relative' onMouseOver={() => hasHover && setIsShowButtons(true)} onTouchStart={() => isTouchDevice && toggleControls()} onMouseLeave={() => hasHover && hideControls()}>
+                            <div className='p-3 bg-black rounded-sm relative' onMouseOver={() => hasHover && setIsShowButtons(true)} onMouseLeave={() => hasHover && hideControls()}>
                                 {
                                     isShowButtons && (
                                         <>
-                                            <span className='text-[45px] sm:text-[60px] ' onClick={handlePrevious} ><IoPlaySkipBackSharp className='absolute top-1/2 translate-y-[-50%] left-4 z-10 text-[#ffffffb1] p-3 pl-3 sm:p-4 sm:pl-4 shadow-2xl bg-[#00000077] rounded-full cursor-pointer hover:scale-110 transition-transform duration-300' title='Previous' /></span>
-                                            <span className='text-[45px] sm:text-[60px] ' onClick={handleNext} ><IoPlaySkipForwardSharp className='absolute top-1/2 translate-y-[-50%] right-4 z-10 text-[#ffffffb1] p-3 pr-3 sm:p-4 sm:pr-4 shadow-2xl bg-[#00000077] rounded-full cursor-pointer hover:scale-110 transition-transform duration-300' title='Next' /></span>
+                                            <span className='text-[45px] sm:text-[60px] control-buttons' onClick={handlePrevious} ><IoPlaySkipBackSharp className='absolute top-1/2 translate-y-[-50%] left-4 z-10 text-[#ffffffb1] p-3 pl-3 sm:p-4 sm:pl-4 shadow-2xl bg-[#00000077] rounded-full cursor-pointer hover:scale-110 transition-transform duration-300' title='Previous' /></span>
+                                            <span className='text-[45px] sm:text-[60px] control-buttons' onClick={handleNext} ><IoPlaySkipForwardSharp className='absolute top-1/2 translate-y-[-50%] right-4 z-10 text-[#ffffffb1] p-3 pr-3 sm:p-4 sm:pr-4 shadow-2xl bg-[#00000077] rounded-full cursor-pointer hover:scale-110 transition-transform duration-300' title='Next' /></span>
                                         </>
                                     )
                                 }
@@ -315,7 +321,7 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
                                         <IoIosPlay className='hidden lg:block absolute top-1/2 left-1/2 translate-y-[-50%] translate-x-[-50%] bg-grass-green p-2 pr-0.5 shadow-2xl text-white rounded-full' size={70} />
                                     )
                                 }
-                                <video ref={videoRef} src={videoData?.content[activeVideo]?.videoUrl} controls controlsList='nodownload' className='w-full cursor-pointer' onClick={handleVideoClick} onEnded={() => setShowPlayButton(true)}></video>
+                                <video ref={videoRef} src={videoData?.content[activeVideo]?.videoUrl} controls controlsList='nodownload' className='w-full cursor-pointer' onClick={handleVideoClick} onEnded={() => setShowPlayButton(true)}  onTouchStart={(e) => isTouchDevice && toggleControls(e)} ></video>
                             </div>
                             <h3 className='text-lg sm:text-xl md:text-[22px] lg:text-2xl font-[700] break-words whitespace-normal max-w-full mt-[-5px] md:mt-[-3px] xl:mt-0'>{videoData?.content[activeVideo]?.title}</h3>
                             {
