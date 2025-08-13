@@ -58,14 +58,17 @@ const CourseAccessPage = () => {
       }
       {
         showChatBot ? (
-          <ChatUI setShowChatBot={setShowChatBot} user={user}/>
+          <ChatUI setShowChatBot={setShowChatBot} user={user} />
 
         ) : (
           <div onClick={() => setShowChatBot(true)}>
 
-          <ChatBot/>
+            <ChatBot />
           </div>
         )
+      }
+      {
+        
       }
     </div>
   )

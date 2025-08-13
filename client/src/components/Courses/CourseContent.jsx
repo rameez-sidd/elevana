@@ -5,7 +5,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '../ui/collapsible';
 import { IoChevronDown, IoChevronUp, IoPlaySkipBack, IoPlaySkipBackSharp, IoPlaySkipForward, IoPlaySkipForwardSharp } from 'react-icons/io5';
-import { LucideTvMinimalPlay } from 'lucide-react';
+import { LuTvMinimalPlay } from "react-icons/lu";
 import profilePic from '../../assets/images/avatar.jpg'
 import { data } from 'react-router-dom';
 import { Rating } from '@mui/material';
@@ -18,6 +18,7 @@ import { TbPlayerTrackNextFilled, TbPlayerTrackPrevFilled } from 'react-icons/tb
 import { BiSolidLeftArrow, BiSolidRightArrow } from 'react-icons/bi';
 import { IoIosPlay } from 'react-icons/io';
 import useInteractionType from '@/utils/DeviceScreenDetector';
+import { CgClose } from 'react-icons/cg';
 
 const ENDPOINT = import.meta.env.VITE_PUBLIC_SOCKET_SERVER_URI || ""
 const socketId = socketIO(ENDPOINT, { transports: ["websocket"] })
@@ -55,8 +56,22 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
     const [isPlaying, setIsPlaying] = useState(false);
     const [showPlayButton, setShowPlayButton] = useState(true);
     const [controlsTimeout, setControlsTimeout] = useState(null);
+    const [showChapters, setShowChapters] = useState(false);
 
     const { isTouchDevice, hasHover } = useInteractionType();
+
+    useEffect(() => {
+        if (showChapters) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'auto';
+        }
+
+        // Cleanup: Re-enable scrolling when component unmounts
+        return () => {
+            document.body.style.overflow = 'auto';
+        };
+    }, [showChapters]);
 
     const toggleControls = () => {
         if (controlsTimeout) {
@@ -269,10 +284,20 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
 
 
     return (
-        <div className={`${user?.role === 'admin' ? 'p-12' : 'py-12 lg:py-16 px-0'}`}>
+        <div className={`${user?.role === 'admin' ? 'p-12' : 'py-12 lg:py-16 px-0'} relative`}>
             <div className='mx-auto max-w-7xl'>
                 <div className='grid grid-cols-6 mt-0 lg:mt-4'>
-                    <div className='col-span-6 lg:col-span-4 flex flex-col px-3 sm:px-4 lg:px-3 bxl:px-4! xl:px-0! '>
+
+                    {/* For mobile screens */}
+                    <div className='col-span-6 mx-3 mb-3 sm:mx-4 bg-[#66a23b41] rounded-sm py-2 px-2.5 md:px-3 md:py-2.5 flex items-center justify-between gap-3 text-sm md:text-base lg:hidden' onClick={() => setShowChapters(true)}>
+                        <div className='flex flex-col gap-1 max-w-full overflow-x-hidden'>
+                            <p className='font-[600] whitespace-nowrap overflow-x-hidden text-ellipsis break-words max-w-full'>Chapter: {videoData?.content[activeVideo].videoSection}</p>
+                            <p className='text-xs md:text-sm font-[400] text-dark-green whitespace-nowrap overflow-x-hidden text-ellipsis break-words max-w-full'>{activeVideo + 1}. {videoData?.content[activeVideo].title}</p>
+                        </div>
+                        <span><IoChevronDown /></span>
+                    </div>
+
+                    <div className='col-span-6 lg:col-span-4  flex flex-col px-3 sm:px-4 lg:px-3 bxl:px-4! xl:px-0! '>
                         <div className='flex flex-col gap-2 max-w-full'>
                             <div className='p-3 bg-black rounded-sm relative' onMouseOver={() => hasHover && setIsShowButtons(true)} onTouchStart={() => isTouchDevice && toggleControls()} onMouseLeave={() => hasHover && hideControls()}>
                                 {
@@ -292,7 +317,7 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
                                 }
                                 <video ref={videoRef} src={videoData?.content[activeVideo]?.videoUrl} controls controlsList='nodownload' className='w-full cursor-pointer' onClick={handleVideoClick} onEnded={() => setShowPlayButton(true)}></video>
                             </div>
-                            <h3 className='text-xl md:text-[22px] lg:text-2xl font-[700] break-words whitespace-normal max-w-full mt-[-4px] md:mt-[-3px] xl:mt-0'>{videoData?.content[activeVideo]?.title}</h3>
+                            <h3 className='text-lg sm:text-xl md:text-[22px] lg:text-2xl font-[700] break-words whitespace-normal max-w-full mt-[-5px] md:mt-[-3px] xl:mt-0'>{videoData?.content[activeVideo]?.title}</h3>
                             {
                                 user?.role !== 'admin' && (
                                     <div className='flex items-center gap-2.5 xl:gap-3 mt-1 lg:mt-1.5 '>
@@ -454,7 +479,7 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
                                                             <p>{videoData?.content[activeVideo]?.description}</p>
 
                                                             <div className='flex flex-col gap-1 mt-6 mb-3'>
-                                                                <h4 className='text-lg lg:text-xl font-[600]'>Resources</h4>
+                                                                <h4 className='text-[17px] sm:text-lg lg:text-xl font-[600]'>Resources</h4>
                                                                 <div className='flex flex-col text-[13px] lg:text-sm'>
                                                                     {
                                                                         videoData?.content[activeVideo]?.links.map((link) => (
@@ -564,15 +589,15 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
 
                     {/*  */}
 
-                    <div className='col-span-2 pr-3 bxl:pr-4 xl:pl-12! hidden lg:block'>
+                    <div className='col-span-6 lg:col-span-2 lg:pr-3 bxl:pr-4 xl:pl-12! lg:block hidden'>
                         <div className='bg-white border border-gray-300 rounded-sm'>
 
                             {
                                 courseBySection && courseBySection.map((content, index) => (
                                     <Collapsible key={index} open={openSections.includes(index)} onOpenChange={() => handleToggle(index)} className={`${index !== courseBySection.length - 1 && "border-b border-gray-300"}`}>
                                         <CollapsibleTrigger className=" w-full flex items-center justify-between  p-2 px-3 cursor-pointer ">
-                                            <div className='flex-1 text-left '>
-                                                <h5 className='font-[600]'>{content?.section}</h5>
+                                            <div className='flex-1 text-left max-w-full'>
+                                                <h5 className='font-[600] whitespace-nowrap overflow-x-hidden text-ellipsis break-words max-w-full'>{content?.section}</h5>
                                                 <div className='flex items-center gap-2 text-sm'>
                                                     <p>{content?.videos?.length} {content?.videos?.length === 1 ? "Lesson" : "Lessons"}</p>
                                                     <p>•</p>
@@ -587,10 +612,10 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
                                         <CollapsibleContent className=" flex flex-col text-xs cursor-pointer my-1.5">
                                             {
                                                 content?.videos.map((video, index) => (
-                                                    <div className={`flex items-center mx-4 px-3 py-3 rounded-sm gap-3 ${activeVideo === video?.videoIndex && (user?.role === 'admin' ? 'bg-dark-green text-white' : 'bg-grass-green text-white')}`} onClick={() => handleSwitchVideo(video?.videoIndex)} key={index}>
-                                                        <LucideTvMinimalPlay size={20} />
-                                                        <div>
-                                                            <p>{video?.title}</p>
+                                                    <div className={`max-w-full flex items-center mx-4 px-3 py-3 rounded-sm gap-3 ${activeVideo === video?.videoIndex && (user?.role === 'admin' ? 'bg-dark-green text-white' : 'bg-grass-green text-white')}`} onClick={() => handleSwitchVideo(video?.videoIndex)} key={index}>
+                                                        <span className='text-[20px]'><LuTvMinimalPlay /></span>
+                                                        <div className='max-w-full overflow-x-hidden'>
+                                                            <p className='whitespace-nowrap overflow-x-hidden text-ellipsis break-words max-w-[100%]'>{video?.title}</p>
                                                             <p className='text-xs font-[300]'>{video?.length}</p>
                                                         </div>
                                                     </div>
@@ -605,6 +630,60 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
                     </div>
                 </div>
             </div>
+
+
+            {/* mobile - chapters */}
+            {
+                showChapters && (
+                    <div className={`bg-white p-1 fixed ${showChapters ? "top-[50px]" : "top-[100%]"} left-0 w-full h-full rounded-t-md shadow-[0_-3px_9px_0px_#00000015] transition-all duration-1000 lg:hidden`}>
+                        <div className='flex items-center justify-between px-1.5 py-2'>
+                            <p className='font-bold'>All Chapters</p>
+                            <span className='text-[20px] hover:bg-gray-100 rounded-full p-1' onClick={() => setShowChapters(false)}><CgClose /></span>
+                        </div>
+                        <div className='h-full overflow-y-scroll md:mx-2'>
+                            <div className='bg-gray-50 rounded-sm'>
+
+                                {
+                                    courseBySection && courseBySection.map((content, index) => (
+                                        <Collapsible key={index} open={openSections.includes(index)} onOpenChange={() => handleToggle(index)} className={`${index !== courseBySection.length - 1 && "border-b border-gray-300"} `}>
+                                            <CollapsibleTrigger className=" w-full flex items-center justify-between  p-2 px-2.5 cursor-pointer ">
+                                                <div className='flex-1 text-left max-w-full'>
+                                                    <h5 className='font-[550] whitespace-nowrap text-sm overflow-x-hidden text-ellipsis break-words max-w-full'>{content?.section}</h5>
+                                                    <div className='flex items-center gap-2 text-xs'>
+                                                        <p>{content?.videos?.length} {content?.videos?.length === 1 ? "Lesson" : "Lessons"}</p>
+                                                        <p>•</p>
+                                                        <p>{content?.sectionDuration} </p>
+                                                    </div>
+                                                </div>
+                                                {
+                                                    openSections.includes(index) ? <IoChevronUp /> : <IoChevronDown />
+                                                }
+
+                                            </CollapsibleTrigger>
+                                            <CollapsibleContent className=" flex flex-col text-xs cursor-pointer my-1.5">
+                                                {
+                                                    content?.videos.map((video, index) => (
+                                                        <div className={`max-w-full flex items-center mx-2 px-3 py-3 rounded-sm gap-3 ${activeVideo === video?.videoIndex && (user?.role === 'admin' ? 'bg-dark-green text-white' : 'bg-grass-green text-white')}`} onClick={() => handleSwitchVideo(video?.videoIndex)} key={index}>
+                                                            <span className='text-[20px]'><LuTvMinimalPlay /></span>
+                                                            <div className='max-w-full overflow-x-hidden'>
+                                                                <p className='whitespace-nowrap overflow-x-hidden text-ellipsis break-words max-w-[100%]'>{video?.title}</p>
+                                                                <p className='text-xs font-[300]'>{video?.length}</p>
+                                                            </div>
+                                                        </div>
+
+                                                    ))
+                                                }
+                                            </CollapsibleContent>
+                                        </Collapsible>
+                                    ))
+                                }
+                                
+                            </div>
+                        </div>
+                    </div>
+                )
+            }
+
         </div>
     )
 }
