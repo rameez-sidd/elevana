@@ -32,7 +32,17 @@ import CourseAccessPage from './pages/CourseAccessPage';
 import CourseQA from './components/Admin/Course/CourseQA';
 
 const ENDPOINT = import.meta.env.VITE_PUBLIC_SOCKET_SERVER_URI || ""
-const socketId = socketIO(ENDPOINT, { transports: ["websocket"] })
+const socketId = socketIO(ENDPOINT, {
+  reconnection: true,
+  reconnectionAttempts: Infinity,
+  reconnectionDelay: 1000,
+  reconnectionDelayMax: 5000,
+  randomizationFactor: 0.5,
+  transports: ["websocket", "polling"],
+  upgrade: true,
+  forceNew: true,
+  timeout: 20000
+})
 
 
 const appRouter = createBrowserRouter([
@@ -62,7 +72,7 @@ const appRouter = createBrowserRouter([
     path: "/course-access/:id",
     element: <CourseAccessPage />,
   },
-  
+
   {
     path: "/admin/admin-dashboard",
     element: <ProtectedRoute><AuthorizeRoles><AdminDashboard /></AuthorizeRoles></ProtectedRoute>,
@@ -108,7 +118,7 @@ const App = () => {
       socketId.off('connect');
     };
   }, []);
-  
+
   return <RouterProvider router={appRouter} />;
 }
 

@@ -47,7 +47,7 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
 
     const [openReply, setOpenReply] = useState(null)
     const [openAllReplies, setOpenAllReplies] = useState([])
-    const [isShowButtons, setIsShowButtons] = useState(false)
+    const [isShowButtons, setIsShowButtons] = useState(true)
     const [expanded, setExpanded] = useState(false)
 
     const videoRef = useRef(null);
@@ -232,17 +232,17 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
 
 
     return (
-        <div className={`${user?.role === 'admin' ? 'p-12' : 'py-16 px-0'}`}>
+        <div className={`${user?.role === 'admin' ? 'p-12' : 'py-12 lg:py-16 px-0'}`}>
             <div className='mx-auto max-w-7xl'>
-                <div className='grid grid-cols-6  mt-4'>
-                    <div className='col-span-4 flex flex-col'>
-                        <div className='flex flex-col gap-2'>
+                <div className='grid grid-cols-6 mt-0 lg:mt-4'>
+                    <div className='col-span-6 lg:col-span-4 flex flex-col px-3 sm:px-4 lg:px-3 bxl:px-4! xl:px-0! '>
+                        <div className='flex flex-col gap-2 max-w-full'>
                             <div className='p-3 bg-black rounded-sm relative' onMouseOver={() => setIsShowButtons(true)} onMouseLeave={() => setIsShowButtons(false)}>
                                 {
                                     isShowButtons && (
                                         <>
-                                            <IoPlaySkipBackSharp size={60} className='absolute top-1/2 translate-y-[-50%] left-4 z-10 text-[#ffffffb1] p-4 pl-4 shadow-2xl bg-[#00000077] rounded-full cursor-pointer hover:scale-110 transition-transform duration-300' title='Previous' onClick={handlePrevious} />
-                                            <IoPlaySkipForwardSharp size={60} className='absolute top-1/2 translate-y-[-50%] right-4 z-10 text-[#ffffffb1] p-4 pr-4 shadow-2xl bg-[#00000077] rounded-full cursor-pointer hover:scale-110 transition-transform duration-300' title='Next' onClick={handleNext} />
+                                            <span className='text-[45px] sm:text-[60px] '><IoPlaySkipBackSharp className='absolute top-1/2 translate-y-[-50%] left-4 z-10 text-[#ffffffb1] p-3 pl-3 sm:p-4 sm:pl-4 shadow-2xl bg-[#00000077] rounded-full cursor-pointer hover:scale-110 transition-transform duration-300' title='Previous' onClick={handlePrevious} /></span>
+                                            <span className='text-[45px] sm:text-[60px] '><IoPlaySkipForwardSharp className='absolute top-1/2 translate-y-[-50%] right-4 z-10 text-[#ffffffb1] p-3 pr-3 sm:p-4 sm:pr-4 shadow-2xl bg-[#00000077] rounded-full cursor-pointer hover:scale-110 transition-transform duration-300' title='Next' onClick={handleNext} /></span>
                                         </>
                                     )
                                 }
@@ -250,24 +250,24 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
                                 {
                                     showPlayButton && (
 
-                                        <IoIosPlay className='absolute top-1/2 left-1/2 translate-y-[-50%] translate-x-[-50%] bg-grass-green p-2 pr-0.5 shadow-2xl text-white rounded-full' size={70} />
+                                        <IoIosPlay className='hidden lg:block absolute top-1/2 left-1/2 translate-y-[-50%] translate-x-[-50%] bg-grass-green p-2 pr-0.5 shadow-2xl text-white rounded-full' size={70} />
                                     )
                                 }
                                 <video ref={videoRef} src={videoData?.content[activeVideo]?.videoUrl} controls controlsList='nodownload' className='w-full cursor-pointer' onClick={handleVideoClick} onEnded={() => setShowPlayButton(true)}></video>
                             </div>
-                            <h3 className='text-2xl font-[700] line-clamp-1 '>{videoData?.content[activeVideo]?.title}</h3>
+                            <h3 className='text-xl md:text-[22px] lg:text-2xl font-[700] break-words whitespace-normal max-w-full mt-[-4px] md:mt-[-3px] xl:mt-0'>{videoData?.content[activeVideo]?.title}</h3>
                             {
                                 user?.role !== 'admin' && (
-                                    <div className='flex items-center gap-4 mt-3'>
-                                        <div>
-                                            <img src={courseData?.course?.createdBy?.avatar?.url || profilePic} width={45} className='rounded-full border border-gray-300' />
+                                    <div className='flex items-center gap-2.5 xl:gap-3 mt-1 lg:mt-1.5 '>
+                                        <div className=''>
+                                            <img src={courseData?.course?.createdBy?.avatar?.url || profilePic} className='min-w-[30px] min-h-[30px] w-[30px] h-[30px] lg:w-[40px] lg:h-[40px] rounded-full border border-gray-300' />
                                         </div>
-                                        <div className='flex flex-col gap-0'>
-                                            <div className='flex items-center gap-2'>
-                                                <p className='font-[500] max-w-[300px] line-clamp-1 '>{courseData?.course?.createdBy?.name}</p>
-                                                <MdVerified className='text-blue-700' size={17} />
+                                        <div className='flex flex-col gap-0  max-w-full'>
+                                            <div className='flex items-center gap-2 overflow-x-hidden'>
+                                                <p className='text-sm lg:text-base font-[500] max-w-[250px] lg:max-w-[300px] whitespace-nowrap text-ellipsis overflow-x-hidden '>{courseData?.course?.createdBy?.name}</p>
+                                                <span className='text-[17px]'><MdVerified className='text-blue-700'/></span>
                                             </div>
-                                            <p className='text-gray-700 font-[300] text-xs'>Author</p>
+                                            <p className='text-gray-700 font-[300] text-[11px] lg:text-xs'>Author</p>
                                         </div>
                                     </div>
 
@@ -397,28 +397,28 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
                                         </div>
                                     </div>
                                 ) : (
-                                    <div className='mt-4 flex flex-col gap-4'>
+                                    <div className='mt-1.5 lg:mt-3 flex flex-col gap-4'>
 
 
-                                        <div className=' bg-gray-200 rounded-md p-2 px-3'>
+                                        <div className=' bg-gray-200 rounded-md p-2 px-2.5 lg:px-3'>
 
-                                            <div className='flex items-center gap-2'>
+                                            <div className='flex items-center gap-2 gap-y-0 flex-wrap'>
                                                 {
                                                     courseData?.course?.tags.split(", ").map((tag, index) => (
-                                                        <span key={index} className='text-sm text-gray-400'>#{tag.toLowerCase().replace(/\s+/g, '')}</span>
+                                                        <span key={index} className='text-xs md:text-[13px] lg:text-sm text-gray-400'>#{tag.toLowerCase().replace(/\s+/g, '')}</span>
                                                     ))
                                                 }
                                             </div>
 
-                                            <div className='text-sm leading-5.5'>
+                                            <div className='mt-2 lg:mt-1 text-sm lg:leading-5.5'>
                                                 {
                                                     videoData?.content[activeVideo]?.description.length <= 250 || expanded ? (
                                                         <div>
                                                             <p>{videoData?.content[activeVideo]?.description}</p>
 
                                                             <div className='flex flex-col gap-1 mt-6 mb-3'>
-                                                                <h4 className='text-xl font-[600]'>Resources</h4>
-                                                                <div className='flex flex-col '>
+                                                                <h4 className='text-lg lg:text-xl font-[600]'>Resources</h4>
+                                                                <div className='flex flex-col text-[13px] lg:text-sm'>
                                                                     {
                                                                         videoData?.content[activeVideo]?.links.map((link) => (
                                                                             <p key={link?._id}>{link?.title}: <a href={link?.url} target='_blank' className='ml-1 text-blue-700 font-[300] hover:underline'>{link?.url}</a></p>
@@ -445,23 +445,23 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
 
                                         </div>
 
-                                        <p className='mt-6 text-xl font-[600]'>{videoData?.content[activeVideo]?.questions.length} Question{videoData?.content[activeVideo]?.questions.length === 1 ? "" : "s"}</p>
+                                        <p className='mt-2 lg:mt-2.5 text-lg lg:text-xl font-[600]'>{videoData?.content[activeVideo]?.questions.length} Question{videoData?.content[activeVideo]?.questions.length === 1 ? "" : "s"}</p>
                                         <div className=''>
                                             <div className='flex flex-col gap-1'>
                                                 <div className='flex items-center gap-2'>
-                                                    <img src={user?.avatar ? user?.avatar?.url : profilePic} alt="user-avatar" width={35} height={35} className='rounded-full object-cover border border-gray-300 self-start' />
+                                                    <img src={user?.avatar ? user?.avatar?.url : profilePic} alt="user-avatar" className='min-w-[28px] min-h-[28px] w-[28px] h-[28px] lg:w-[35px] lg:h-[35px] rounded-full object-cover border border-gray-300 self-start' />
                                                     <input type='text' value={question} onChange={(e) => setQuestion(e.target.value)} placeholder='Ask your doubts...' rows={1} className='border-b border-gray-400 flex-1 resize-none outline-none focus:border-b-2 focus:border-black px-2 py-1 text-sm placeholder:text-sm'></input>
                                                 </div>
                                                 <div className='flex justify-end'>
                                                     <button disabled={isSubmittingQuestion} className={`bg-black text-white text-xs px-4 py-1  rounded-full ${isSubmittingQuestion ? 'cursor-not-allowed bg-gray-300 hover:bg-gray-300' : 'cursor-pointer hover:bg-gray-700'}`} onClick={handleQuestionSubmit}>{isSubmittingQuestion ? 'Submitting...' : 'Submit'}</button>
                                                 </div>
                                             </div>
-                                            <div className='mt-5 flex flex-col gap-8'>
+                                            <div className='mt-3.5 xl:mt-5 flex flex-col gap-4.5 md:gap-6'>
                                                 {
                                                     videoData?.content[activeVideo]?.questions?.slice().reverse().map((item, index) => (
                                                         <div className='flex items-center gap-3' key={index}>
                                                             <div className='self-start'>
-                                                                <img src={item?.user?.avatar ? item?.user?.avatar?.url : profilePic} alt="user-avatar" width={32} height={32} className='rounded-full object-cover border border-gray-300 self-start' />
+                                                                <img src={item?.user?.avatar ? item?.user?.avatar?.url : profilePic} alt="user-avatar" className='min-w-[28px] min-h-[28px] w-[28px] h-[28px] lg:w-[32px] lg:h-[32px] rounded-full object-cover border border-gray-300 self-start' />
                                                             </div>
                                                             <div className='flex-1 flex flex-col gap-0.5 '>
                                                                 <div className='flex items-center gap-2'>
@@ -489,9 +489,9 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
                                                                                 {
 
                                                                                     item?.questionReplies?.slice().reverse().map((reply, i) => (
-                                                                                        <div className='flex items-center gap-3' key={i}>
+                                                                                        <div className='flex items-start gap-3' key={i}>
                                                                                             <div >
-                                                                                                <img src={reply?.user?.avatar ? reply?.user?.avatar?.url : profilePic} alt="user-avatar" width={28} height={28} className='rounded-full object-cover border border-gray-300 self-start' />
+                                                                                                <img src={reply?.user?.avatar ? reply?.user?.avatar?.url : profilePic} alt="user-avatar" className='min-w-[26px] min-h-[26px] w-[26px] h-[26px] lg:w-[28px] lg:h-[28px] rounded-full object-cover border border-gray-300 self-start' />
                                                                                             </div>
                                                                                             <div className='flex-1 flex flex-col '>
                                                                                                 <div className='flex items-center gap-2'>
@@ -527,7 +527,7 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
 
                     {/*  */}
 
-                    <div className='col-span-2 pl-12'>
+                    <div className='col-span-2 pr-3 bxl:pr-4 xl:pl-12! hidden lg:block'>
                         <div className='bg-white border border-gray-300 rounded-sm'>
 
                             {
