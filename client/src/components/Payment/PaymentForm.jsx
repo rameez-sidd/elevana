@@ -68,7 +68,7 @@ const PaymentForm = ({ setOpenPayment, data }) => {
                 setMessage("Payment processing. Please wait...");
             }
         } catch (error) {
-            setMessage("An unexpected error occurred.");
+            setMessage(`${error}: An unexpected error occurred.`);
         } finally {
             setIsLoading(false)
             setOpenPayment(false)
@@ -76,25 +76,25 @@ const PaymentForm = ({ setOpenPayment, data }) => {
     }
 
     return (
-        <div className='flex flex-row'>
-            <div className='flex-1 flex flex-col gap-5 p-6 pb-4 '>
+        <div className='flex flex-col md:flex-row'>
+            <div className='flex-1 flex flex-col gap-3 p-2 bsm2:p-3 lg:p-4 xl:p-6 md:pb-4 '>
                 <div className='flex items-center gap-2'>
                     <IoArrowBackCircleSharp size={32} className='cursor-pointer hover:text-gray-600' onClick={() => setOpenPayment(false)}/>
                     <h3 className='font-plaster text-lg text-grass-green'>Elevana</h3>
                 </div>
                 <div className='flex flex-col mt-1'>
-                    <p className='text-gray-600'>Pay Elevana</p>
-                    <p className='text-4xl font-[500]'>₹{data?.price}.00</p>
+                    <p className='text-[15px] text-gray-600'>Pay Elevana</p>
+                    <p className='text-3xl xl:text-4xl font-[500]'>₹{data?.price}.00</p>
                 </div>
-                <div className='flex flex-col gap-2 mb-20'>
-                    <div className='rounded-sm flex  pr-24  max-h-[250px]'>
-                        <img src={data?.thumbnail?.url}  alt="" className='rounded-sm object-contain h-full'/>
+                <div className='flex flex-col gap-1 mb-4 md:mb-20'>
+                    <div className='rounded-sm flex '>
+                        <img src={data?.thumbnail?.url}  alt="" className='rounded-sm '/>
                     </div>
-                    <p className='text-2xl font-[600]'>{data?.name}</p>
+                    <p className='text-xl/6 lg:text-2xl font-[600]'>{data?.name}</p>
                 </div>
                 
             </div>
-            <form id='payment-form' onSubmit={handleSubmit} className='flex flex-col justify-center gap-3 font-lexend flex-1 p-6 px-8 max-h-[90vh] custom-scrollbar overflow-y-scroll border-l border-gray-300'>
+            <form id='payment-form' onSubmit={handleSubmit} className='flex flex-col justify-center gap-3 font-lexend flex-1 px-2 py-4 bsm2:px-3 lg:px-4.5 xl:p-6 xl:px-8 border-t md:border-t-0 md:border-l border-gray-300'>
                 <LinkAuthenticationElement id="link-authentication-element"
                 // Access the email value like so:
                 // onChange={(event) => {

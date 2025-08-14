@@ -617,7 +617,7 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
                                         <CollapsibleContent className=" flex flex-col text-xs cursor-pointer my-1.5">
                                             {
                                                 content?.videos.map((video, index) => (
-                                                    <div className={`max-w-full flex items-center mx-4 px-3 py-3 rounded-sm gap-3 ${activeVideo === video?.videoIndex && (user?.role === 'admin' ? 'bg-dark-green text-white' : 'bg-grass-green text-white')}`} onClick={() => handleSwitchVideo(video?.videoIndex)} key={index}>
+                                                    <div className={`max-w-full flex items-center mx-3 px-3 py-3 rounded-sm gap-3 ${activeVideo === video?.videoIndex && (user?.role === 'admin' ? 'bg-dark-green text-white' : 'bg-grass-green text-white')}`} onClick={() => handleSwitchVideo(video?.videoIndex)} key={index}>
                                                         <span className='text-[20px]'><LuTvMinimalPlay /></span>
                                                         <div className='max-w-full overflow-x-hidden'>
                                                             <p className='whitespace-nowrap overflow-x-hidden text-ellipsis break-words max-w-[100%]'>{video?.title}</p>
