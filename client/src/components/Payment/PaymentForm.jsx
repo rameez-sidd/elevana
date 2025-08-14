@@ -77,7 +77,7 @@ const PaymentForm = ({ setOpenPayment, data }) => {
 
     return (
         <div className='flex flex-col md:flex-row'>
-            <div className='flex-1 flex flex-col gap-3 p-2 bsm2:p-3 lg:p-4 xl:p-6 md:pb-4 '>
+            <div className='flex-1 flex flex-col gap-3 p-3 lg:p-4 xl:p-6 md:pb-4 '>
                 <div className='flex items-center gap-2'>
                     <IoArrowBackCircleSharp size={32} className='cursor-pointer hover:text-gray-600' onClick={() => setOpenPayment(false)}/>
                     <h3 className='font-plaster text-lg text-grass-green'>Elevana</h3>
@@ -94,7 +94,7 @@ const PaymentForm = ({ setOpenPayment, data }) => {
                 </div>
                 
             </div>
-            <form id='payment-form' onSubmit={handleSubmit} className='flex flex-col justify-center gap-3 font-lexend flex-1 px-2 py-4 bsm2:px-3 lg:px-4.5 xl:p-6 xl:px-8 border-t md:border-t-0 md:border-l border-gray-300'>
+            <form id='payment-form' onSubmit={handleSubmit} className='flex flex-col justify-center gap-3 font-lexend flex-1 px-3 py-4 lg:px-4.5 xl:p-6 xl:px-8 border-t md:border-t-0 md:border-l border-gray-300'>
                 <LinkAuthenticationElement id="link-authentication-element"
                 // Access the email value like so:
                 // onChange={(event) => {
