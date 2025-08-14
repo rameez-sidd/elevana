@@ -127,9 +127,9 @@ const ChatUI = ({ setShowChatBot, user }) => {
                         }
                     }}
                     placeholder='Need help?'
-                    className='text-sm flex-1 border-none outline-none focus:outline-none focus-within:outline-none px-3'
+                    className='text-sm flex-1 border-none outline-none focus:outline-none focus-within:outline-none pr-3 pl-2'
                 />
-                <div className='p-2.5 py-1.5'>
+                <div className='p-1.5 px-2'>
                     <button disabled={isSending} onClick={sendMessage} className={`${isSending ? "bg-gray-300 hover:none cursor-not-allowed" : "bg-[linear-gradient(127deg,_rgba(36,_51,_220,_1)_0%,_rgba(15,_137,_239,_1)_63%,_rgba(5,_181,249,_1)_100%)] hover:shadow-[0_2px_6px_0_#0039ffa6] hover:cursor-pointer"} h-9 w-9 rounded-full grid place-items-center `}>
                         <IoSend size={18} className="ml-0.5 text-white" />
                     </button>
