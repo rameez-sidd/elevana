@@ -74,7 +74,6 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
     }, [showChapters]);
 
     const toggleControls = (e) => {
-        console.log('sdlf');
         
         console.log(e.target.classList);
         

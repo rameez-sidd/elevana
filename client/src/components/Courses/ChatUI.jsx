@@ -68,7 +68,7 @@ const ChatUI = ({ setShowChatBot, user }) => {
     }
 
     return (
-        <div className='bg-white fixed bottom-10 right-10 border border-gray-300 shadow-lg rounded-md w-[380px] overflow-hidden'>
+        <div className='bg-white fixed bottom-2 right-1.5 lg:right-5 lg:bottom-5 xl:right-8 xl:bottom-7 border border-gray-300 shadow-lg rounded-md max-w-[380px] ml-3  sm:ml-0 overflow-hidden'>
             <div className='bg-gray-100 flex items-center p-2'>
                 <div className='flex items-center gap-3 flex-1'>
                     <div><img src={botIcon} alt="" width={35} /></div>
@@ -83,7 +83,7 @@ const ChatUI = ({ setShowChatBot, user }) => {
 
             </div>
 
-            <div className='h-[400px] flex flex-col justify-end '>
+            <div className='h-[290px] sm:h-[350px] flex flex-col justify-end '>
                 <div ref={chatContainerRef} className='flex flex-col gap-2 py-2 overflow-y-scroll custom-scrollbar'>
                     <div className='flex justify-start px-1'>
                         <div className='text-xs bg-gray-200 w-fit max-w-[80%] p-2 rounded-md text-black font-[300]'>Hey, How can I help you?</div>
