@@ -290,7 +290,7 @@ const CourseDetails = ({ data, stripePromise, clientSecret, refetch }) => {
                   </div>
                 )
               }
-              <div className='flex flex-col gap-6 px-1 md:px-0'>
+              <div className={`flex flex-col gap-6 ${data?.reviews.length === 0 ? 'px-0' : 'px-1'} md:px-0`}>
                 {
                   data?.reviews?.slice().reverse().map((review, index) => (
                     <div className='flex items-center gap-2.5 lg:gap-3' key={index}>
@@ -312,7 +312,7 @@ const CourseDetails = ({ data, stripePromise, clientSecret, refetch }) => {
                 {
                   !isPurchased &&
                   data?.reviews.length === 0 && (
-                    <div className='text-sm text-gray-500'>
+                    <div className='text-xs md:text-[13px] text-gray-500'>
                       No Reviews Yet!
                     </div>
                   )
