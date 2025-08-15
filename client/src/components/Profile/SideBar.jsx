@@ -19,8 +19,8 @@ const SideBar = () => {
 
 
     return (
-        <div className=' min-w-[320px] flex items-center justify-end  p-6 pr-0 '>
-            <div className='bg-white min-h-[400px] rounded-xl flex flex-col overflow-hidden relative shadow-lg border border-gray-300 '>
+        <div className='col-span-3 lg:col-span-2 bxl:col-span-4! bxl2:col-span-2! xl:col-span-1! blg:flex items-center justify-end hidden'>
+            <div className='bg-white min-h-[300px] rounded-xl flex flex-col overflow-hidden relative shadow-lg  border border-gray-300 min-w-[230px]'>
                 <div className='bg-dark-green px-2 py-1'>
                     <div className='flex items-center'>
                         <GoDotFill className='text-grass-green mx-[-2px]' />
@@ -30,22 +30,22 @@ const SideBar = () => {
                 </div>
 
                 <NavLink to='/profile'>
-                    <div className='flex items-center gap-4 py-6 px-5 cursor-pointer'>
-                        <div className='w-16 h-16 rounded-full relative flex items-center justify-center'>
-                            <img src={user?.avatar?.url || profilePic} alt="avatar" className='w-16 h-16 object-cover object-center rounded-full border border-gray-300' />
+                    <div className='flex items-center gap-2.5 cursor-pointer px-3 py-3.5'>
+                        <div className='w-11 h-11 rounded-full relative flex items-center justify-center'>
+                            <img src={user?.avatar?.url || profilePic} alt="avatar" className='w-11 h-11 object-cover object-center rounded-full border border-gray-300' />
                         </div>
                         <div className='flex flex-col'>
-                            <h3 className='text-xl text-dark-green  font-[800] line-clamp-1 text-ellipsis overflow-hidden max-w-[320px]'>{formatName(user?.name)}</h3>
+                            <h3 className='text-lg text-dark-green  font-[800] whitespace-nowrap text-ellipsis overflow-hidden max-w-[320px]'>{formatName(user?.name)}</h3>
                             <p className='text-xs  text-gray-500'>{user?.role && user?.role === 'admin' ? "Educator" : "Student"}</p>
                         </div>
                     </div>
                 </NavLink>
 
-                <div className='flex flex-col gap-3 mt-3'>
+                <div className='flex flex-col gap-2.5 px-3 mt-3.5'>
 
 
                     <NavLink to='/profile/change-password' className={({ isActive }) =>
-                        `${isActive ? "bg-dark-green text-white hover:bg-dark-green" : "hover:bg-light-green"} flex items-center gap-4 rounded-4xl mx-6 py-2 px-6 cursor-pointer transition-all duration-300`
+                        `${isActive ? "bg-dark-green text-white hover:bg-dark-green" : "hover:bg-light-green"} px-3 flex items-center gap-2.5 rounded-4xl  py-2 cursor-pointer transition-all duration-300`
                     }>
                         <RiLockPasswordFill />
                         <p className='font-[300] text-sm'>Change Password</p>
@@ -57,7 +57,7 @@ const SideBar = () => {
 
 
                     <NavLink to="/profile/enrolled-courses" className={({ isActive }) =>
-                        `${isActive ? "bg-dark-green text-white hover:bg-dark-green" : "hover:bg-light-green"} flex items-center gap-4 rounded-4xl mx-6 py-2 px-6 cursor-pointer transition-all duration-300`} >
+                        `${isActive ? "bg-dark-green text-white hover:bg-dark-green" : "hover:bg-light-green"} px-3 flex items-center gap-2.5 rounded-4xl py-2 cursor-pointer transition-all duration-300`} >
                         <RiVideoOnAiFill />
                         <p className='font-[300] text-sm'>Enrolled Courses</p>
 
@@ -66,7 +66,7 @@ const SideBar = () => {
 
                 </div>
 
-                <div className='flex items-center gap-4 rounded-4xl mx-6 py-2 px-6 cursor-pointer transition-all absolute bottom-4 right-0 left-0  duration-300 hover:bg-light-green' onClick={() => setOpenLogout(true)}>
+                <div className='flex items-center gap-2.5 rounded-4xl py-2 cursor-pointer transition-all px-3 mx-3 mb-3 duration-300 absolute bottom-0 left-0 right-0 hover:bg-light-green' onClick={() => setOpenLogout(true)}>
                     <IoLogOut />
                     <p className='font-[300] text-sm'>Log Out</p>
 

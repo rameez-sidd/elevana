@@ -16,7 +16,7 @@ const EnrolledCourses = () => {
 
 
   return (
-    <div className='w-full h-full px-26 py-12 flex justify-center overflow-y-hidden '>
+    <div className='w-full h-full col-span-4 px-26 py-12 flex justify-center overflow-y-hidden '>
       {
         isLoading ? (
           <Loading size='screen' />

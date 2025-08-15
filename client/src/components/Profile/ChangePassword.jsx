@@ -30,47 +30,47 @@ const ChangePassword = () => {
   }
 
   return (
-    <div className={`flex-1 p-6 px-44  flex items-center justify-center ${user?.role === 'admin' && "h-full"}`}>
-      <div className={`min-w-2xl flex flex-col`}>
+    <div className={`col-span-5 blg:col-span-8 lg:col-span-6 bxl:col-span-13! bxl2:col-span-7! xl:col-span-4! px-2 bsm2:px-6 sm:px-10 md:px-20 blg:px-0! lg:px-44  flex items-center justify-center ${user?.role === 'admin' && "h-full"}`}>
+      <div className={`w-full sm:w-xl lg:min-w-2xl flex flex-col`}>
         {
           user?.role !== 'admin' && (
-            <div className='h-[100px] '></div>
+            <div className='h-[60px] bg-red-300 lg:h-[73px]'></div>
           )
         }
 
-        <div className={`bg-white rounded-md px-8 ${user?.role === 'admin' ? 'pt-12' : 'pt-20'} pb-8 flex items-center justify-center border border-gray-300  ${user?.role === 'admin' ? "shadow-none" : "shadow-lg"}   relative`}>
+        <div className={`bg-white rounded-md px-3 sm:px-5 lg:px-8 ${user?.role === 'admin' ? 'pt-12px' : 'pt-[58px] sm:pt-[68px] lg:pt-[78px]'} pb-6 sm:pb-7 lg:pb-8 flex items-center justify-center border border-gray-300  ${user?.role === 'admin' ? "shadow-none" : "shadow-lg"}   relative`}>
           <form className='flex flex-col items-center w-full' onSubmit={handlePasswordChange}>
             {
               user?.role !== 'admin' && (
-                <div className='absolute top-[-80px] rounded-full bg-light-green border border-gray-300 p-2 flex items-center justify-center shadow-lg'>
-                  <img src={changePasswordIcon} alt="" width={110} height={110} className='rounded-full bg-white p-2' />
+                <div className='absolute top-[-60px] lg:top-[-73px] w-[100px] h-[100px] lg:w-[120px] lg:h-[120px]  rounded-full bg-light-green border border-gray-300 p-2 flex items-center justify-center shadow-lg'>
+                  <img src={changePasswordIcon} alt="" className='rounded-full bg-white p-2' />
                 </div>
               )
             }
 
             {/* <div className='h-[100px] invisible'></div> */}
-            <div className='flex items-center gap-7 w-full'>
-              <label htmlFor="oldPassword" className='min-w-[130px] text-sm'>Old Password:</label>
+            <div className='flex flex-col sm:flex-row items-start sm:items-center gap-0.5 sm:gap-5 lg:gap-7 w-full'>
+              <label htmlFor="oldPassword" className='min-w-[130px] text-[13px] lg:text-sm'>Old Password</label>
               <div className='flex bg-gray-100 w-full border border-gray-300 rounded-sm overflow-hidden'>
-                <input type={showOldPassword ? "text" : "password"} name="" id="oldPassword" required value={oldPassword} onChange={(e) => setOldPassword(e.target.value)} className='text-sm font-[300] bg-gray-100 w-full p-2 px-3 outline-none' placeholder='Your existing password' />
+                <input type={showOldPassword ? "text" : "password"} name="" id="oldPassword" required value={oldPassword} onChange={(e) => setOldPassword(e.target.value)} className='text-[13px] lg:text-sm font-[300] bg-gray-100 w-full p-2 px-3 outline-none' placeholder='Your existing password' />
                 <div className='px-2 hover:bg-gray-200  grid place-items-center cursor-pointer' onClick={() => setShowOldPassword(!showOldPassword)}>
                   {showOldPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
 
                 </div>
               </div>
             </div>
-            <div className='flex items-center gap-7 mt-8 w-full'>
-              <label htmlFor="newPassword" className='min-w-[130px] text-sm'>New Password:</label>
+            <div className='flex flex-col sm:flex-row items-start sm:items-center gap-0.5 sm:gap-5 lg:gap-7 mt-4 sm:mt-6 lg:mt-8 w-full'>
+              <label htmlFor="newPassword" className='min-w-[130px] text-[13px] lg:text-sm whitespace-nowrap'>New Password</label>
               <div className='flex bg-gray-100 w-full border border-gray-300 rounded-sm overflow-hidden'>
 
-                <input type={showNewPassword ? "text" : "password"} name="" id="newPassword" required value={newPassword} onChange={(e) => setNewPassword(e.target.value)} className='text-sm font-[300] bg-gray-100 w-full p-2 px-3 outline-none' placeholder='Choose a new, secure password' />
+                <input type={showNewPassword ? "text" : "password"} name="" id="newPassword" required value={newPassword} onChange={(e) => setNewPassword(e.target.value)} className='text-[13px] lg:text-sm font-[300] bg-gray-100 w-full p-2 px-3 outline-none' placeholder='Choose a new, secure password' />
                 <div className='px-2 hover:bg-gray-200  grid place-items-center cursor-pointer' onClick={() => setShowNewPassword(!showNewPassword)}>
                   {showNewPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
 
                 </div>
               </div>
             </div>
-            <div className='mt-8'>
+            <div className='mt-6 sm:mt-7 lg:mt-8'>
               <input type="submit" disabled={isLoading} value={isLoading ? "Saving..." : "Save"} className={`bg-dark-green text-white py-1.5 px-15 ${isLoading ?
                 "cursor-not-allowed bg-gray-300 hover:bg-gray-300" : "cursor-pointer hover:bg-muted-green"}  rounded-sm text-sm`} />
             </div>
