@@ -63,7 +63,7 @@ const Header = ({ isProfileOpen, setIsProfileOpen }) => {
             <div className='justify-self-end flex items-center justify-center '>
                 {
                     user ? (
-                        <img src={user.avatar ? user.avatar.url : profilePic} alt="avatar" className={`w-7 h-7 rounded-full object-cover cursor-pointer border border-gray-200 hover:outline-3 ${isProfileOpen ? 'outline-3 outline-dark-green hover:dark-green' : "hover:outline-grass-green"}`} onClick={() => (user?.role === 'admin' ? navigate('/admin/admin-dashboard') : navigate('/profile'))} />
+                        <img src={user.avatar ? user.avatar.url : profilePic} alt="avatar" className={`w-7 h-7 rounded-full object-cover cursor-pointer border border-gray-200 hover:outline-3 ${isProfileOpen ? 'outline-3 outline-dark-green hover:dark-green border-none' : "hover:outline-grass-green"}`} onClick={() => (user?.role === 'admin' ? navigate('/admin/admin-dashboard') : navigate('/profile'))} />
                     ) : (
                         <button className='bg-dark-green text-xs md:text-[13px] lg:text-sm text-white py-2 px-4 sm:py-2.5 sm:px-5 md:px-6  lg:px-7 font-[300] cursor-pointer hover:bg-dark-grass-green rounded-4xl' onClick={() => handleSetModal("signup")}>Get Started</button>
                     )

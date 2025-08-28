@@ -54,15 +54,15 @@ const MyAccount = () => {
 
 
   return (
-    <div className={`col-span-5 blg:col-span-8 lg:col-span-6 bxl:col-span-13! bxl2:col-span-7! xl:col-span-4! px-2 bsm2:px-6 sm:px-10 md:px-20 blg:px-0! lg:px-44  flex items-center justify-center  ${user?.role === 'admin' && "h-full"} `}>
+    <div className={`col-span-5 blg:col-span-8 lg:col-span-6 bxl:col-span-13! bxl2:col-span-7! xl:col-span-4! px-2.5 bsm2:px-6 sm:px-10 md:px-20 blg:px-0! lg:px-44  flex items-center justify-center  ${user?.role === 'admin' && "h-full"} `}>
       <div className={`w-full sm:w-xl lg:min-w-2xl flex flex-col`}>
-        <div className='h-[60px] bg-red-300 lg:h-[73px] '>
+        <div className='h-[60px]  lg:h-[73px] '>
 
         </div>
-        <div className={`bg-white rounded-md px-3 sm:px-5 lg:px-8 pt-[58px] sm:pt-[68px] lg:pt-[78px] pb-6 sm:pb-7 lg:pb-8 flex items-center justify-center border border-gray-300  ${user?.role === 'admin' ? "shadow-none" : "shadow-lg"}   relative`}>
+        <div className={`bg-white rounded-md px-3.5 sm:px-5 lg:px-8 pt-[58px] sm:pt-[68px] lg:pt-[78px] pb-6 sm:pb-7 lg:pb-8 flex items-center justify-center border border-gray-300  ${user?.role === 'admin' ? "shadow-none" : "shadow-lg"}   relative`}>
           <form className='flex flex-col items-center w-full' onSubmit={handleSubmit}>
             <div className='absolute top-[-60px] lg:top-[-73px] w-[100px] h-[100px] lg:w-[120px] lg:h-[120px] rounded-full flex items-center justify-center shadow-lg'>
-              <img src={previewImage} alt="avatar"  className='w-full h-full rounded-full outline outline-gray-200 border-6 bg-gray-200 border-white object-cover' />
+              <img src={previewImage} alt="avatar"  className='w-full h-full rounded-full outline outline-gray-200 border-5 sm:border-6 bg-gray-200 border-white object-cover' />
               <input type="file" name="" id="avatar" className="hidden" accept="image/png,image/jpg,image/jpeg,image/webp" onChange={handleImageChange}/>
               <label htmlFor="avatar" className='cursor-pointer absolute bottom-1 right-1 bg-dark-green text-white rounded-full h-8 w-8 hover:bg-muted-green grid place-items-center'><span className='text-[17px] lg:text-[21px]'><TbCameraPlus/></span></label> 
             </div>

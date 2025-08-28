@@ -30,15 +30,15 @@ const ChangePassword = () => {
   }
 
   return (
-    <div className={`col-span-5 blg:col-span-8 lg:col-span-6 bxl:col-span-13! bxl2:col-span-7! xl:col-span-4! px-2 bsm2:px-6 sm:px-10 md:px-20 blg:px-0! lg:px-44  flex items-center justify-center ${user?.role === 'admin' && "h-full"}`}>
+    <div className={`col-span-5 blg:col-span-8 lg:col-span-6 bxl:col-span-13! bxl2:col-span-7! xl:col-span-4! px-2.5 bsm2:px-6 sm:px-10 md:px-20 blg:px-0! lg:px-44  flex items-center justify-center ${user?.role === 'admin' && "h-full"}`}>
       <div className={`w-full sm:w-xl lg:min-w-2xl flex flex-col`}>
         {
           user?.role !== 'admin' && (
-            <div className='h-[60px] bg-red-300 lg:h-[73px]'></div>
+            <div className='h-[60px] lg:h-[73px]'></div>
           )
         }
 
-        <div className={`bg-white rounded-md px-3 sm:px-5 lg:px-8 ${user?.role === 'admin' ? 'pt-12px' : 'pt-[58px] sm:pt-[68px] lg:pt-[78px]'} pb-6 sm:pb-7 lg:pb-8 flex items-center justify-center border border-gray-300  ${user?.role === 'admin' ? "shadow-none" : "shadow-lg"}   relative`}>
+        <div className={`bg-white rounded-md px-3.5 sm:px-5 lg:px-8 ${user?.role === 'admin' ? 'pt-12px' : 'pt-[58px] sm:pt-[68px] lg:pt-[78px]'} pb-6 sm:pb-7 lg:pb-8 flex items-center justify-center border border-gray-300  ${user?.role === 'admin' ? "shadow-none" : "shadow-lg"}   relative`}>
           <form className='flex flex-col items-center w-full' onSubmit={handlePasswordChange}>
             {
               user?.role !== 'admin' && (
