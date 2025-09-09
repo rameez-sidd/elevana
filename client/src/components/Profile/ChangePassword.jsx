@@ -30,11 +30,11 @@ const ChangePassword = () => {
   }
 
   return (
-    <div className={`col-span-5 blg:col-span-8 lg:col-span-6 bxl:col-span-13! bxl2:col-span-7! xl:col-span-4! px-2.5 bsm2:px-6 sm:px-10 md:px-20 blg:px-0! lg:px-44  flex items-center justify-center ${user?.role === 'admin' && "h-full"}`}>
-      <div className={`w-full sm:w-xl lg:min-w-2xl flex flex-col`}>
+    <div className={`col-span-5 blg:col-span-8 lg:col-span-6 bxl:col-span-13! bxl2:col-span-7! xl:col-span-4! px-2.5 bsm2:px-6 sm:px-10 md:px-20 blg:px-0! lg:px-44  flex items-start sm:items-center justify-center ${user?.role === 'admin' && "h-full"}`}>
+      <div className={`w-full sm:w-xl lg:min-w-2xl flex flex-col  mt-10 sm:mt-0`}>
         {
           user?.role !== 'admin' && (
-            <div className='hidden sm:block sm:h-[60px] lg:h-[73px]'></div>
+            <div className='h-[60px] lg:h-[73px]'></div>
           )
         }
 

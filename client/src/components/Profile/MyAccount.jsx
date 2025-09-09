@@ -54,9 +54,9 @@ const MyAccount = () => {
 
 
   return (
-    <div className={`col-span-5 blg:col-span-8 lg:col-span-6 bxl:col-span-13! bxl2:col-span-7! xl:col-span-4! px-2.5 bsm2:px-6 sm:px-10 md:px-20 blg:px-0! lg:px-44  flex items-center justify-center  ${user?.role === 'admin' && "h-full"} `}>
-      <div className={`w-full sm:w-xl lg:min-w-2xl flex flex-col`}>
-        <div className='hidden sm:block sm:h-[60px] lg:h-[73px] '>
+    <div className={`col-span-5 blg:col-span-8 lg:col-span-6 bxl:col-span-13! bxl2:col-span-7! xl:col-span-4! px-2.5 bsm2:px-6 sm:px-10 md:px-20 blg:px-0! lg:px-44  flex items-start sm:items-center justify-center  ${user?.role === 'admin' && "h-full"} `}>
+      <div className={`w-full sm:w-xl lg:min-w-2xl flex flex-col mt-10 sm:mt-0`}>
+        <div className='h-[60px] lg:h-[73px] '>
 
         </div>
         <div className={`bg-white rounded-md px-3.5 sm:px-5 lg:px-8 pt-[58px] sm:pt-[68px] lg:pt-[78px] pb-6 sm:pb-7 lg:pb-8 flex items-center justify-center border border-gray-300  ${user?.role === 'admin' ? "shadow-none" : "shadow-lg"}   relative`}>
