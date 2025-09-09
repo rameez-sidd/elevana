@@ -34,7 +34,7 @@ const ChangePassword = () => {
       <div className={`w-full sm:w-xl lg:min-w-2xl flex flex-col`}>
         {
           user?.role !== 'admin' && (
-            <div className='h-[20px] sm:h-[60px] lg:h-[73px]'></div>
+            <div className='hidden sm:block sm:h-[60px] lg:h-[73px]'></div>
           )
         }
 
