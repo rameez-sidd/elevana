@@ -19,7 +19,7 @@ const CourseCard = ({ course, isEnrolled }) => {
 
                 </div>
 
-                <div className={`mx-auto p-2 px-0.5 pt-1.5 flex flex-col   ${isEnrolled ? 'w-[200px] xs:w-[190px] sm:w-[170px] md:w-[150px]' : 'w-[250px] min-h-[110px]'}`}>
+                <div className={`mx-auto p-2 px-0 pt-1.5 flex flex-col   ${isEnrolled ? 'w-[200px] xs:w-[190px] sm:w-[170px] md:w-[150px]' : 'w-[250px] min-h-[110px]'}`}>
                     <div className={`${isEnrolled ? 'text-[15px] sm:text-sm' : 'text-lg'} font-[600] line-clamp-1 text-ellipsis`}>
                         {course?.name}
                     </div>
