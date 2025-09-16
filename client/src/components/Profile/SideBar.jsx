@@ -21,7 +21,7 @@ const SideBar = () => {
 
     return (
         <div className='col-span-3 lg:col-span-2 bxl:col-span-4! bxl2:col-span-2! xl:col-span-1! blg:flex items-center justify-end hidden'>
-            <div className='bg-white min-h-[250px] rounded-xl flex flex-col overflow-hidden relative shadow-lg py-3 border border-gray-300 min-w-[230px]'>
+            <div className='bg-white min-h-[250px] rounded-xl flex flex-col overflow-hidden relative shadow-lg py-3 min-w-[230px]'>
                 {/* <div className='bg-dark-green px-2 py-1'>
                     <div className='flex items-center'>
                         <GoDotFill className='text-grass-green mx-[-2px]' />
