@@ -6,7 +6,7 @@ import { Link, useNavigate } from 'react-router-dom'
 const CourseCard = ({ course, isEnrolled }) => {
     const navigate = useNavigate()
     return (
-            <div className={`bg-white rounded-md ${isEnrolled ? 'min-w-[150px]' : 'min-w-[250px]'} w-fit xs:w-full bsm:w-fit! shadow-lg hover:shadow-sm cursor-pointer  border border-gray-300`} onClick={() => {
+            <div className={`bg-white rounded-md ${isEnrolled ? 'min-w-[150px] border-gray-200' : 'min-w-[250px] border-gray-300'} w-fit xs:w-full bsm:w-fit! shadow-lg hover:shadow-sm cursor-pointer  border `} onClick={() => {
                 if(!isEnrolled) {
                     navigate(`/course/${course._id}`)
                 }
