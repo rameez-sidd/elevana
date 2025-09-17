@@ -88,7 +88,7 @@ const Header = ({ isProfileOpen }) => {
                         <Popover className="blg:hidden">
                             <PopoverTrigger asChild>
 
-                                <img src={user.avatar ? user.avatar.url : profilePic} alt="avatar" className={`w-7 h-7 rounded-full object-cover cursor-pointer border border-gray-200 hover:outline-3 ${isProfileOpen ? 'outline-3 mr-1.5 md:mr-0 outline-dark-green hover:dark-green border-none' : "hover:outline-grass-green"}`} onClick={handleAvatarClick} />
+                                <img src={user.avatar ? user.avatar.url : profilePic} alt="avatar" className={`w-7 h-7 rounded-full object-cover cursor-pointer border border-gray-200 hover:outline-3 ${isProfileOpen ? 'outline-3 outline-dark-green hover:dark-green border-none' : "hover:outline-grass-green"}`} onClick={handleAvatarClick} />
                             </PopoverTrigger>
                             <PopoverContent className="blg:hidden p-0 overflow-hidden w-fit mr-2">
                                 <div className='flex flex-col'>
