@@ -34,7 +34,7 @@ const CourseSteps = () => {
                     <div key={index} className='flex flex-col gap-0.5'>
                         <div className={`flex items-center cursor-pointer ${activeStep + 1 > index ? "text-dark-green" : "text-green"}`} >
                             <ImRadioChecked2 size={20} className='w-8' />
-                            <p className='text-sm'>{step}</p>
+                            <p className='text-sm whitespace-nowrap'>{step}</p>
                         </div>
                         {
                             index !== steps.length - 1 && (

@@ -59,7 +59,7 @@ const CoursesDataGrid = () => {
 
 
     return (
-        <div className='px-12 py-12'>
+        <div className='px-6 b2xl:px-12 py-12'>
             {
                 isLoading ? (
                     <Loading size='screen'/>

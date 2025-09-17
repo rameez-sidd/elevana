@@ -99,7 +99,7 @@ const CourseInfo = () => {
     }
 
     return (
-        <div className='py-12 px-12'>
+        <div className='py-12 px-6 b2xl:px-12'>
             <div>
                 <form className='flex flex-col gap-6' onSubmit={handleSubmit}>
                     <div className='flex flex-col gap-0.5'>
@@ -154,11 +154,11 @@ const CourseInfo = () => {
                             <label htmlFor="demo-video" className='text-sm'>Demo Video</label>
                             <div className='flex items-center gap-2'>
                                 <input type="file" disabled={uploading} name="demoVideo" id="demo-video" accept="video/*" onChange={handleVideoUpload} className='hidden' />
-                                <label htmlFor="demo-video" className={`text-sm font-[300] ${courseInfo?.demoUrl ? "text-black" : "text-[#7F7F7F]"} bg-white w-full p-2 px-3 border border-gray-300 rounded-sm outline-none ${uploading ? "cursor-not-allowed pointer-events-none" : "cursor-pointer"} hover:bg-gray-50 flex items-center gap-1`}>
+                                <label htmlFor="demo-video" className={`text-sm font-[300] ${courseInfo?.demoUrl ? "text-black" : "text-[#7F7F7F]"} bg-white w-full p-2 px-3 border border-gray-300 rounded-sm outline-none ${uploading ? "cursor-not-allowed pointer-events-none" : "cursor-pointer"} hover:bg-gray-50 flex items-center gap-1 line-clamp-1!`}>
                                     {
                                         uploading ? <>
                                             <span>Uploading...</span>
-                                            <div className="w-4 h-4 border-4 border-gray-300 border-t-dark-green rounded-full animate-spin"></div>
+                                            <div className="inline-block b2xl:block w-4 h-4 border-4 border-gray-300 border-t-dark-green rounded-full animate-spin"></div>
                                         </> : courseInfo.demoUrl ? courseInfo.demoFileName || "Change Video" : "Upload your demo video file here"
                                     }
                                 </label>
@@ -175,7 +175,7 @@ const CourseInfo = () => {
                     </div>
                     <div className='mt-5'>
                         <input type="file" disabled={uploading} name="thumbnail" id="file" accept='image/*' className='hidden' onChange={handleFileChange} />
-                        <label htmlFor="file" className={`${courseInfo.thumbnail ? "w-[500px] p-2" : "w-full p-4"} ${dragging ? "bg-light-green" : "bg-white"} border border-gray-300 flex flex-col items-center justify-center rounded-sm ${uploading ? 'cursor-not-allowed pointer-events-none' : 'cursor-pointer'} `} onDragOver={handleDragOver} onDragLeave={handleDragLeave} onDrop={handleDrop}>
+                        <label htmlFor="file" className={`${courseInfo.thumbnail ? "max-w-full bxl:w-[500px] p-2" : "w-full p-4"} ${dragging ? "bg-light-green" : "bg-white"} border border-gray-300 flex flex-col items-center justify-center rounded-sm ${uploading ? 'cursor-not-allowed pointer-events-none' : 'cursor-pointer'} `} onDragOver={handleDragOver} onDragLeave={handleDragLeave} onDrop={handleDrop}>
                             {
                                 courseInfo.thumbnail ? (
                                     <>

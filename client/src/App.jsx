@@ -30,6 +30,7 @@ import ProfileAdmin from './components/Admin/Profile/ProfileAdmin';
 import ChangePasswordAdmin from './components/Admin/ChangePassword/ChangePasswordAdmin';
 import CourseAccessPage from './pages/CourseAccessPage';
 import CourseQA from './components/Admin/Course/CourseQA';
+import NotFound from './pages/NotFound';
 
 const ENDPOINT = import.meta.env.VITE_PUBLIC_SOCKET_SERVER_URI || ""
 const socketId = socketIO(ENDPOINT, {
@@ -103,6 +104,10 @@ const appRouter = createBrowserRouter([
       { path: "change-password", element: <ChangePasswordAdmin /> },
     ]
 
+  },
+  {
+    path: "*",
+    element: <NotFound />,
   },
 
 

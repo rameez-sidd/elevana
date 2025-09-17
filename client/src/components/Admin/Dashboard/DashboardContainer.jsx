@@ -70,8 +70,8 @@ const DashboardContainer = () => {
     return (
         <div className='px-8 py-8'>
             <div className='flex flex-col gap-8'>
-                <div className='grid grid-cols-4'>
-                    <div className='h-[300px] bg-zinc-200 rounded-sm pt-3 col-span-3'>
+                <div className='grid grid-cols-4 b2xl:grid-cols-7 b2xl2:grid-cols-20 gap-y-8 b2xl:gap-y-0'>
+                    <div className='h-[300px] bg-zinc-200 rounded-sm pt-3 col-span-4 b2xl:col-span-5 b2xl2:col-span-15'>
                         <h2 className='font-[600] text-center'>Users Analytics</h2>
                         <div className='h-full flex items-end'>
                             {
@@ -100,8 +100,8 @@ const DashboardContainer = () => {
                         </div>
                     </div>
 
-                    <div className='col-span-1 pl-8 flex flex-col justify-between '>
-                        <div className='flex justify-between bg-zinc-200 rounded-sm p-4'>
+                    <div className='col-span-4 b2xl:col-span-2 b2xl2:col-span-5 b2xl:pl-8 flex b2xl:flex-col b2xl:justify-between gap-8 b2xl:gap-0'>
+                        <div className='flex justify-between bg-zinc-200 rounded-sm p-4 flex-1 b2xl:flex-0'>
                             <div className='flex flex-col gap-0'>
                                 <AiOutlineProduct size={28} className='text-sky-700' />
                                 <p className='text-2xl font-[600] mt-4'>{ordersComparePercentage ? ordersComparePercentage?.currentMonth : "0"}</p>
@@ -121,7 +121,7 @@ const DashboardContainer = () => {
                                 </Box>
                             </div>
                         </div>
-                        <div className='flex justify-between bg-zinc-200 rounded-sm p-4'>
+                        <div className='flex justify-between bg-zinc-200 rounded-sm p-4 flex-1 b2xl:flex-0'>
                             <div className='flex flex-col gap-0'>
                                 <PiUsersThree size={28} className='text-sky-700' />
                                 <p className='text-2xl font-[600] mt-4'>{userComparePercentage ? userComparePercentage?.currentMonth : "0"}</p>
@@ -147,14 +147,14 @@ const DashboardContainer = () => {
 
                 </div>
 
-                <div className='grid grid-cols-5 '>
-                    <div className='col-span-2 flex flex-col gap-2 pr-8 self-center '>
+                <div className='grid grid-cols-5 gap-y-8 b2xl:gap-y-0'>
+                    <div className='col-span-5 b2xl:col-span-2 flex flex-col gap-2 b2xl:pr-8 self-center '>
                         <h5 className='font-[600]'>Recent Transactions</h5>
                         <Invoices /> 
 
                     </div>
 
-                    <div className='h-[300px] bg-zinc-200 rounded-sm pt-3 col-span-3'>
+                    <div className='h-[300px] bg-zinc-200 rounded-sm pt-3 col-span-5 b2xl:col-span-3'>
                         <h2 className='font-[600] text-center'>Orders Analytics</h2>
                         <div className='h-full flex items-end'>
                             {

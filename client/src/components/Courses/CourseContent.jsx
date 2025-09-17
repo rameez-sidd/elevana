@@ -289,7 +289,7 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
 
 
     return (
-        <div className={`${user?.role === 'admin' ? 'p-12' : 'py-12 lg:py-16 px-0'} relative`}>
+        <div className={`${user?.role === 'admin' ? 'px-3 b2xl:px-12 py-12' : 'py-12 lg:py-16 px-0'} relative`}>
             <div className='mx-auto max-w-7xl'>
                 <div className='grid grid-cols-6 mt-0 lg:mt-4'>
 
@@ -345,7 +345,7 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
                             {/* Overview, Resources, Q&A, Reviews */}
                             {
                                 user?.role === 'admin' ? (
-                                    <div className='mt-9 bg-white border border-gray-300 rounded-md overflow-hidden'>
+                                    <div className='mt-2 bg-white border border-gray-300 rounded-md overflow-hidden'>
                                         <div className='flex items-center bg-light-green text-black text-xs'>
 
                                             <p className={`flex-1 text-center cursor-pointer p-2 ${activeDetail === 'qa' && 'bg-dark-green text-white'}`} onClick={() => setActiveDetail('qa')}>Q & A</p>
@@ -362,7 +362,7 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
                                                             No questions yet!
                                                         </div>
                                                     ) : (
-                                                        <div className=' flex flex-col gap-8'>
+                                                        <div className=' flex flex-col gap-4'>
                                                             {
                                                                 videoData?.content[activeVideo]?.questions?.slice().reverse().map((item, index) => (
                                                                     <div className='flex items-center gap-3' key={index}>
@@ -433,7 +433,7 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
                                                             No reviews yet!
                                                         </div>
                                                     ) : (
-                                                        <div className={`${!isReviewExists && "mt-4"} flex flex-col gap-8`}>
+                                                        <div className={`${!isReviewExists && "mt-4"} flex flex-col gap-4`}>
                                                             {
                                                                 courseData?.course?.reviews?.slice().reverse().map((review, index) => (
                                                                     <div className='flex items-center gap-3' key={index}>
@@ -599,10 +599,10 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
 
                             {
                                 courseBySection && courseBySection.map((content, index) => (
-                                    <Collapsible key={index} open={openSections.includes(index)} onOpenChange={() => handleToggle(index)} className={`${index !== courseBySection.length - 1 && "border-b border-gray-300"}`}>
-                                        <CollapsibleTrigger className=" w-full flex items-center justify-between  p-2 px-3 cursor-pointer ">
-                                            <div className='flex-1 text-left max-w-full'>
-                                                <h5 className='font-[600] whitespace-nowrap overflow-x-hidden text-ellipsis break-words max-w-full'>{content?.section}</h5>
+                                    <Collapsible key={index} open={openSections.includes(index)} onOpenChange={() => handleToggle(index)} className={`${index !== courseBySection.length - 1 && "border-b border-gray-300"} `}>
+                                        <CollapsibleTrigger className="max-w-full flex items-center gap-2 p-2 px-3 cursor-pointer  w-full">
+                                            <div className='flex-1 text-left whitespace-nowrap overflow-x-hidden text-ellipsis break-words max-w-full'>
+                                                <h5 className='font-[600] whitespace-nowrap overflow-x-hidden text-ellipsis '>{content?.section}</h5>
                                                 <div className='flex items-center gap-2 text-sm'>
                                                     <p>{content?.videos?.length} {content?.videos?.length === 1 ? "Lesson" : "Lessons"}</p>
                                                     <p>•</p>
@@ -610,7 +610,7 @@ const CourseContent = ({ id, user, courseData, courseRefetch }) => {
                                                 </div>
                                             </div>
                                             {
-                                                openSections.includes(index) ? <IoChevronUp /> : <IoChevronDown />
+                                                openSections.includes(index) ? <span className='w-5 h-5 grid place-items-center'><IoChevronUp /></span> : <span className='w-5 h-5 grid place-items-center'><IoChevronDown /></span>
                                             }
 
                                         </CollapsibleTrigger>

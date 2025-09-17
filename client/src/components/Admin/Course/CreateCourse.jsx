@@ -15,7 +15,7 @@ const CreateCourse = () => {
         <div className='flex-1'>
           <Outlet/>
         </div>
-        <div className='px-6 py-12'>
+        <div className='pl-0 b2xl:pl-6 px-6 py-12'>
           <CourseSteps/>
         </div>
       </div>

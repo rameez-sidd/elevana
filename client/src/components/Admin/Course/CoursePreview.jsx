@@ -49,10 +49,10 @@ const CoursePreview = () => {
   }
 
   return (
-    <div className='px-12 py-12'>
+    <div className='px-6 b2xl:px-12 py-12'>
       <div className='flex flex-col gap-12'>
         <div className=' flex flex-col gap-3'>
-          <div className='bg-black  h-[500px] rounded-sm'>
+          <div className='bg-black h-[300px] bxl:h-[350px] bxl2:h-[400px] xl:h-[450px] b2xl:h-[500px] rounded-sm'>
             {
               courseData?.demoUrl ? (
                 <video src={courseData?.demoUrl} controls poster={courseData?.thumbnail?.url || courseData?.thumbnail} className='w-full h-full object-contain rounded-sm'></video>

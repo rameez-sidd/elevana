@@ -12,6 +12,7 @@ import { HiUser } from 'react-icons/hi2'
 import { RiLockPasswordFill, RiVideoOnAiFill } from 'react-icons/ri'
 import { IoLogOut } from 'react-icons/io5'
 import Logout from '../Auth/Logout'
+import { TbLayoutDashboardFilled } from 'react-icons/tb'
 
 const Header = ({ isProfileOpen }) => {
     const { user, modalOpen } = useSelector((state) => state.auth)
@@ -96,9 +97,14 @@ const Header = ({ isProfileOpen }) => {
                                         <span><HiUser /></span>
                                         <p className='text-sm'>My Profile</p>
                                     </Link>
-                                    <Link to='/profile/enrolled-courses' className='flex items-center gap-2 px-3 pr-6 py-2.5 border-b hover:bg-gray-100 cursor-pointer'>
-                                        <span><RiVideoOnAiFill /></span>
-                                        <p className='text-sm'>My Courses</p>
+                                    <Link to={user?.role === 'admin' ? '/admin/admin-dashboard' : '/profile/enrolled-courses'} className='flex items-center gap-2 px-3 pr-6 py-2.5 border-b hover:bg-gray-100 cursor-pointer'>
+                                        <span>
+                                            {
+                                                user?.role === 'admin' ? <TbLayoutDashboardFilled/> : <RiVideoOnAiFill />
+                                            }
+                                            
+                                        </span>
+                                        <p className='text-sm'>My {user?.role === 'admin' ? "Dashboard" : "Courses"}</p>
                                     </Link>
                                     <Link to='/profile/change-password' className='flex items-center gap-2 px-3 pr-6 py-2.5 border-b hover:bg-gray-100 cursor-pointer'>
                                         <span><RiLockPasswordFill /></span>

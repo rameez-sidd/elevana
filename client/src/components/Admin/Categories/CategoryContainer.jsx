@@ -68,7 +68,7 @@ const CategoryContainer = () => {
     }
 
     return (
-        <div className='px-12 py-12 h-full flex '>
+        <div className='px-6 b2xl:px-12 py-6 b2xl:py-12 h-full flex '>
             {
                 isLoading ? (
                     <Loading size='full'/>
@@ -105,7 +105,7 @@ const CategoryContainer = () => {
                             </div>
                         </div>
 
-                        <div className={`absolute bottom-4 right-4 bg-dark-green text-white text-sm w-30 hover:bg-dark-grass-green py-1.5 rounded-sm text-center ${areCategoriesUnchanged(data.layout?.categories, categories) || isAnyCategoryTitleEmpty(categories) || isAddingCategory ? "!cursor-not-allowed bg-gray-400 hover:bg-gray-400" : "!cursor-pointer"}`} onClick={areCategoriesUnchanged(data.layout?.categories, categories) || isAnyCategoryTitleEmpty(categories) ? () => null : editCategoriesHandler }>{isAddingCategory ? "Saving..." : "Save"}</div>
+                        <div className={`absolute bottom-0 b2xl:bottom-4 right-0 bg-dark-green text-white text-sm w-30 hover:bg-dark-grass-green py-1.5 rounded-sm text-center ${areCategoriesUnchanged(data.layout?.categories, categories) || isAnyCategoryTitleEmpty(categories) || isAddingCategory ? "!cursor-not-allowed bg-gray-400 hover:bg-gray-400" : "!cursor-pointer"}`} onClick={areCategoriesUnchanged(data.layout?.categories, categories) || isAnyCategoryTitleEmpty(categories) ? () => null : editCategoriesHandler }>{isAddingCategory ? "Saving..." : "Save"}</div>
                     </div>
                 )
             }

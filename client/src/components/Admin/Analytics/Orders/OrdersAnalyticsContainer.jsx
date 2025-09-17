@@ -20,7 +20,7 @@ const OrdersAnalyticsContainer = () => {
     const minValue = 0
 
     return (
-        <div className='px-12 py-12 flex h-full'>
+        <div className='px-6 b2xl:px-12 py-12 flex h-full'>
             {
                 isLoading ? (
                     <Loading size='full'/>

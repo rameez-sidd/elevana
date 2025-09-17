@@ -55,7 +55,7 @@ const CourseData = () => {
   }
 
   return (
-    <div className='py-12 px-12'>
+    <div className='py-12 px-6 b2xl:px-12'>
       <div className='flex flex-col gap-8'>
 
         <div className='flex flex-col gap-1'>

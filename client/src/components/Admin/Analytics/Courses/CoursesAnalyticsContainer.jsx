@@ -18,7 +18,7 @@ const CoursesAnalyticsContainer = () => {
     const minValue = 0
 
     return (
-        <div className='px-12 py-12 flex h-full'>
+        <div className='px-6 b2xl:px-12 py-12 flex h-full'>
             {
                 isLoading ? (
                     <Loading size='full' />
@@ -32,7 +32,7 @@ const CoursesAnalyticsContainer = () => {
                         <div className='h-full flex items-center justify-centeroverflow-y-hidden'>
                             <ResponsiveContainer height="70%" >
                                 <BarChart data={analyticsData} margin={{ top: 20, right: 30, left: 20, bottom: 50 }}>
-                                    <XAxis dataKey="name" interval={0} dy={10} style={{ fontSize: '10px' }}>
+                                    <XAxis dataKey="name"  interval={0} dy={10} style={{ fontSize: '10px' }}>
                                         <Label offset={0} position='insideBottom' />
                                     </XAxis>
 
