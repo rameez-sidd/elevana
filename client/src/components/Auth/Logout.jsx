@@ -13,6 +13,7 @@ const Logout = ({ openLogout, setOpenLogout }) => {
         try {
             await logOut().unwrap()
             navigate('/')
+            setOpenLogout(false)
             googleLogout()
             toast.success("Logout successful")
         } catch (error) {
