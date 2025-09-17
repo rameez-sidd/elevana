@@ -31,6 +31,8 @@ import ChangePasswordAdmin from './components/Admin/ChangePassword/ChangePasswor
 import CourseAccessPage from './pages/CourseAccessPage';
 import CourseQA from './components/Admin/Course/CourseQA';
 import NotFound from './pages/NotFound';
+import { useDispatch } from 'react-redux';
+import { setModalOpen } from './redux/features/auth/authSlice';
 
 const ENDPOINT = import.meta.env.VITE_PUBLIC_SOCKET_SERVER_URI || ""
 const socketId = socketIO(ENDPOINT, {
@@ -114,6 +116,13 @@ const appRouter = createBrowserRouter([
 ])
 
 const App = () => {
+
+  const dispatch = useDispatch()
+   useEffect(() => {
+    // Reset modal every time app is freshly loaded
+    dispatch(setModalOpen(""));
+  }, [dispatch]);
+
   useEffect(() => {
     socketId.on('connect', () => {
       console.log('Socket connected:', socketId.id);
