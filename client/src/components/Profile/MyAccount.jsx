@@ -56,10 +56,10 @@ const MyAccount = () => {
   return (
     <div className={`col-span-5 blg:col-span-8 lg:col-span-6 bxl:col-span-13! bxl2:col-span-7! xl:col-span-4!  px-2.5 bsm2:px-6 sm:px-10 md:px-20 blg:px-0! lg:px-44  flex items-start sm:items-center justify-center  ${user?.role === 'admin' && "h-full"} `}>
       <div className={`w-full sm:w-xl lg:min-w-2xl flex flex-col items-center mt-10 sm:mt-0`}>
-        <div className='h-[60px] '>
+        <div className='h-[60px] bg-red-400'>
 
         </div>
-        <div className={`bg-white rounded-md  w-full px-3.5 sm:px-5  max-w-[500px] pt-[58px] sm:pt-[68px] pb-6 sm:pb-7 lg:pb-8 flex items-center justify-center  ${user?.role === 'admin' ? "shadow-none" : "shadow-lg"}   relative`}>
+        <div className={`bg-white border border-gray-200 rounded-md  w-full px-3.5 sm:px-5  max-w-[500px] pt-[58px] sm:pt-[68px] pb-6 sm:pb-7 lg:pb-8 flex items-center justify-center  ${user?.role === 'admin' ? "shadow-none" : "shadow-lg"}   relative`}>
           <form className='flex flex-col items-center w-full' onSubmit={handleSubmit}>
             <div className='absolute top-[-60px] w-[100px] h-[100px] rounded-full flex items-center justify-center shadow-lg'>
               <img src={previewImage} alt="avatar"  className='w-full h-full rounded-full outline outline-gray-200 border-5 sm:border-6 bg-gray-200 border-white object-cover' />

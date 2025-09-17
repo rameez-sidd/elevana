@@ -21,26 +21,7 @@ const SideBar = () => {
 
     return (
         <div className='col-span-3 lg:col-span-2 bxl:col-span-4! bxl2:col-span-2! xl:col-span-1! blg:flex items-center justify-end hidden'>
-            <div className='bg-white min-h-[250px] rounded-xl flex flex-col overflow-hidden relative shadow-lg py-3 min-w-[230px]'>
-                {/* <div className='bg-dark-green px-2 py-1'>
-                    <div className='flex items-center'>
-                        <GoDotFill className='text-grass-green mx-[-2px]' />
-                        <GoDotFill className='text-dark-orange mx-[-2px]' />
-                        <GoDotFill className='text-light-orange mx-[-2px]' />
-                    </div>
-                </div> */}
-
-                {/* <NavLink to='/profile'>
-                    <div className='flex items-center gap-2.5 cursor-pointer px-3 py-3.5'>
-                        <div className='w-11 h-11 rounded-full relative flex items-center justify-center'>
-                            <img src={user?.avatar?.url || profilePic} alt="avatar" className='w-11 h-11 object-cover object-center rounded-full border border-gray-300' />
-                        </div>
-                        <div className='flex flex-col'>
-                            <h3 className='text-lg text-dark-green  font-[800] whitespace-nowrap text-ellipsis overflow-hidden max-w-[320px]'>{formatName(user?.name)}</h3>
-                            <p className='text-xs  text-gray-500'>{user?.role && user?.role === 'admin' ? "Educator" : "Student"}</p>
-                        </div>
-                    </div>
-                </NavLink> */}
+            <div className='bg-white min-h-[250px] rounded-xl flex flex-col overflow-hidden relative shadow-lg py-3 min-w-[230px] border border-gray-200'>
 
                 <div className='flex flex-col gap-2.5 px-3'>
 

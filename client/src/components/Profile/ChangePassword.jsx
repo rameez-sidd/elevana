@@ -32,21 +32,17 @@ const ChangePassword = () => {
   return (
     <div className={`col-span-5 blg:col-span-8 lg:col-span-6 bxl:col-span-13! bxl2:col-span-7! xl:col-span-4! px-2.5 bsm2:px-6 sm:px-10 md:px-20 blg:px-0! lg:px-44  flex items-start sm:items-center justify-center ${user?.role === 'admin' && "h-full"}`}>
       <div className={`w-full sm:w-xl lg:min-w-2xl flex flex-col items-center  mt-10 sm:mt-0`}>
-        {
-          user?.role !== 'admin' && (
-            <div className='h-[60px]'></div>
-          )
-        }
 
-        <div className={`bg-white w-full max-w-[500px] rounded-md px-3.5 sm:px-5  ${user?.role === 'admin' ? 'pt-12px' : 'pt-[58px] sm:pt-[68px] '} pb-6 sm:pb-7 flex items-center justify-center ${user?.role === 'admin' ? "shadow-none" : "shadow-lg"}   relative`}>
+        <div className='h-[60px]'></div>
+
+
+        <div className={`bg-white border border-gray-200 w-full max-w-[500px] rounded-md px-3.5 sm:px-5 pt-[58px] sm:pt-[68px] pb-6 sm:pb-7 flex items-center justify-center ${user?.role === 'admin' ? "shadow-none" : "shadow-lg"}   relative`}>
           <form className='flex flex-col items-center w-full' onSubmit={handlePasswordChange}>
-            {
-              user?.role !== 'admin' && (
-                <div className='absolute top-[-60px] w-[100px] h-[100px] rounded-full bg-green border border-gray-300 p-1.5 flex items-center justify-center shadow-lg'>
-                  <img src={changePasswordIcon} alt="" className='rounded-full bg-white p-2' />
-                </div>
-              )
-            }
+
+            <div className='absolute top-[-60px] w-[100px] h-[100px] rounded-full bg-green border border-gray-300 p-1.5 flex items-center justify-center shadow-lg'>
+              <img src={changePasswordIcon} alt="" className='rounded-full bg-white p-2' />
+            </div>
+
 
             {/* <div className='h-[100px] invisible'></div> */}
             <div className='flex flex-col sm:flex-row items-start sm:items-center gap-0.5 sm:gap-5 w-full'>
